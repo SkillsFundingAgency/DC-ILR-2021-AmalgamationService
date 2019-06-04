@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ESFA.DC.ILR.AmalgamationService.Rules")]
+[assembly: AssemblyTitle("ESFA.DC.ILR.AmalgamationService.Services.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ESFA.DC.ILR.AmalgamationService.Rules")]
+[assembly: AssemblyProduct("ESFA.DC.ILR.AmalgamationService.Services.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b1e45d8e-5a67-4cdb-b063-e7f85ae5838a")]
+[assembly: Guid("31a1340b-ce76-48d2-bd10-1c14edb1d4fb")]
 
 // Version information for an assembly consists of the following four values:
 //
