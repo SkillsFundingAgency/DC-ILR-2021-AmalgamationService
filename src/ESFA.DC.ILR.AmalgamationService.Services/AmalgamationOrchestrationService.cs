@@ -1,15 +1,24 @@
-﻿using System;
+﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.Model.Loose;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationOrchestrationService : IAmalgamationOrchestrationService
     {
-        public Task AmalgamateAsync(List<string> files)
+        IMessageProvider<Message> _messageProvider;
+        IAmalgamationService _amalgamationService;
+        IAmalgamationOutputService _amalgamationOutputService;
+        public AmalgamationOrchestrationService(IMessageProvider<Message> messageProvider, IAmalgamationService amalgamationService, IAmalgamationOutputService amalgamationOutputService)
         {
-            throw new NotImplementedException();
+            _messageProvider = messageProvider;
+            _amalgamationService = amalgamationService;
+            _amalgamationOutputService = amalgamationOutputService;
+        }
+        public Task ProcessAsync(List<string> files, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

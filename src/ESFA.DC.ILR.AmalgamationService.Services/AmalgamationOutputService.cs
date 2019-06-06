@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
-    public class AmalgamationOutputService : IAmalgamationOutputService<string>
+    public class AmalgamationOutputService : IAmalgamationOutputService
     {
         private readonly IXmlSerializationService _xmlSerializationService;
         private readonly IFileService _fileService;
@@ -21,7 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _fileService = fileService;
         }
 
-        public Task<string> ProcessAsync(List<IMessage> messages, string outputFilePath, CancellationToken cancellationToken)
+        public Task ProcessAsync(IAmalgamationMessage amalgamatedMessage, string outputFilePath, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

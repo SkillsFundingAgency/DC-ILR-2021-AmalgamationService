@@ -24,8 +24,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             string container = Path.GetDirectoryName(filepath);
             using (var stream = await _fileService.OpenReadStreamAsync(filename, container, cancellationToken))
             {
-                stream.Position = 0;
-
                 return _xmlSerializationService.Deserialize<Message>(stream);
             }
         }
