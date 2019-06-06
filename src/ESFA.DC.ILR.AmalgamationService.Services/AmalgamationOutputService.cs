@@ -21,7 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _fileService = fileService;
         }
 
-        public Task ProcessAsync(IAmalgamationMessage amalgamatedMessage, string outputFilePath, CancellationToken cancellationToken)
+        public Task ProcessAsync(IAmalgamationResult amalgamatedMessage, string outputFilePath, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

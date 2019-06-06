@@ -7,6 +7,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IMessageProvider<T>
     {
-        Task<T> ProvideAsync(string file, CancellationToken cancellationToken);
+        Task<T> ProvideAsync(string filepath, CancellationToken cancellationToken);
     }
 }

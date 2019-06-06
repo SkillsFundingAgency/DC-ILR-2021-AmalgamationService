@@ -5,9 +5,9 @@ using ESFA.DC.ILR.Model.Interface;
 using ESFA.DC.ILR.Model.Loose;
 namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
-    public interface IAmalgamationMessage
+    public interface IAmalgamationResult
     {
-        Message messaage { get; }
-        IAmalgamationValidationError validationError { get; }
+        Message Messaage { get; }
+        IEnumerable<IAmalgamationValidationError> ValidationErrors { get; }
     }
 }
