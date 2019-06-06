@@ -7,6 +7,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IAmalgamationService
     {
-        Task<IAmalgamationMessage> AmalgamateAsync(List<Message> messages);
+        Task<IAmalgamationMessage> AmalgamateAsync(List<Message> messages,CancellationToken cancellationToken);
     }
 }

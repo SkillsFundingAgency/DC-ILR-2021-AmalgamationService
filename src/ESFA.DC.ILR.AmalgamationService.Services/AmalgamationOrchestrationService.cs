@@ -16,9 +16,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _amalgamationService = amalgamationService;
             _amalgamationOutputService = amalgamationOutputService;
         }
-        public Task ProcessAsync(List<string> files, CancellationToken cancellationToken)
+        public async Task ProcessAsync(List<string> files, string outputPath, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            //TODO:file level pre validation here
+
+            List<Message> messages = new List<Message>();
+
+            foreach (var file in files)
+            {
+                var messaage = await _messageProvider.ProvideAsync(file, cancellationToken);
+                messages.Add(messaage);
+            }
+
+            var amalgamatedMessage = await _amalgamationService.AmalgamateAsync(messages, cancellationToken);
+
+            await _amalgamationOutputService.ProcessAsync(amalgamatedMessage, outputPath, cancellationToken);
         }
     }
 }
