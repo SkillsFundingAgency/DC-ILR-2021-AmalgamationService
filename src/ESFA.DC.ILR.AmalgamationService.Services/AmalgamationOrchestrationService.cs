@@ -21,8 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public async Task ProcessAsync(List<string> filePaths, string outputPath, CancellationToken cancellationToken)
         {
-            //TODO:file level pre validation here
-
+            // TODO:file level pre validation here
             List<Message> messages = new List<Message>();
 
             foreach (var file in filePaths)
