@@ -4,6 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.AmalgamationService.Services.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>ESFA.DC.ILR.AmalgamationService.Services.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="ESFA.DC.FileService.Interface" Version="0.1.18-beta0001" />
     <PackageReference Include="ESFA.DC.ILR.1920.Model.Loose" Version="0.1.5-beta0001" />
