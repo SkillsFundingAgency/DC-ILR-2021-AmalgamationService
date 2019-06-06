@@ -3,13 +3,15 @@ using ESFA.DC.ILR.Model.Loose;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationOrchestrationService : IAmalgamationOrchestrationService
     {
-        IMessageProvider<Message> _messageProvider;
-        IAmalgamationService _amalgamationService;
-        IAmalgamationOutputService _amalgamationOutputService;
+        private IMessageProvider<Message> _messageProvider;
+        private IAmalgamationService _amalgamationService;
+        private IAmalgamationOutputService _amalgamationOutputService;
+
         public AmalgamationOrchestrationService(IMessageProvider<Message> messageProvider, IAmalgamationService amalgamationService, IAmalgamationOutputService amalgamationOutputService)
         {
             _messageProvider = messageProvider;
