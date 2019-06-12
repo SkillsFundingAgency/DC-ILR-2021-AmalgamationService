@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.AmalgamationSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.AmalgamationService.Services.Tests", "ESFA.DC.ILR.AmalgamationService.Services.Tests\ESFA.DC.ILR.AmalgamationService.Services.Tests.csproj", "{31A1340B-CE76-48D2-BD10-1C14EDB1D4FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.AmalgamationService.Rules", "ESFA.DC.ILR.AmalgamationService.Rules\ESFA.DC.ILR.AmalgamationService.Rules.csproj", "{5A582F60-9723-4709-86A3-EED25E23B296}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{31A1340B-CE76-48D2-BD10-1C14EDB1D4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31A1340B-CE76-48D2-BD10-1C14EDB1D4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31A1340B-CE76-48D2-BD10-1C14EDB1D4FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A582F60-9723-4709-86A3-EED25E23B296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A582F60-9723-4709-86A3-EED25E23B296}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A582F60-9723-4709-86A3-EED25E23B296}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A582F60-9723-4709-86A3-EED25E23B296}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
