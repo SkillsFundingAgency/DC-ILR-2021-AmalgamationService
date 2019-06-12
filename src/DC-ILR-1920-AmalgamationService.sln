@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.AmalgamationService.Services", "ESFA.DC.ILR.AmalgamationService.Services\ESFA.DC.ILR.AmalgamationService.Services.csproj", "{F6E83C4C-AA25-4740-97C1-6BDC1F4F6678}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.AmalgamationService.Services", "ESFA.DC.ILR.AmalgamationService.Services\ESFA.DC.ILR.AmalgamationService.Services.csproj", "{F6E83C4C-AA25-4740-97C1-6BDC1F4F6678}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.AmalgamationService.Interfaces", "ESFA.DC.ILR.AmalgamationService.Interfaces\ESFA.DC.ILR.AmalgamationService.Interfaces.csproj", "{C41398AD-C5B7-4DB6-8BF7-4A3BB5D6F94F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.AmalgamationService.Interfaces", "ESFA.DC.ILR.AmalgamationService.Interfaces\ESFA.DC.ILR.AmalgamationService.Interfaces.csproj", "{C41398AD-C5B7-4DB6-8BF7-4A3BB5D6F94F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.AmalgamationService.Services.Tests", "ESFA.DC.ILR.AmalgamationService.Services.Tests\ESFA.DC.ILR.AmalgamationService.Services.Tests.csproj", "{31A1340B-CE76-48D2-BD10-1C14EDB1D4FB}"
 EndProject
