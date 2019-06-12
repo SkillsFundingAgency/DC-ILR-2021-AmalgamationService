@@ -8,7 +8,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationService : IAmalgamationService
     {
-        public Task<IAmalgamationResult> AmalgamateAsync(List<Message> messages, CancellationToken cancellationToken)
+        public Task<IAmalgamationResult> AmalgamateAsync(IEnumerable<Message> messages, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
