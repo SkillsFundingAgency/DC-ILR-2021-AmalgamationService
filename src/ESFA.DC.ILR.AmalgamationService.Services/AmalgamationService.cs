@@ -12,5 +12,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
             throw new System.NotImplementedException();
         }
+
+        public Task<IAmalgamationResult> AmalgamateAsync(List<Message> messages, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
