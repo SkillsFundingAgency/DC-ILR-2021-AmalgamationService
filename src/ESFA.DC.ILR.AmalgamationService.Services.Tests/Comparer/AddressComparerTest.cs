@@ -1,7 +1,7 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Services.Comparer;
 using Xunit;
 
-namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
+namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Comparer
 {
     public class AddressComparerTest
     {

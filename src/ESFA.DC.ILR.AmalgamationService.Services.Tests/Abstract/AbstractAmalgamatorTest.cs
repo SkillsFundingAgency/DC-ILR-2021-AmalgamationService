@@ -1,38 +1,51 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
-using ESFA.DC.ILR.Model.Loose;
-using FluentAssertions;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
 {
-    public class AbstractAmalgamatorTest
+    public class AbstractAmalgamatorTest : BaseTest
     {
-        public IList<T> GetInputModels<T, TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, Func<T> constructor)
+        private Mock<IAmalgamator<TestData>> _mockTestDataAmalgamatos = new Mock<IAmalgamator<TestData>>();
+
+        private Mock<IRule<string>> _mockRule = new Mock<IRule<string>>();
+        private AbstractAmalgamatorCaller _amalgamator = new AbstractAmalgamatorCaller();
+        private List<TestData> _testDatas = new List<TestData>();
+
+        public AbstractAmalgamatorTest()
         {
-            return new List<T>()
-            {
-                GetInputModel(propertySelector, value, constructor),
-                GetInputModel(propertySelector, value, constructor),
-                GetInputModel(propertySelector, value, constructor),
-            };
+            _mockTestDataAmalgamatos.Setup(m => m.Amalgamate(It.IsAny<List<TestData>>())).Returns((List<TestData> s) => s[0]);
+
+            _mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => s[0]);
+
+            _testDatas.Add(GetTestData("11!", "Property11", 234234));
         }
 
-        public T GetInputModel<T, TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, Func<T> constructor)
+        [Fact]
+        public void ApplyRuleTest_Success()
         {
-            var selectorFunc = propertySelector.Compile();
+            TestData testDataAmalgamated = new TestData();
 
-            T model = constructor();
+            _amalgamator.ApplyRuleCaller(d => d.PropertyStr, _mockRule.Object.Definition, _testDatas, testDataAmalgamated);
+            Assert.Equal(testDataAmalgamated.PropertyStr, _testDatas[0].PropertyStr);
+        }
 
-            var prop = (PropertyInfo)((MemberExpression)propertySelector.Body).Member;
-            prop.SetValue(model, value);
+        [Fact]
+        public void ApplyChildRule_Success()
+        {
+            Assert.True(true);
+        }
 
-            return model;
+        [Fact]
+        public void ApplyGroupedChildCollectionRule_Success()
+        {
+            Assert.True(true);
+        }
+
+        private TestData GetTestData(string key, string propertyStr = "", long propertyLng = 0, TestData[] data = null)
+        {
+            return new TestData() { Key = key, PropertyStr = propertyStr, PropertyLng = propertyLng, Messages = data };
         }
     }
 }

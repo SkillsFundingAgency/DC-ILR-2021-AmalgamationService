@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
+﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
 using ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract;
 using ESFA.DC.ILR.Model.Loose;
 using FluentAssertions;
 using Moq;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
@@ -24,70 +22,34 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         private DateTime _testDateTime2 = new DateTime(2017, 6, 1);
 
         private IRuleProvider _ruleProvider = new RuleProvider();
+        private LearnerAmalgamator _learnerAmalgamator;
 
-        [Fact]
-        public void AmalgamatePrevLearnRefNumber_Success()
+        public LearnerAmalgamatorTest()
         {
-            var inputModels = GetInputModels(l => l.PrevLearnRefNumber, _testString1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).PrevLearnRefNumber.Should().Be(_testString1);
+            LearnerEmploymentStatusAmalgamator learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider);
+            _learnerAmalgamator = BuildAmalgamator(learnerEmploymentStatusAmalgamator, _ruleProvider);
         }
 
         [Fact]
-        public void AmalgamatePrevLearnRefNumber_Failure()
+        public void Amalgamate_Success()
         {
-            var inputModels = GetInputModels(l => l.PrevLearnRefNumber, _testString1, () => new MessageLearner());
-            inputModels[0].PrevLearnRefNumber = _testString2;
-            var amalgamatedMessageLearner = Assert.Throws<Exception>(() => BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels));
-        }
+            MessageLearner messageLearner1 = new MessageLearner() { LearnRefNumber = _testString1, PrevLearnRefNumber = _testString1, PMUKPRN = _testLong1, PrevUKPRN = _testLong1, DateOfBirth = _testDateTime1, FamilyName = _testString1, GivenNames = _testString1 };
+            MessageLearner messageLearner2 = new MessageLearner() { LearnRefNumber = _testString1, PMUKPRN = _testLong1, PrevUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
+            List<MessageLearner> messageLearners = new List<MessageLearner>() { messageLearner1, messageLearner2 };
 
-        [Fact]
-        public void AmalgamatePrevUKPRN_Success()
-        {
-            var inputModels = GetInputModels(l => l.PrevUKPRN, _testLong1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).PrevUKPRN.Should().Be(_testLong1);
-        }
+            MessageLearner messageLearnerExpected = new MessageLearner() { LearnRefNumber = _testString1, PrevLearnRefNumber = _testString1, PrevUKPRN = _testLong1, FamilyName = _testString1, GivenNames = _testString1, PMUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
 
-        [Fact]
-        public void AmalgamatePMUKPRN_Success()
-        {
-            var inputModels = GetInputModels(l => l.PMUKPRN, _testLong1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).PMUKPRN.Should().Be(_testLong1);
-        }
+            var amalgamated = _learnerAmalgamator.Amalgamate(messageLearners);
 
-        [Fact]
-        public void AmalgamateCampId_Success()
-        {
-            var inputModels = GetInputModels(l => l.CampId, _testString1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).CampId.Should().Be(_testString1);
-        }
-
-        [Fact]
-        public void AmalgamateFamilyName_Success()
-        {
-            var inputModels = GetInputModels(l => l.FamilyName, _testString1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).FamilyName.Should().Be(_testString1);
-        }
-
-        [Fact]
-        public void AmalgamateGivenNames_Success()
-        {
-            var inputModels = GetInputModels(l => l.GivenNames, _testString1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).GivenNames.Should().Be(_testString1);
-        }
-
-        [Fact]
-        public void AmalgamateDateOfBirth_Success()
-        {
-            var inputModels = GetInputModels(l => l.DateOfBirth, _testDateTime1, () => new MessageLearner());
-            BuildAmalgamator(null, _ruleProvider).Amalgamate(inputModels).DateOfBirth.Should().Be(_testDateTime1);
+            amalgamated.Should().BeEquivalentTo(messageLearnerExpected);
         }
 
         public LearnerAmalgamator BuildAmalgamator(
-            IAmalgamator<MessageLearnerLLDDandHealthProblem> llddAndHealthProblemAmalgamator = null,
+            IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator = null,
             IRuleProvider ruleProvider = null)
         {
             return new LearnerAmalgamator(
-                llddAndHealthProblemAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLLDDandHealthProblem>>(),
+                learnerEmploymentStatusAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerEmploymentStatus>>(),
                 ruleProvider ?? Mock.Of<IRuleProvider>());
         }
     }
