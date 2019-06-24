@@ -10,10 +10,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     public class MessageAmalgamator : AbstractAmalgamator, IAmalgamator<Message>
     {
         private readonly IAmalgamator<MessageHeader> _headerAmalgamator;
+        private readonly IAmalgamator<MessageLearner> _learnerAmalgamator;
 
-        public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator)
+        public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator, IAmalgamator<MessageLearner> learnerAmalgamator)
         {
             _headerAmalgamator = headerAmalgamator;
+            _learnerAmalgamator = learnerAmalgamator;
         }
 
         public Message Amalgamate(IEnumerable<Message> models)
@@ -21,6 +23,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var message = new Message();
 
             ApplyChildRule(m => m.Header, _headerAmalgamator, models, message);
+
+            ApplyGroupedChildCollectionRule(m => m.Learner, g => g.LearnRefNumber, _learnerAmalgamator, models, message);
 
             return message;
         }

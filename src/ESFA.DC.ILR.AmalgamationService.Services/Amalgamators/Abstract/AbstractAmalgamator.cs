@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
 {
@@ -35,6 +35,35 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
 
                 var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
                 prop.SetValue(entity, value);
+            }
+
+            return entity;
+        }
+
+        protected T ApplyGroupedChildCollectionRule<T, TValue, TGroupBy>(Expression<Func<T, IEnumerable<TValue>>> selector, Expression<Func<TValue, TGroupBy>> groupBySelector, IAmalgamator<TValue> amalgamator, IEnumerable<T> inputEntities, T entity)
+        {
+            if (inputEntities == null || inputEntities.Count() < 1)
+            {
+                return default(T);
+            }
+
+            var selectorFunc = selector.Compile();
+            var groupByFunc = groupBySelector.Compile();
+
+            if (!inputEntities.Any(e => e != null && selectorFunc.Invoke(e) != null))
+            {
+                return default(T);
+            }
+
+            var inputCollection = inputEntities.Where(e => e != null).SelectMany(selectorFunc);
+
+            var inputGroups = inputCollection.GroupBy(groupByFunc);
+            var amalgamatedGroups = inputGroups.Select(amalgamator.Amalgamate);
+
+            if (amalgamatedGroups.Any())
+            {
+                var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
+                prop.SetValue(entity, amalgamatedGroups.ToArray<TValue>());
             }
 
             return entity;
