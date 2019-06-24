@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 {
-    public class BaseTest
+    public abstract class BaseAmalgamatorTest
     {
         public IList<T> GetInputModels<T, TValue>(Expression<Func<T, TValue>> propertySelector, TValue value, Func<T> constructor)
         {

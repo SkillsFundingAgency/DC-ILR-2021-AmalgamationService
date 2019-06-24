@@ -11,7 +11,7 @@ using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 {
-    public class LearnerAmalgamatorTest : AbstractAmalgamatorTest
+    public class LearnerAmalgamatorTest : BaseAmalgamatorTest
     {
         private string _testString1 = "string1";
         private long _testLong1 = 1111111;

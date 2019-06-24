@@ -20,6 +20,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         }
 
         [Fact]
+        public void AlwaysFailNull()
+        {
+            StandardRule<long?> standardRule = new StandardRule<long?>();
+            Assert.Null(standardRule.Definition(null));
+        }
+
+        [Fact]
+        public void AlwaysFailEmptyList()
+        {
+            StandardRule<long?> standardRule = new StandardRule<long?>();
+            Assert.Null(standardRule.Definition(new List<long?>()));
+        }
+
+        [Fact]
+        public void AlwaysFailListOfNulls()
+        {
+            StandardRule<string> standardRule = new StandardRule<string>();
+            Assert.Null(standardRule.Definition(new List<string>() { null, null }));
+        }
+
+        [Fact]
         public void AlwaysFail()
         {
             StandardRule<long> standardRule = new StandardRule<long>();

@@ -10,11 +10,18 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
     public class SourceAmalgamator : AbstractAmalgamator, IAmalgamator<MessageHeaderSource>
     {
+        private IRule<DateTime> _standardRuleDateTime;
+
+        public SourceAmalgamator(IRuleProvider ruleProvider)
+        {
+            _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime>();
+        }
+
         public MessageHeaderSource Amalgamate(IEnumerable<MessageHeaderSource> models)
         {
             var source = new MessageHeaderSource();
 
-            ApplyRule(s => s.DateTime, new FirstRule<DateTime>().Definition, models, source);
+            ApplyRule(s => s.DateTime, _standardRuleDateTime.Definition, models, source);
 
             return source;
         }
