@@ -7,18 +7,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
 {
     public class AbstractAmalgamatorTest : BaseAmalgamatorTest
     {
-        private Mock<IRule<string>> _mockRule;
-        private AbstractAmalgamatorCaller _amalgamator;
-        private List<TestData> _testDatas;
-
         [Fact]
         public void ApplyRuleTest_Success()
         {
-            Initialize();
+            var testDataList = new List<TestData>() { GetTestData("11!", "Property11", 234234) };
             TestData testDataAmalgamated = new TestData();
 
-            _amalgamator.ApplyRuleCaller(d => d.PropertyStr, _mockRule.Object.Definition, _testDatas, testDataAmalgamated);
-            Assert.Equal(testDataAmalgamated.PropertyStr, _testDatas[0].PropertyStr);
+            NewAmalgamator().ApplyRuleCaller(d => d.PropertyStr, GetMockRule().Object.Definition, testDataList, testDataAmalgamated);
+            Assert.Equal(testDataAmalgamated.PropertyStr, testDataList[0].PropertyStr);
         }
 
         [Fact]
@@ -33,17 +29,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
             Assert.True(true);
         }
 
-        private void Initialize()
+        private AbstractAmalgamatorCaller NewAmalgamator()
         {
-            _amalgamator = new AbstractAmalgamatorCaller();
+            return new AbstractAmalgamatorCaller();
+        }
 
-            Mock<IAmalgamator<TestData>> mockTestDataAmalgamatos = new Mock<IAmalgamator<TestData>>();
-            mockTestDataAmalgamatos.Setup(m => m.Amalgamate(It.IsAny<List<TestData>>())).Returns((List<TestData> s) => s[0]);
-
-            _mockRule = new Mock<IRule<string>>();
-            _mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => s[0]);
-
-            _testDatas = new List<TestData>() { GetTestData("11!", "Property11", 234234) };
+        private Mock<IRule<string>> GetMockRule()
+        {
+            var mockRule = new Mock<IRule<string>>();
+            mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => s[0]);
+            return mockRule;
         }
 
         private TestData GetTestData(string key, string propertyStr = "", long propertyLng = 0, TestData[] data = null)
