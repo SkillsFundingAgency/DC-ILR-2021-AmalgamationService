@@ -14,4 +14,4 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 
         string Key { get; set; }
     }
-    }
+}
