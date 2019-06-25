@@ -5,10 +5,24 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IAmalgamationValidationError
     {
-        string RuleName { get; }
-
         Severity? Severity { get; }
 
-        IEnumerable<IErrorMessageParameter> ErrorMessageParameters { get; }
+        AmalgamationValidationRuleType? RuleName { get; set; }
+
+         string LearnRefNumber { get; set; }
+
+         string Entity { get; set; }
+
+         string Key { get; set; }
+
+         string ConflictingAttribute { get; set; }
+
+         string File { get; set; }
+
+         string Value { get; set; }
+
+         string Description { get; set; }
+
+         bool Warning { get; set; }
     }
 }

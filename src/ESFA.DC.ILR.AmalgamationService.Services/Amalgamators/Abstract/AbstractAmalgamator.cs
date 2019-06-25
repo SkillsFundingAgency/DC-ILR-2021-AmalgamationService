@@ -9,6 +9,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
 {
     public class AbstractAmalgamator
     {
+        protected IRuleContext RuleContext { get; set; }
+
         protected T ApplyRule<T, TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, TValue> rule, IEnumerable<T> inputEntities, T entity)
         {
             var selectorFunc = selector.Compile();
