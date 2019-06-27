@@ -8,17 +8,17 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
     public class AddressRule : IRule<string>
     {
-        public string Definition(IEnumerable<string> values)
+        public IRuleResult<string> Definition(IEnumerable<string> values)
         {
             var distinctValues = values.Distinct(new AddressComparer()).ToList();
 
             if (distinctValues.Count <= 1)
             {
-                return distinctValues.FirstOrDefault();
+                return new RuleResult<string>() { Success = true, Result = distinctValues.First() };
             }
             else
             {
-                throw new Exception();
+                return new RuleResult<string>() { Success = false };
             }
         }
     }

@@ -10,7 +10,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
 {
     public class AbstractAmalgamatorCaller : AbstractAmalgamator
     {
-        public T ApplyRuleCaller<T, TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, TValue> rule, IEnumerable<T> inputEntities, T entity)
+        public T ApplyRuleCaller<T, TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
         {
             return ApplyRule(selector, rule, inputEntities, entity);
         }
