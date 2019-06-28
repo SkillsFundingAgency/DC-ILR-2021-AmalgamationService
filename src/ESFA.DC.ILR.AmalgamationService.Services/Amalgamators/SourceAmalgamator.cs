@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
@@ -13,6 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<DateTime> _standardRuleDateTime;
 
         public SourceAmalgamator(IRuleProvider ruleProvider)
+            : base(Enum.GetName(typeof(Entity), Entity.Source), string.Empty)
         {
             _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime>();
         }

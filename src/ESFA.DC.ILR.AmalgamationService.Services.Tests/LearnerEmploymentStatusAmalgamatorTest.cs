@@ -2,7 +2,7 @@
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
 using ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using FluentAssertions;
 using System;
 using Xunit;

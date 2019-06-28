@@ -1,6 +1,7 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
            IRuleProvider ruleProvider)
+            : base(Enum.GetName(typeof(Entity), Entity.Learner), string.Empty)
         {
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
 
