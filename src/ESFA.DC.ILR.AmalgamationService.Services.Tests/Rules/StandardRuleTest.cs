@@ -1,9 +1,7 @@
-﻿using System;
+﻿using ESFA.DC.ILR.AmalgamationService.Services.Rules;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ESFA.DC.ILR.AmalgamationService.Services.Rules;
+using FluentAssertions;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
@@ -16,28 +14,35 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             StandardRule<long> standardRule = new StandardRule<long>();
             List<long> items = new List<long>() { 123, 123 };
             var result = standardRule.Definition(items);
-            Assert.Equal(items[0], result);
+            RuleResult<long> ruleResultExpected = new RuleResult<long>() { Success = true, Result = 123 };
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
 
         [Fact]
         public void AlwaysFailNull()
         {
             StandardRule<long?> standardRule = new StandardRule<long?>();
-            Assert.Null(standardRule.Definition(null));
+            var result = standardRule.Definition(null);
+            RuleResult<long?> ruleResultExpected = new RuleResult<long?>();
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
 
         [Fact]
         public void AlwaysFailEmptyList()
         {
             StandardRule<long?> standardRule = new StandardRule<long?>();
-            Assert.Null(standardRule.Definition(new List<long?>()));
+            var result = standardRule.Definition(new List<long?>());
+            RuleResult<long?> ruleResultExpected = new RuleResult<long?>();
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
 
         [Fact]
         public void AlwaysFailListOfNulls()
         {
             StandardRule<string> standardRule = new StandardRule<string>();
-            Assert.Null(standardRule.Definition(new List<string>() { null, null }));
+            var result = standardRule.Definition(new List<string>() { null, null });
+            RuleResult<string> ruleResultExpected = new RuleResult<string>();
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
 
         [Fact]
@@ -46,8 +51,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             StandardRule<long> standardRule = new StandardRule<long>();
             List<long> items = new List<long>() { 123, 124 };
 
-            // TODO expect error once error handling is done
-            Assert.Throws<Exception>(() => standardRule.Definition(items));
+            var result = standardRule.Definition(items);
+            RuleResult<long> ruleResultExpected = new RuleResult<long>() { Success = false };
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
     }
 }

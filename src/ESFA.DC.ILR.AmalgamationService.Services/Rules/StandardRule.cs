@@ -9,22 +9,29 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
     public class StandardRule<T> : IRule<T>
     {
-        public T Definition(IEnumerable<T> values)
+        public IRuleResult<T> Definition(IEnumerable<T> values)
         {
             if (values == null || values.Count() < 1 || values.All(x => x == null))
             {
-                return default(T);
+                return new RuleResult<T>();
             }
 
             var distinctValues = values.Distinct().Where(x => x != null).ToList();
 
-            if (distinctValues.Count <= 1)
+            if (distinctValues.Count == 1)
             {
-                return distinctValues.FirstOrDefault();
+                return new RuleResult<T>()
+                {
+                    Success = true,
+                    Result = distinctValues.First()
+                };
             }
             else
             {
-                throw new Exception();
+                return new RuleResult<T>()
+                {
+                    Success = false
+                };
             }
         }
     }

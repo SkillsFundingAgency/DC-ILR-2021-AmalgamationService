@@ -1,9 +1,7 @@
-﻿using System;
+﻿using ESFA.DC.ILR.AmalgamationService.Services.Rules;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ESFA.DC.ILR.AmalgamationService.Services.Rules;
+using FluentAssertions;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
@@ -13,10 +11,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         [Fact]
         public void AlwaysTrue()
         {
+            string strTestAddress = "address 1";
+
             AddressRule addressRule = new AddressRule();
-            List<string> adresses = new List<string>() { "address 1", "address 1" };
+            List<string> adresses = new List<string>() { strTestAddress, strTestAddress };
             var result = addressRule.Definition(adresses);
-            Assert.Equal(adresses[0], result);
+            RuleResult<string> ruleResultExpected = new RuleResult<string>() { Success = true, Result = strTestAddress };
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
 
         [Fact]
@@ -24,9 +25,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             AddressRule addressRule = new AddressRule();
             List<string> adresses = new List<string>() { "address 1", "address 2" };
-
-            // TODO expect error once error handling is done
-            Assert.Throws<Exception>(() => addressRule.Definition(adresses));
+            var result = addressRule.Definition(adresses);
+            RuleResult<string> ruleResultExpected = new RuleResult<string>() { Success = false };
+            result.Should().BeEquivalentTo(ruleResultExpected);
         }
     }
 }

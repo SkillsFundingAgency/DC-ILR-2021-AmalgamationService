@@ -11,7 +11,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
     {
         protected IRuleContext RuleContext { get; set; }
 
-        protected T ApplyRule<T, TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, TValue> rule, IEnumerable<T> inputEntities, T entity)
+        protected T ApplyRule<T, TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
         {
             var selectorFunc = selector.Compile();
 
@@ -19,8 +19,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
 
             var value = rule.Invoke(inputValues);
 
-            var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
-            prop.SetValue(entity, value);
+            if (value.Success)
+            {
+                var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
+                prop.SetValue(entity, value.Result);
+            }
+            else
+            {
+                //TODO : work AmalgamationValidationErrors
+            }
 
             return entity;
         }

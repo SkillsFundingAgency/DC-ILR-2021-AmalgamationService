@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using Moq;
 using System.Collections.Generic;
 using Xunit;
@@ -13,7 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
             var testDataList = new List<TestData>() { GetTestData("11!", "Property11", 234234) };
             TestData testDataAmalgamated = new TestData();
 
-            NewAmalgamator().ApplyRuleCaller(d => d.PropertyStr, GetMockRule().Object.Definition, testDataList, testDataAmalgamated);
+            NewAmalgamator().ApplyRuleCaller(d => d.PropertyStr, GetMockRuleSuccess().Object.Definition, testDataList, testDataAmalgamated);
             Assert.Equal(testDataAmalgamated.PropertyStr, testDataList[0].PropertyStr);
         }
 
@@ -34,10 +35,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
             return new AbstractAmalgamatorCaller();
         }
 
-        private Mock<IRule<string>> GetMockRule()
+        private Mock<IRule<string>> GetMockRuleSuccess()
         {
             var mockRule = new Mock<IRule<string>>();
-            mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => s[0]);
+
+            mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => new RuleResult<string>() { Success = true, Result = s[0] });
+
             return mockRule;
         }
 
