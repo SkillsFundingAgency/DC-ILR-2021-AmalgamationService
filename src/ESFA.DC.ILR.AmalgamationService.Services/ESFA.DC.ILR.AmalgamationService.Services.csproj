@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ESFA.DC.ILR.AmalgamationService.Interfaces\ESFA.DC.ILR.AmalgamationService.Interfaces.csproj" />
+    <ProjectReference Include="..\ESFA.DC.ILR.Model.Loose.ReadWrite\ESFA.DC.ILR.Model.Loose.ReadWrite.csproj" />
   </ItemGroup>
 
 </Project>

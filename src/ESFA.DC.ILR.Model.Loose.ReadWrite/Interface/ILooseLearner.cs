@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearner
+    public interface ILooseLearner : IParentRelationship<ILooseMessage>
     {
         string LearnRefNumber { get;  set; }
 
@@ -74,5 +74,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
         IReadOnlyCollection<ILooseLearningDelivery> LearningDeliveries { get;  set; }
 
         IReadOnlyCollection<ILooseLLDDAndHealthProblem> LLDDAndHealthProblems { get;  set; }
+
+        ILooseMessage Message { get; set; }
     }
 }
