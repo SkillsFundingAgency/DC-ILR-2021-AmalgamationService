@@ -92,6 +92,7 @@
     <Compile Include="BaseAmalgamatorTest.cs" />
     <Compile Include="Comparer\AddressComparerTest.cs" />
     <Compile Include="LearnerEmploymentStatusAmalgamatorTest.cs" />
+    <Compile Include="ParentRelationshipMapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LearnerAmalgamatorTest.cs" />
     <Compile Include="Rules\AddressRuleTest.cs" />
@@ -106,6 +107,10 @@
     <ProjectReference Include="..\ESFA.DC.ILR.AmalgamationService.Services\ESFA.DC.ILR.AmalgamationService.Services.csproj">
       <Project>{f6e83c4c-aa25-4740-97c1-6bdc1f4f6678}</Project>
       <Name>ESFA.DC.ILR.AmalgamationService.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ESFA.DC.ILR.Model.Loose.ReadWrite\ESFA.DC.ILR.Model.Loose.ReadWrite.csproj">
+      <Project>{2f7697fa-bf58-455e-a87c-1bf9ac137cc8}</Project>
+      <Name>ESFA.DC.ILR.Model.Loose.ReadWrite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
