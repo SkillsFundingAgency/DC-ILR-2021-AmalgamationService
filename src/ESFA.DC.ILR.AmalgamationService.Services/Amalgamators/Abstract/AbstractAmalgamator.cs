@@ -38,13 +38,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             }
             else
             {
-                inputEntities.ToList().ForEach(x => AmalgamationValidationErrors.Add(new AmalgamationValidationError()
+                AmalgamationValidationErrors.AddRange(inputEntities.Select(x => new AmalgamationValidationError()
                 {
                     File = x.SourceFileName,
                     LearnRefNumber = x.LearnRefNumber,
                     Entity = Enum.GetName(typeof(Entity), _entityType),
                     Key = _keyValueSelectorFunc(x),
-
                     Value = prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name
                 }));
