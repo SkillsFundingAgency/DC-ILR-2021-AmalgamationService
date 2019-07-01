@@ -8,14 +8,14 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class LearnerEmploymentStatusAmalgamator : AbstractAmalgamator, IAmalgamator<MessageLearnerLearnerEmploymentStatus>
+    public class LearnerEmploymentStatusAmalgamator : AbstractAmalgamator<MessageLearnerLearnerEmploymentStatus>, IAmalgamator<MessageLearnerLearnerEmploymentStatus>
     {
         private IRule<string> _standardRuleString;
         private IRule<long> _standardRuleLong;
         private IRule<DateTime> _standardRuleDateTime;
 
         public LearnerEmploymentStatusAmalgamator(IRuleProvider ruleProvider)
-            : base(Enum.GetName(typeof(Entity), Entity.LearnerEmploymentStatus), string.Empty)
+            : base(Entity.LearnerEmploymentStatus, (x) => x.DateEmpStatApp.ToString())
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long>();

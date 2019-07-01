@@ -8,12 +8,12 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class HeaderAmalgamator : AbstractAmalgamator, IAmalgamator<MessageHeader>
+    public class HeaderAmalgamator : AbstractAmalgamator<MessageHeader>, IAmalgamator<MessageHeader>
     {
         private readonly IAmalgamator<MessageHeaderSource> _sourceAmalgamator;
 
         public HeaderAmalgamator(IAmalgamator<MessageHeaderSource> sourceAmalgamator)
-            : base(Enum.GetName(typeof(Entity), Entity.Header), string.Empty)
+            : base(Entity.Header, (x) => x.SourceFileName)
         {
             _sourceAmalgamator = sourceAmalgamator;
         }

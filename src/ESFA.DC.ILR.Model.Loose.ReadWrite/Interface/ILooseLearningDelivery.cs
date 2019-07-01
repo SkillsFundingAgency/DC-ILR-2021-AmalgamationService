@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearningDelivery
+    public interface ILooseLearningDelivery : IParentRelationship<ILooseLearner>, IAmalgamationModel
     {
         string LearnAimRef { get;  set; }
 
@@ -70,5 +70,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
         IReadOnlyCollection<ILooseLearningDeliveryHE> LearningDeliveryHEs { get;  set; }
 
         IReadOnlyCollection<ILooseLearningDeliveryWorkPlacement> LearningDeliveryWorkPlacements { get;  set; }
+
+        ILooseLearner Learner { get; set; }
     }
 }

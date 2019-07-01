@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class LearnerAmalgamator : AbstractAmalgamator, IAmalgamator<MessageLearner>
+    public class LearnerAmalgamator : AbstractAmalgamator<MessageLearner>, IAmalgamator<MessageLearner>
     {
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
 
@@ -20,7 +20,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
            IRuleProvider ruleProvider)
-            : base(Enum.GetName(typeof(Entity), Entity.Learner), string.Empty)
+            : base(Entity.Learner, (x) => x.LearnRefNumber)
         {
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
 
@@ -32,8 +32,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
         public MessageLearner Amalgamate(IEnumerable<MessageLearner> models)
         {
-            var messageLearner = new MessageLearner() { LearnRefNumber = models.FirstOrDefault().LearnRefNumber };
+            var messageLearner = new MessageLearner();
 
+            ApplyRule(s => s.LearnRefNumber, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.PrevLearnRefNumber, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.PrevUKPRN, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.PMUKPRN, _standardRuleLong.Definition, models, messageLearner);
@@ -43,7 +44,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             ApplyRule(s => s.GivenNames, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.DateOfBirth, _standardRuleDateTime.Definition, models, messageLearner);
 
-            ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
+            //ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
 
             return messageLearner;
         }
