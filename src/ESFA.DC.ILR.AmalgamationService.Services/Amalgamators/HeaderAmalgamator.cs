@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class HeaderAmalgamator : AbstractAmalgamator, IAmalgamator<MessageHeader>
+    public class HeaderAmalgamator : AbstractAmalgamator<MessageHeader>, IAmalgamator<MessageHeader>
     {
         private readonly IAmalgamator<MessageHeaderSource> _sourceAmalgamator;
 
         public HeaderAmalgamator(IAmalgamator<MessageHeaderSource> sourceAmalgamator)
+            : base(Entity.Header, (x) => x.SourceFileName)
         {
             _sourceAmalgamator = sourceAmalgamator;
         }

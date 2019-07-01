@@ -35,5 +35,11 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => learnerDestinationandProgressionField;
             set => learnerDestinationandProgressionField = (MessageLearnerDestinationandProgression[]) value;
         }
+        public IAmalgamationRoot Parent { get => AmalgamationRoot; set => AmalgamationRoot = value; }
+        public IAmalgamationRoot AmalgamationRoot { get; set; }
+
+        public string SourceFileName => AmalgamationRoot.Filename;
+
+        public string LearnRefNumber => null;
     }
 }

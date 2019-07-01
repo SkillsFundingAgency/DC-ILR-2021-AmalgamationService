@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseMessage
+    public interface ILooseMessage : IParentRelationship<IAmalgamationRoot>, IAmalgamationModel
     {
         ILooseHeader HeaderEntity { get;  set; }
 
@@ -13,5 +13,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
         IReadOnlyCollection<ILooseLearner> Learners { get;  set; }
 
         IReadOnlyCollection<ILooseLearnerDestinationAndProgression> LearnerDestinationAndProgressions { get;  set; }
+
+        IAmalgamationRoot AmalgamationRoot { get; set; }
     }
 }

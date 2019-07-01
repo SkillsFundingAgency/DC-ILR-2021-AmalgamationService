@@ -1,13 +1,14 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class LearnerAmalgamator : AbstractAmalgamator, IAmalgamator<MessageLearner>
+    public class LearnerAmalgamator : AbstractAmalgamator<MessageLearner>, IAmalgamator<MessageLearner>
     {
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
 
@@ -19,6 +20,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
            IRuleProvider ruleProvider)
+            : base(Entity.Learner, (x) => x.LearnRefNumber)
         {
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
 
@@ -30,8 +32,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
         public MessageLearner Amalgamate(IEnumerable<MessageLearner> models)
         {
-            var messageLearner = new MessageLearner() { LearnRefNumber = models.FirstOrDefault().LearnRefNumber };
+            var messageLearner = new MessageLearner();
 
+            ApplyRule(s => s.LearnRefNumber, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.PrevLearnRefNumber, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.PrevUKPRN, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.PMUKPRN, _standardRuleLong.Definition, models, messageLearner);

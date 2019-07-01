@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using System;
 using System.Collections.Generic;
-using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
@@ -39,7 +39,14 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         public IReadOnlyCollection<ILooseEmploymentStatusMonitoring> EmploymentStatusMonitorings
         {
             get => employmentStatusMonitoringField;
-            set => employmentStatusMonitoringField = (MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring[]) value;
+            set => employmentStatusMonitoringField = (MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring[])value;
         }
+        public ILooseLearner Parent { get => Learner; set => Learner = value; }
+
+        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
+
+        public string LearnRefNumber => Learner.LearnRefNumber;
+
+        public ILooseLearner Learner { get; set; }
     }
 }

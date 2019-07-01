@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearner : IParentRelationship<ILooseMessage>
+    public interface ILooseLearner : IParentRelationship<ILooseMessage>, IAmalgamationModel
     {
         string LearnRefNumber { get;  set; }
 

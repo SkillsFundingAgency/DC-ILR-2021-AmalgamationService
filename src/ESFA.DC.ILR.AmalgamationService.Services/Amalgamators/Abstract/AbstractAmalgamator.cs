@@ -1,4 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,32 +9,50 @@ using System.Reflection;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
 {
-    public class AbstractAmalgamator
+    public class AbstractAmalgamator<T>
+        where T : IAmalgamationModel
     {
-        protected IRuleContext RuleContext { get; set; }
+        private readonly Entity _entityType;
+        private readonly Func<T, string> _keyValueSelectorFunc;
 
-        protected T ApplyRule<T, TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
+        protected AbstractAmalgamator(Entity entityType, Expression<Func<T, string>> keyValueSelector)
+        {
+            _entityType = entityType;
+            _keyValueSelectorFunc = keyValueSelector.Compile();
+        }
+
+        protected List<IAmalgamationValidationError> AmalgamationValidationErrors { get; } = new List<IAmalgamationValidationError>();
+
+        protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
         {
             var selectorFunc = selector.Compile();
 
             var inputValues = inputEntities.Where(e => e != null).Select(e => selectorFunc.Invoke(e)).ToList();
 
             var value = rule.Invoke(inputValues);
+            var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
 
             if (value.Success)
             {
-                var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
                 prop.SetValue(entity, value.Result);
             }
             else
             {
-                //TODO : work AmalgamationValidationErrors
+                AmalgamationValidationErrors.AddRange(inputEntities.Select(x => new AmalgamationValidationError()
+                {
+                    File = x.SourceFileName,
+                    LearnRefNumber = x.LearnRefNumber,
+                    Entity = Enum.GetName(typeof(Entity), _entityType),
+                    Key = _keyValueSelectorFunc(x),
+                    Value = prop.GetValue(x).ToString(),
+                    ConflictingAttribute = prop.Name
+                }));
             }
 
             return entity;
         }
 
-        protected T ApplyChildRule<T, TValue>(Expression<Func<T, TValue>> selector, IAmalgamator<TValue> amalgamator, IEnumerable<T> inputEntities, T entity)
+        protected T ApplyChildRule<TValue>(Expression<Func<T, TValue>> selector, IAmalgamator<TValue> amalgamator, IEnumerable<T> inputEntities, T entity)
         {
             var selectorFunc = selector.Compile();
 
@@ -49,7 +69,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             return entity;
         }
 
-        protected T ApplyGroupedChildCollectionRule<T, TValue, TGroupBy>(Expression<Func<T, IEnumerable<TValue>>> selector, Expression<Func<TValue, TGroupBy>> groupBySelector, IAmalgamator<TValue> amalgamator, IEnumerable<T> inputEntities, T entity)
+        protected T ApplyGroupedChildCollectionRule<TValue, TGroupBy>(Expression<Func<T, IEnumerable<TValue>>> selector, Expression<Func<TValue, TGroupBy>> groupBySelector, IAmalgamator<TValue> amalgamator, IEnumerable<T> inputEntities, T entity)
         {
             if (inputEntities == null || inputEntities.Count() < 1)
             {

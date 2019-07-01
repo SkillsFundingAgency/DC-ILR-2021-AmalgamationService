@@ -2,7 +2,7 @@
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
 using ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using FluentAssertions;
 using Moq;
 using System;
@@ -37,11 +37,17 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             MessageLearner messageLearner2 = new MessageLearner() { LearnRefNumber = _testString1, PMUKPRN = _testLong1, PrevUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
             List<MessageLearner> messageLearners = new List<MessageLearner>() { messageLearner1, messageLearner2 };
 
-            MessageLearner messageLearnerExpected = new MessageLearner() { LearnRefNumber = _testString1, PrevLearnRefNumber = _testString1, PrevUKPRN = _testLong1, FamilyName = _testString1, GivenNames = _testString1, PMUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
+            MessageLearner expectedResult = new MessageLearner() { LearnRefNumber = _testString1, PrevLearnRefNumber = _testString1, PrevUKPRN = _testLong1, FamilyName = _testString1, GivenNames = _testString1, PMUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
 
             var amalgamated = _learnerAmalgamator.Amalgamate(messageLearners);
 
-            amalgamated.Should().BeEquivalentTo(messageLearnerExpected);
+            Assert.Equal(amalgamated.LearnRefNumber, expectedResult.LearnRefNumber);
+            Assert.Equal(amalgamated.PrevLearnRefNumber, expectedResult.PrevLearnRefNumber);
+            Assert.Equal(amalgamated.PrevUKPRN, expectedResult.PrevUKPRN);
+            Assert.Equal(amalgamated.DateOfBirth, expectedResult.DateOfBirth);
+            Assert.Equal(amalgamated.FamilyName, expectedResult.FamilyName);
+            Assert.Equal(amalgamated.GivenNames, expectedResult.GivenNames);
+            Assert.Equal(amalgamated.CampId, expectedResult.CampId);
         }
 
         public LearnerAmalgamator BuildAmalgamator(

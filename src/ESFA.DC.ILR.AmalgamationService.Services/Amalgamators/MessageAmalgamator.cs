@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class MessageAmalgamator : AbstractAmalgamator, IAmalgamator<Message>
+    public class MessageAmalgamator : AbstractAmalgamator<Message>, IAmalgamator<Message>
     {
         private readonly IAmalgamator<MessageHeader> _headerAmalgamator;
         private readonly IAmalgamator<MessageLearner> _learnerAmalgamator;
 
         public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator, IAmalgamator<MessageLearner> learnerAmalgamator)
+            : base(Entity.Message, (x) => null)
         {
             _headerAmalgamator = headerAmalgamator;
             _learnerAmalgamator = learnerAmalgamator;

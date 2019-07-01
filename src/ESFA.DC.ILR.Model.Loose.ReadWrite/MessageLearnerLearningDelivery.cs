@@ -245,5 +245,12 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => learningDeliveryWorkPlacementField;
             set => learningDeliveryWorkPlacementField = (MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement[]) value;
         }
+        public ILooseLearner Parent { get => Learner; set => Learner = value; }
+
+        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
+
+        public string LearnRefNumber => Learner.LearnRefNumber;
+
+        public ILooseLearner Learner { get; set; }
     }
 }

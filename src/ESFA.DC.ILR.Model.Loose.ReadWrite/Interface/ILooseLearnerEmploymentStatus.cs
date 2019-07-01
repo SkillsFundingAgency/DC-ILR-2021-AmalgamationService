@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearnerEmploymentStatus
+    public interface ILooseLearnerEmploymentStatus : IParentRelationship<ILooseLearner>, IAmalgamationModel
     {
         string AgreeId { get;  set; }
 
