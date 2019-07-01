@@ -44,7 +44,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             ApplyRule(s => s.GivenNames, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.DateOfBirth, _standardRuleDateTime.Definition, models, messageLearner);
 
-            //ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
+            ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
 
             return messageLearner;
         }
