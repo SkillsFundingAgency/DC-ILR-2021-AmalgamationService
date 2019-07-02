@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
-    public static class AttributeHelper
+    public static class AttributeExtensions
     {
         public static T GetAttribute<T>(this System.Enum value)
             where T : Attribute
