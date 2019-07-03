@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Attribute;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using System;
@@ -21,13 +22,18 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             _keyValueSelectorFunc = keyValueSelector.Compile();
         }
 
-        protected List<IAmalgamationValidationError> AmalgamationValidationErrors { get; } = new List<IAmalgamationValidationError>();
+        public List<IAmalgamationValidationError> AmalgamationValidationErrors { get; } = new List<IAmalgamationValidationError>();
 
         protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
         {
             var selectorFunc = selector.Compile();
 
-            var inputValues = inputEntities.Where(e => e != null).Select(e => selectorFunc.Invoke(e)).ToList();
+            var inputValues = inputEntities.Where(e => e != null).Select(e => selectorFunc.Invoke(e)).Where(f => f != null).ToList();
+
+            if (inputValues == null || inputValues.All(i => i == null))
+            {
+                return default(T);
+            }
 
             var value = rule.Invoke(inputValues);
             var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
@@ -43,7 +49,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     File = x.SourceFileName,
                     LearnRefNumber = x.LearnRefNumber,
                     Entity = Enum.GetName(typeof(Entity), _entityType),
-                    Key = _keyValueSelectorFunc(x),
+                    Key = string.Format("{0} : {1}", _entityType.GetAttribute<KeyProperty>().PropertyName, _keyValueSelectorFunc(x)),
                     Value = prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name
                 }));
