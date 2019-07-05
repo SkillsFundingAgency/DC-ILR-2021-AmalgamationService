@@ -20,5 +20,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => learnerHEFinancialSupportField;
             set => learnerHEFinancialSupportField = (MessageLearnerLearnerHELearnerHEFinancialSupport[]) value;
         }
+        public ILooseLearner Learner { get; set; }
+        public ILooseLearner Parent { get => Learner; set => Learner = value; }
+        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
+        public string LearnRefNumber => Learner.LearnRefNumber;
     }
 }

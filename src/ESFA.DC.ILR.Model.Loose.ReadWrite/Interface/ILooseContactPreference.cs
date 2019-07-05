@@ -1,6 +1,6 @@
 ﻿namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseContactPreference
+    public interface ILooseContactPreference : IParentRelationship<ILooseLearner>, IAmalgamationModel
     {
         string ContPrefType { get;  set; }
 

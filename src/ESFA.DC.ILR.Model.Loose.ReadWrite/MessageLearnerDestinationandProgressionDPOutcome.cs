@@ -44,5 +44,10 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 outEndDateField = value.GetValueOrDefault();
             }
         }
+        public ILooseLearnerDestinationAndProgression LooseLearnerDestinationAndProgression { get; set; }
+
+        public ILooseLearnerDestinationAndProgression Parent { get => LooseLearnerDestinationAndProgression; set => LooseLearnerDestinationAndProgression = value; }
+        public string SourceFileName => LooseLearnerDestinationAndProgression.SourceFileName;
+        public string LearnRefNumber => LooseLearnerDestinationAndProgression.LearnRefNumber;
     }
 }

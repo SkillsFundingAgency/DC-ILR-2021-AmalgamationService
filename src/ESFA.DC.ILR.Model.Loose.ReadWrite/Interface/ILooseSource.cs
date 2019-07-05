@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseSource : IParentRelationship<ILooseMessage>, IAmalgamationModel
+    public interface ILooseSource : IParentRelationship<ILooseHeader>, IAmalgamationModel
     {
         string ProtectiveMarkingString { get;  set; }
 

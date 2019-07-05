@@ -1,6 +1,6 @@
 ﻿namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLLDDAndHealthProblem
+    public interface ILooseLLDDAndHealthProblem : IParentRelationship<ILooseLearner>, IAmalgamationModel
     {
         long? LLDDCatNullable { get;  set; }
 

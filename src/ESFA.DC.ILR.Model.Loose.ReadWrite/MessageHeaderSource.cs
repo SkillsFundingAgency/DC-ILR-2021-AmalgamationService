@@ -12,10 +12,10 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             set => protectiveMarkingField = (MessageHeaderSourceProtectiveMarking)Enum.Parse(typeof(MessageHeaderSourceProtectiveMarking), value);
         }
 
-        public ILooseMessage Message { get; set; }
+        public ILooseHeader Header { get; set; }
 
-        public ILooseMessage Parent { get => Message; set => Message = value; }
-        public string SourceFileName { get => Message.SourceFileName; }
+        public ILooseHeader Parent { get => Header; set => Header = value; }
+        public string SourceFileName { get => Header.SourceFileName; }
         public string LearnRefNumber => null;
     }
 }
