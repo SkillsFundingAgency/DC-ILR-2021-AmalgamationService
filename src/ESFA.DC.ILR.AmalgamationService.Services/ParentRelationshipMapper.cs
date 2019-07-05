@@ -22,6 +22,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             foreach (var child in parentChildProperties)
             {
                 var obj = child.GetValue(input);
+                if (obj == null)
+                {
+                    continue;
+                }
+
                 var propertyInfo = obj.GetType().GetProperty("Parent");
                 propertyInfo.SetValue(obj, input);
                 RecursiveMap(child);

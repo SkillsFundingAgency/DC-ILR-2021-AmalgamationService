@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseCollectionDetails
+    public interface ILooseCollectionDetails : IParentRelationship<ILooseHeader>, IAmalgamationModel
     {
         string CollectionString { get;  set; }
 

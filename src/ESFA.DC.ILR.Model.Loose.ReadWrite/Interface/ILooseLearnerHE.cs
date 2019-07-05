@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearnerHE
+    public interface ILooseLearnerHE : IParentRelationship<ILooseLearner>, IAmalgamationModel
     {
         string UCASPERID { get;  set; }
 

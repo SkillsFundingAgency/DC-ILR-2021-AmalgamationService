@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseDPOutcome
+    public interface ILooseDPOutcome : IParentRelationship<ILooseLearnerDestinationAndProgression>, IAmalgamationModel
     {
         string OutType { get;  set; }
 

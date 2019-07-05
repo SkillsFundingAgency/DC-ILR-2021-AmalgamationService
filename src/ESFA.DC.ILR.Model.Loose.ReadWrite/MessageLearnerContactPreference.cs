@@ -13,5 +13,10 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 contPrefCodeField = value.GetValueOrDefault();
             }
         }
+
+        public ILooseLearner Learner { get; set; }
+        public ILooseLearner Parent { get => Learner; set => Learner = value; }
+        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
+        public string LearnRefNumber => Learner.LearnRefNumber;
     }
 }

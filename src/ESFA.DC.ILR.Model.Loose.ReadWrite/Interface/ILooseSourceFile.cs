@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseSourceFile
+    public interface ILooseSourceFile : IParentRelationship<ILooseMessage>, IAmalgamationModel
     {
         string SourceFileName { get;  set; }
 
