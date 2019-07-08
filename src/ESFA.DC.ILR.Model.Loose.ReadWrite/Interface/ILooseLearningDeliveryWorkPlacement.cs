@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearningDeliveryWorkPlacement
+    public interface ILooseLearningDeliveryWorkPlacement : IParentRelationship<ILooseLearningDelivery>, IAmalgamationModel
     {
         DateTime? WorkPlaceStartDateNullable { get;  set; }
 

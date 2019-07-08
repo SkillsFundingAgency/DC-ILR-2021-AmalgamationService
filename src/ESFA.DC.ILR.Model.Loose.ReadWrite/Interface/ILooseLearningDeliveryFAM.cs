@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearningDeliveryFAM
+    public interface ILooseLearningDeliveryFAM : IParentRelationship<ILooseLearningDelivery>, IAmalgamationModel
     {
         string LearnDelFAMType { get;  set; }
 

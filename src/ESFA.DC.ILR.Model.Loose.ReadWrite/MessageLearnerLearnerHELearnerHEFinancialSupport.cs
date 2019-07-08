@@ -23,5 +23,12 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 fINAMOUNTField = value.GetValueOrDefault();
             }
         }
+
+        public ILooseLearnerHE LearnerHE { get; set; }
+        public ILooseLearnerHE Parent { get => LearnerHE; set => LearnerHE = value; }
+
+        public string SourceFileName => LearnerHE.SourceFileName;
+
+        public string LearnRefNumber => LearnerHE.LearnRefNumber;
     }
 }

@@ -24,5 +24,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 LearnDelFAMDateTo = value.GetValueOrDefault();
             }
         }
+        public ILooseLearningDelivery LearningDelivery { get; set; }
+        public ILooseLearningDelivery Parent { get => LearningDelivery; set => LearningDelivery = value; }
+        public string SourceFileName => LearningDelivery.SourceFileName;
+        public string LearnRefNumber => LearningDelivery.LearnRefNumber;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearningDeliveryHE
+    public interface ILooseLearningDeliveryHE : IParentRelationship<ILooseLearningDelivery>, IAmalgamationModel
     {
         string NUMHUS { get;  set; }
         string SSN { get;  set; }

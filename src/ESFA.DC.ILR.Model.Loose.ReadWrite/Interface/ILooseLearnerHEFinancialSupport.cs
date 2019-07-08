@@ -1,6 +1,6 @@
 ﻿namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseLearnerHEFinancialSupport
+    public interface ILooseLearnerHEFinancialSupport : IParentRelationship<ILooseLearnerHE>, IAmalgamationModel
     {
         long? FINTYPENullable { get;  set; }
 
