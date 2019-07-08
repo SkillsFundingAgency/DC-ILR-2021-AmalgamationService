@@ -1,8 +1,9 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearningDeliveryLearningDeliveryHE : ILooseLearningDeliveryHE
+    public partial class MessageLearnerLearningDeliveryLearningDeliveryHE : AbstractLooseReadWriteModel<ILooseLearningDelivery>, ILooseLearningDeliveryHE
     {
         public long? TYPEYRNullable
         {
@@ -173,5 +174,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 pCTLDCSField = value.GetValueOrDefault();
             }
         }
+        
+        public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
+
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

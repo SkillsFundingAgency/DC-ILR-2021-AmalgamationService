@@ -1,10 +1,11 @@
 ﻿using System;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Extension;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageHeaderCollectionDetails : ILooseCollectionDetails
+    public partial class MessageHeaderCollectionDetails : AbstractLooseReadWriteModel<ILooseHeader>, ILooseCollectionDetails
     {
         public string CollectionString
         {
@@ -17,9 +18,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => yearField.XmlEnumToString();
             set => yearField = (MessageHeaderCollectionDetailsYear)Enum.Parse(typeof(MessageHeaderCollectionDetailsYear), value);
         }
-        public ILooseHeader Header { get; set; }
-        public ILooseHeader Parent { get => Header; set => Header = value; }
-        public string SourceFileName => Header.Message.AmalgamationRoot.Filename;
-        public string LearnRefNumber => Header.LearnRefNumber;
+        public string SourceFileName => Parent.Parent.Parent.Filename;
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

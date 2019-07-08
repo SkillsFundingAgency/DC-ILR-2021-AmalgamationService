@@ -1,12 +1,11 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerProviderSpecLearnerMonitoring : ILooseProviderSpecLearnerMonitoring
+    public partial class MessageLearnerProviderSpecLearnerMonitoring : AbstractLooseReadWriteModel<ILooseLearner>, ILooseProviderSpecLearnerMonitoring
     {
-        public ILooseLearner Learner { get; set; }
-        public ILooseLearner Parent { get => Learner; set => Learner = value; }
-        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
-        public string LearnRefNumber => Learner.LearnRefNumber;
+        public string SourceFileName => Parent.Parent.Parent.Filename;
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

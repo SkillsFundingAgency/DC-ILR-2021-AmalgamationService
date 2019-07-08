@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class Message : ILooseMessage
+    public partial class Message : AbstractLooseReadWriteModel<IAmalgamationRoot>, ILooseMessage
     {
         public ILooseHeader HeaderEntity
         {
@@ -35,7 +36,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => learnerDestinationandProgressionField;
             set => learnerDestinationandProgressionField = (MessageLearnerDestinationandProgression[]) value;
         }
-        public IAmalgamationRoot Parent { get => AmalgamationRoot; set => AmalgamationRoot = value; }
         public IAmalgamationRoot AmalgamationRoot { get; set; }
 
         public string SourceFileName => AmalgamationRoot.Filename;

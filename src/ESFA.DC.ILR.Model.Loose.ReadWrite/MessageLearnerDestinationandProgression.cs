@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerDestinationandProgression : ILooseLearnerDestinationAndProgression
+    public partial class MessageLearnerDestinationandProgression : AbstractLooseReadWriteModel<ILooseMessage> ,ILooseLearnerDestinationAndProgression
     {
         public long? ULNNullable
         {
@@ -21,9 +22,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             set => dPOutcomeField = (MessageLearnerDestinationandProgressionDPOutcome[]) value;
         }
 
-        public ILooseMessage Message { get; set; }
-
-        public ILooseMessage Parent { get => Message; set => Message = value; }
-        public string SourceFileName { get => Message.AmalgamationRoot.Filename; }
+        public string SourceFileName { get => Parent.Parent.Filename; }
     }
 }

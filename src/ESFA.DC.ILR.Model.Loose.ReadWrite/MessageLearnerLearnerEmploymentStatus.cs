@@ -1,10 +1,11 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using System;
 using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearnerEmploymentStatus : ILooseLearnerEmploymentStatus
+    public partial class MessageLearnerLearnerEmploymentStatus : AbstractLooseReadWriteModel<ILooseLearner>, ILooseLearnerEmploymentStatus
     {
         public long? EmpStatNullable
         {
@@ -41,12 +42,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => employmentStatusMonitoringField;
             set => employmentStatusMonitoringField = (MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring[])value;
         }
-        public ILooseLearner Parent { get => Learner; set => Learner = value; }
+        
+        public string SourceFileName => Parent.Parent.Parent.Filename;
 
-        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
-
-        public string LearnRefNumber => Learner.LearnRefNumber;
-
-        public ILooseLearner Learner { get; set; }
+        public string LearnRefNumber => Parent.Parent.LearnRefNumber;
     }
 }

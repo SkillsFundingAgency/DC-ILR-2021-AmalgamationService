@@ -1,9 +1,10 @@
 ﻿using System;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearningDeliveryAppFinRecord : ILooseAppFinRecord
+    public partial class MessageLearnerLearningDeliveryAppFinRecord : AbstractLooseReadWriteModel<ILooseLearningDelivery>, ILooseAppFinRecord
     {
         public long? AFinCodeNullable
         {
@@ -34,5 +35,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 aFinAmountField = value.GetValueOrDefault();
             }
         }
+
+        public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
+
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

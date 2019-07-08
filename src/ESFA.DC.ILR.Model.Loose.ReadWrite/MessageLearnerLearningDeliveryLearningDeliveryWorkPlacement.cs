@@ -1,9 +1,10 @@
 ﻿using System;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement : ILooseLearningDeliveryWorkPlacement
+    public partial class MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement : AbstractLooseReadWriteModel<ILooseLearningDelivery>, ILooseLearningDeliveryWorkPlacement
     {
         public DateTime? WorkPlaceStartDateNullable
         {
@@ -54,5 +55,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 workPlaceEndDateField = value.GetValueOrDefault();
             }
         }
+        
+        public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
+
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

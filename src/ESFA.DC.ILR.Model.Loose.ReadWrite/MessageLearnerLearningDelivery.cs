@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearningDelivery : ILooseLearningDelivery
+    public partial class MessageLearnerLearningDelivery : AbstractLooseReadWriteModel<ILooseLearner>, ILooseLearningDelivery
     {
         public long? AimTypeNullable
         {
@@ -245,12 +246,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => learningDeliveryWorkPlacementField;
             set => learningDeliveryWorkPlacementField = (MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement[]) value;
         }
-        public ILooseLearner Parent { get => Learner; set => Learner = value; }
 
-        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
+        public string SourceFileName => Parent.Parent.Parent.Filename;
 
-        public string LearnRefNumber => Learner.LearnRefNumber;
-
-        public ILooseLearner Learner { get; set; }
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearningDeliveryLearningDeliveryFAM : ILooseLearningDeliveryFAM
+    public partial class MessageLearnerLearningDeliveryLearningDeliveryFAM : AbstractLooseReadWriteModel<ILooseLearningDelivery>, ILooseLearningDeliveryFAM
     {
         public DateTime? LearnDelFAMDateFromNullable
         {
@@ -24,5 +25,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 LearnDelFAMDateTo = value.GetValueOrDefault();
             }
         }
+        public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

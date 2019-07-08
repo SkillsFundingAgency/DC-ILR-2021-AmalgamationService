@@ -1,8 +1,9 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearnerHELearnerHEFinancialSupport : ILooseLearnerHEFinancialSupport
+    public partial class MessageLearnerLearnerHELearnerHEFinancialSupport : AbstractLooseReadWriteModel<ILooseLearnerHE>, ILooseLearnerHEFinancialSupport
     {
         public long? FINTYPENullable
         {
@@ -23,5 +24,9 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 fINAMOUNTField = value.GetValueOrDefault();
             }
         }
+        
+        public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
+
+        public string LearnRefNumber => Parent.Parent.LearnRefNumber;
     }
 }

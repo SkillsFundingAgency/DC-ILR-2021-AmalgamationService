@@ -2,7 +2,7 @@
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
-    public interface ILooseAppFinRecord
+    public interface ILooseAppFinRecord : IParentRelationship<ILooseLearningDelivery>, IAmalgamationModel
     {
         string AFinType { get;  set; }
         
