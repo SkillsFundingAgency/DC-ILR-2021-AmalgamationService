@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
@@ -16,38 +17,45 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         private T RecursiveMap<T>(T parent)
         {
-            var parentChildProperties = GetPropertyInfos<T>(parent);
+            var childEntities = GetChildEntities<T>(parent);
 
-            foreach (var child in parentChildProperties)
+            foreach (var child in childEntities.Where(c => c != null))
             {
-                var childValue = (IParentRelationshipSetter)child.GetValue(parent);
-                if (childValue == null)
-                {
-                    continue;
-                }
-
-                if (typeof(IEnumerable<IParentRelationshipSetter>).IsAssignableFrom(child.PropertyType))
-                {
-                    var collection = (IEnumerable<IParentRelationshipSetter>)child.GetValue(parent, null);
-                    foreach (var item in collection)
-                    {
-                        ApplyParentValue(parent, child, item);
-                    }
-
-                    continue;
-                }
-
-                ApplyParentValue(parent, child, childValue);
+                child.ParentSetter = parent;
+                RecursiveMap(child);
             }
 
             return parent;
         }
 
-        private void ApplyParentValue<T, TChild>(T parent, PropertyInfo child, TChild childValue)
+        private IEnumerable<IParentRelationshipSetter> GetChildEntities<T>(T input)
         {
-            var propertyInfo = typeof(TChild).GetProperty("ParentSetter");
-            propertyInfo.SetValue(childValue, parent);
-            RecursiveMap(childValue);
+            var childEntities = new List<IParentRelationshipSetter>();
+
+            var properties = input.GetType().GetProperties();
+
+            var assignableProperties = properties.Where(
+                p =>
+                p.PropertyType.IsInterface &&
+                p.Name != "Parent" &&
+                typeof(IParentRelationshipSetter).IsAssignableFrom(p.PropertyType));
+
+            childEntities.AddRange(assignableProperties.Select(p => (IParentRelationshipSetter)p.GetValue(input)));
+
+            var assignableCollections = properties.Where(
+                p =>
+                typeof(IEnumerable<IParentRelationshipSetter>).IsAssignableFrom(p.PropertyType) && p.CustomAttributes.Any(x => x.AttributeType == typeof(XmlArrayItemAttribute) || x.AttributeType == typeof(XmlElementAttribute)));
+
+            foreach (var listItem in assignableCollections)
+            {
+                var listItemCollections = (IEnumerable<IParentRelationshipSetter>)listItem.GetValue(input, null);
+                if (listItemCollections != null)
+                {
+                    childEntities.AddRange(listItemCollections);
+                }
+            }
+
+            return childEntities;
         }
 
         private IEnumerable<PropertyInfo> GetPropertyInfos<T>(T input)

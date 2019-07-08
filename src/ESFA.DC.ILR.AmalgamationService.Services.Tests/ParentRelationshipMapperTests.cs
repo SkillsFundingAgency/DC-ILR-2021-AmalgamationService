@@ -15,7 +15,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             {
                 new MessageLearner()
                 {
-                    LearnRefNumber = "123"
+                    LearnRefNumber = "123",
+                    LearningDeliveries = new[]
+                    {
+                        new MessageLearnerLearningDelivery()
+                        {
+                            ConRefNumber = "conRef1",
+                            ProviderSpecDeliveryMonitorings = new[]
+                            {
+                                new MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring()
+                                {
+                                    ProvSpecDelMon = "ProvSpecDelMon"
+                                }
+                            }
+                        }
+                    }
                 },
                 new MessageLearner() { LearnRefNumber = "1231" }
             };
