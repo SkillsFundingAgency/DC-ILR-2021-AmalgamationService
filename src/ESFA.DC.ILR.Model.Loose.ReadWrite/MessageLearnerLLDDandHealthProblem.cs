@@ -24,7 +24,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 primaryLLDDField = value.GetValueOrDefault();
             }
         }
-        public string SourceFileName => Parent.Parent.AmalgamationRoot.Filename;
+        public string SourceFileName => Parent.Parent.Parent.Filename;
         public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

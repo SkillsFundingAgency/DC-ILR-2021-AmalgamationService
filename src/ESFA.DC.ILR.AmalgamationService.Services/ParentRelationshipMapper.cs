@@ -14,23 +14,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             return RecursiveMap<T>(input);
         }
 
-        private T RecursiveMap<T>(T input)
+        private T RecursiveMap<T>(T parent)
         {
-            var parent = input;
-
-            var parentChildProperties = GetPropertyInfos<T>(input);
+            var parentChildProperties = GetPropertyInfos<T>(parent);
 
             foreach (var child in parentChildProperties)
             {
-                var childValue = (IParentRelationshipSetter)child.GetValue(input);
+                var childValue = (IParentRelationshipSetter)child.GetValue(parent);
                 if (childValue == null)
                 {
                     continue;
                 }
 
-                if (child.PropertyType.GetInterfaces().Any(i => i.IsInterface && i.UnderlyingSystemType == typeof(IEnumerable)))
+                if (typeof(IEnumerable<IParentRelationshipSetter>).IsAssignableFrom(child.PropertyType))
                 {
-                    var collection = (IEnumerable<IParentRelationshipSetter>)child.GetValue(input, null);
+                    var collection = (IEnumerable<IParentRelationshipSetter>)child.GetValue(parent, null);
                     foreach (var item in collection)
                     {
                         ApplyParentValue(parent, child, item);
@@ -39,7 +37,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                     continue;
                 }
 
-                //var newchildValue = Convert.ChangeType(childValue, child.PropertyType);
                 ApplyParentValue(parent, child, childValue);
             }
 
@@ -58,10 +55,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             var properties = typeof(T).GetProperties();
             var assignable = properties.Where(
                 p =>
-                p.PropertyType.IsAssignableFrom(typeof(IParentRelationshipSetter)));
-
-            //p.PropertyType.GetInterfaces().Any(i => (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IParentRelationship<>))));
-            //    || (i.IsInterface && i.UnderlyingSystemType == typeof(IEnumerable))));
+                p.PropertyType.IsAssignableFrom(typeof(IParentRelationshipSetter))
+                || typeof(IEnumerable<IParentRelationshipSetter>).IsAssignableFrom(p.PropertyType));
 
             return assignable;
         }

@@ -40,23 +40,23 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             Assert.Equal(amalgamated.AgreeId, expectedResult.AgreeId);
         }
 
-        //[Fact]
-        //public void AmalgamateEmploymentStatus_Fail()
-        //{
-        //    MessageLearner messageLearner = new MessageLearner() { LearnRefNumber = "123", Parent = new Message() { Parent = new AmalgamationRoot() { Filename = "xyz.xml", Message = new Message() } } };
+        [Fact]
+        public void AmalgamateEmploymentStatus_Fail()
+        {
+            MessageLearner messageLearner = new MessageLearner() { LearnRefNumber = "123", Parent = new Message() { Parent = new AmalgamationRoot() { Filename = "xyz.xml", Message = new Message() } } };
 
-        //    MessageLearnerLearnerEmploymentStatus[] messageLearnerLearnerEmploymentStatuses =
-        //    {
-        //    new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 1, EmpId = 3, Parent = messageLearner },
-        //    new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
-        //    };
+            MessageLearnerLearnerEmploymentStatus[] messageLearnerLearnerEmploymentStatuses =
+            {
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 1, EmpId = 3, Parent = messageLearner },
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
+            };
 
-        //    var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, AgreeId = "4" };
+            var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, AgreeId = "4" };
 
-        //    var amalgamated = _learnerEmploymentStatusAmalgamator.Amalgamate(messageLearnerLearnerEmploymentStatuses);
-        //    var validationError = _learnerEmploymentStatusAmalgamator.AmalgamationValidationErrors;
+            var amalgamated = _learnerEmploymentStatusAmalgamator.Amalgamate(messageLearnerLearnerEmploymentStatuses);
+            var validationError = _learnerEmploymentStatusAmalgamator.AmalgamationValidationErrors;
 
-        //    validationError.Count.Equals(2);
-        //}
+            validationError.Count.Equals(2);
+        }
     }
 }

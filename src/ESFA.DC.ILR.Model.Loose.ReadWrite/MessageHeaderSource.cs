@@ -13,7 +13,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             set => protectiveMarkingField = (MessageHeaderSourceProtectiveMarking)Enum.Parse(typeof(MessageHeaderSourceProtectiveMarking), value);
         }
 
-        public string SourceFileName { get => Parent.Parent.AmalgamationRoot.Filename; }
+        public string SourceFileName { get => Parent.Parent.Parent.Filename; }
         public string LearnRefNumber => null;
     }
 }

@@ -17,7 +17,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             set => sourceField = (MessageHeaderSource) value;
         }
         
-        public string SourceFileName { get => Parent.AmalgamationRoot.Filename; }
+        public string SourceFileName { get => Parent.Parent.Filename; }
         public string LearnRefNumber => null;
     }
 }

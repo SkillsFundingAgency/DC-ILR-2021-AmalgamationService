@@ -22,6 +22,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             set => dPOutcomeField = (MessageLearnerDestinationandProgressionDPOutcome[]) value;
         }
 
-        public string SourceFileName { get => Parent.AmalgamationRoot.Filename; }
+        public string SourceFileName { get => Parent.Parent.Filename; }
     }
 }

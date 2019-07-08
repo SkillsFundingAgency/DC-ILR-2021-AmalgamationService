@@ -159,6 +159,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             set => lLDDandHealthProblemField = (MessageLearnerLLDDandHealthProblem[])value;
         }
         
-        public string SourceFileName => Parent.AmalgamationRoot.Filename;
+        public string SourceFileName => Parent.Parent.Filename;
     }
 }
