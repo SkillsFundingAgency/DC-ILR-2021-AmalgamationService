@@ -55,7 +55,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             var properties = typeof(T).GetProperties();
             var assignable = properties.Where(
                 p =>
-                p.PropertyType.IsAssignableFrom(typeof(IParentRelationshipSetter))
+                typeof(IParentRelationshipSetter).IsAssignableFrom(p.PropertyType)
                 || typeof(IEnumerable<IParentRelationshipSetter>).IsAssignableFrom(p.PropertyType));
 
             return assignable;
