@@ -74,7 +74,5 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
         IReadOnlyCollection<ILooseLearningDelivery> LearningDeliveries { get;  set; }
 
         IReadOnlyCollection<ILooseLLDDAndHealthProblem> LLDDAndHealthProblems { get;  set; }
-
-        ILooseMessage Message { get; set; }
     }
 }

@@ -1,8 +1,9 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring : ILooseEmploymentStatusMonitoring
+    public partial class MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring : AbstractLooseReadWriteModel<ILooseLearner>, ILooseEmploymentStatusMonitoring
     {
         public long? ESMCodeNullable
         {
@@ -14,12 +15,8 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
-        public ILooseLearner Parent { get => Learner; set => Learner = value; }
+        public string SourceFileName => Parent.Parent.AmalgamationRoot.Filename;
 
-        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
-
-        public string LearnRefNumber => Learner.LearnRefNumber;
-
-        public ILooseLearner Learner { get; set; }
+        public string LearnRefNumber => Parent.Parent.LearnRefNumber;
     }
 }

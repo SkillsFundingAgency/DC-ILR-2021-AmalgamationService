@@ -1,8 +1,9 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerContactPreference : ILooseContactPreference
+    public partial class MessageLearnerContactPreference : AbstractLooseReadWriteModel<ILooseLearner>,  ILooseContactPreference
     {
         public long? ContPrefCodeNullable
         {
@@ -13,10 +14,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 contPrefCodeField = value.GetValueOrDefault();
             }
         }
-
-        public ILooseLearner Learner { get; set; }
-        public ILooseLearner Parent { get => Learner; set => Learner = value; }
-        public string SourceFileName => Learner.Message.AmalgamationRoot.Filename;
-        public string LearnRefNumber => Learner.LearnRefNumber;
+        public string SourceFileName => Parent.Parent.AmalgamationRoot.Filename;
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearner : ILooseLearner
+    public partial class MessageLearner : AbstractLooseReadWriteModel<ILooseMessage>, ILooseLearner
     {
         public long? ULNNullable
         {
@@ -157,11 +158,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => lLDDandHealthProblemField;
             set => lLDDandHealthProblemField = (MessageLearnerLLDDandHealthProblem[])value;
         }
-
-        public ILooseMessage Message { get; set; }
-
-        public ILooseMessage Parent { get => Message; set => Message = value; }
-
-        public string SourceFileName => Message.AmalgamationRoot.Filename;
+        
+        public string SourceFileName => Parent.AmalgamationRoot.Filename;
     }
 }

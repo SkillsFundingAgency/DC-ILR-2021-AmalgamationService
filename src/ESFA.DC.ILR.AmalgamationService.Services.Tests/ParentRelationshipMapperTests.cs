@@ -17,9 +17,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             ILooseMessage message = new Message()
             {
                 HeaderEntity = new MessageHeader()
+                {
+                    CollectionDetails = new MessageHeaderCollectionDetails()
+                }
             };
 
-            var result = NewMapper().MapChildren(message);
+            var result = NewMapper().MapChildren<ILooseMessage>(message);
         }
 
         private ParentRelationshipMapper NewMapper()

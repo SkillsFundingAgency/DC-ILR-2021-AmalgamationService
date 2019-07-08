@@ -1,9 +1,10 @@
 ﻿using System;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerDestinationandProgressionDPOutcome : ILooseDPOutcome
+    public partial class MessageLearnerDestinationandProgressionDPOutcome : AbstractLooseReadWriteModel<ILooseLearnerDestinationAndProgression>, ILooseDPOutcome
     {
         public long? OutCodeNullable
         {
@@ -44,10 +45,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 outEndDateField = value.GetValueOrDefault();
             }
         }
-        public ILooseLearnerDestinationAndProgression LooseLearnerDestinationAndProgression { get; set; }
-
-        public ILooseLearnerDestinationAndProgression Parent { get => LooseLearnerDestinationAndProgression; set => LooseLearnerDestinationAndProgression = value; }
-        public string SourceFileName => LooseLearnerDestinationAndProgression.SourceFileName;
-        public string LearnRefNumber => LooseLearnerDestinationAndProgression.LearnRefNumber;
+        public string SourceFileName => Parent.Parent.AmalgamationRoot.Filename;
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

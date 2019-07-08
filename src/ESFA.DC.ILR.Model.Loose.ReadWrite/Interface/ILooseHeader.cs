@@ -5,7 +5,5 @@
         ILooseCollectionDetails CollectionDetailsEntity { get;  set; }
 
         ILooseSource SourceEntity { get;  set; }
-
-        ILooseMessage Message { get; set; }
     }
 }

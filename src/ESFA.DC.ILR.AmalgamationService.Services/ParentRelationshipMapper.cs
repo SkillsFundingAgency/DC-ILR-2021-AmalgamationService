@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,45 +11,46 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
     {
         public T MapChildren<T>(T input)
         {
-            return RecursiveMap(input);
+            return RecursiveMap<T>(input);
         }
 
         private T RecursiveMap<T>(T input)
         {
             var parent = input;
 
-            var parentChildProperties = GetPropertyInfos(input);
+            var parentChildProperties = GetPropertyInfos<T>(input);
 
             foreach (var child in parentChildProperties)
             {
-                var obj = child.GetValue(input);
-                if (obj == null)
+                var childValue = (IParentRelationshipSetter)child.GetValue(input);
+                if (childValue == null)
                 {
                     continue;
                 }
 
                 if (child.PropertyType.GetInterfaces().Any(i => i.IsInterface && i.UnderlyingSystemType == typeof(IEnumerable)))
                 {
-                    var collection = (IEnumerable)child.GetValue(input, null);
+                    var collection = (IEnumerable<IParentRelationshipSetter>)child.GetValue(input, null);
                     foreach (var item in collection)
                     {
-                        ApplyParentValue(input, child, item);
+                        ApplyParentValue(parent, child, item);
                     }
 
                     continue;
                 }
 
-                ApplyParentValue(input, child, obj);
+                //var newchildValue = Convert.ChangeType(childValue, child.PropertyType);
+                ApplyParentValue(parent, child, childValue);
             }
 
-            return input;
+            return parent;
         }
 
-        private void ApplyParentValue<T>(T input, PropertyInfo child, object obj)
+        private void ApplyParentValue<T, TChild>(T parent, PropertyInfo child, TChild childValue)
         {
-            var propertyInfo = obj.GetType().GetProperty("Parent");
-            propertyInfo.SetValue(obj, input);
-            RecursiveMap(obj);
+            var propertyInfo = typeof(TChild).GetProperty("ParentSetter");
+            propertyInfo.SetValue(childValue, parent);
+            RecursiveMap(childValue);
         }
 
         private IEnumerable<PropertyInfo> GetPropertyInfos<T>(T input)
@@ -56,8 +58,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             var properties = typeof(T).GetProperties();
             var assignable = properties.Where(
                 p =>
-                p.PropertyType.GetInterfaces().Any(i => (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IParentRelationship<>))
-             || (i.IsInterface && i.UnderlyingSystemType == typeof(IEnumerable))));
+                p.PropertyType.IsAssignableFrom(typeof(IParentRelationshipSetter)));
+
+            //p.PropertyType.GetInterfaces().Any(i => (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IParentRelationship<>))));
+            //    || (i.IsInterface && i.UnderlyingSystemType == typeof(IEnumerable))));
 
             return assignable;
         }

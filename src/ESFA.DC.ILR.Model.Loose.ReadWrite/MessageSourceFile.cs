@@ -1,9 +1,10 @@
 ﻿using System;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageSourceFile : ILooseSourceFile
+    public partial class MessageSourceFile : AbstractLooseReadWriteModel<ILooseMessage>, ILooseSourceFile
     {
         public DateTime? DateTimeNullable
         {
@@ -15,9 +16,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
-        public ILooseMessage Message { get; set; }
-
-        public ILooseMessage Parent { get => Message; set => Message = value; }
         public string LearnRefNumber => null;
     }
 }

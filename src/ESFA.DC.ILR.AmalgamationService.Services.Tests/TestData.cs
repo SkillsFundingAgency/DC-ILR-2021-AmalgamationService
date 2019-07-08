@@ -22,5 +22,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         public string LearnRefNumber => throw new NotImplementedException();
 
         public ILooseMessage Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public object ParentSetter { set => throw new NotImplementedException(); }
     }
 }

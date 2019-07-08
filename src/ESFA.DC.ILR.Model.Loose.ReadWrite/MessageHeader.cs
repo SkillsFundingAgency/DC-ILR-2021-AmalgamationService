@@ -1,8 +1,9 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageHeader : ILooseHeader
+    public partial class MessageHeader : AbstractLooseReadWriteModel<ILooseMessage>, ILooseHeader
     {
         public ILooseCollectionDetails CollectionDetailsEntity
         {
@@ -15,10 +16,8 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             get => sourceField;
             set => sourceField = (MessageHeaderSource) value;
         }
-        public ILooseMessage Message { get;  set; }
-
-        public ILooseMessage Parent { get => Message; set => Message = value; }
-        public string SourceFileName { get => Message.AmalgamationRoot.Filename; }
+        
+        public string SourceFileName { get => Parent.AmalgamationRoot.Filename; }
         public string LearnRefNumber => null;
     }
 }
