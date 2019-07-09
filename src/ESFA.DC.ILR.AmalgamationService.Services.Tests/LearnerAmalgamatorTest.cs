@@ -27,7 +27,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         public LearnerAmalgamatorTest()
         {
             LearnerEmploymentStatusAmalgamator learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider);
-            _learnerAmalgamator = BuildAmalgamator(learnerEmploymentStatusAmalgamator, _ruleProvider);
+            LearnerHEAmalgamator learnerHEAmalgamator = new LearnerHEAmalgamator(_ruleProvider);
+
+            _learnerAmalgamator = BuildAmalgamator(learnerEmploymentStatusAmalgamator, learnerHEAmalgamator, _ruleProvider);
         }
 
         [Fact]
@@ -52,10 +54,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
         public LearnerAmalgamator BuildAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator = null,
+            IAmalgamator<MessageLearnerLearnerHE> learnerHEAmalgamator = null,
             IRuleProvider ruleProvider = null)
         {
             return new LearnerAmalgamator(
                 learnerEmploymentStatusAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerEmploymentStatus>>(),
+                learnerHEAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerHE>>(),
                 ruleProvider ?? Mock.Of<IRuleProvider>());
         }
     }

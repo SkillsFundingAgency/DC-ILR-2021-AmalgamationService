@@ -11,6 +11,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     public class LearnerAmalgamator : AbstractAmalgamator<MessageLearner>, IAmalgamator<MessageLearner>
     {
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
+        private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
 
         private IRule<string> _standardRuleString;
         private IRule<long> _standardRuleLong;
@@ -19,10 +20,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
+            IAmalgamator<MessageLearnerLearnerHE> learnerHEAmalgamator,
            IRuleProvider ruleProvider)
             : base(Entity.Learner, (x) => x.LearnRefNumber)
         {
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
+            _learnerHEAmalgamator = learnerHEAmalgamator;
 
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long>();
@@ -45,6 +48,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             ApplyRule(s => s.DateOfBirth, _standardRuleDateTime.Definition, models, messageLearner);
 
             ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
+            ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
 
             return messageLearner;
         }
