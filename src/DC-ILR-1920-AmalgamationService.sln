@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.AmalgamationSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.AmalgamationService.Services.Tests", "ESFA.DC.ILR.AmalgamationService.Services.Tests\ESFA.DC.ILR.AmalgamationService.Services.Tests.csproj", "{31A1340B-CE76-48D2-BD10-1C14EDB1D4FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.Model.Loose.ReadWrite", "ESFA.DC.ILR.Model.Loose.ReadWrite\ESFA.DC.ILR.Model.Loose.ReadWrite.csproj", "{2F7697FA-BF58-455E-A87C-1BF9AC137CC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.Model.Loose.ReadWrite", "ESFA.DC.ILR.Model.Loose.ReadWrite\ESFA.DC.ILR.Model.Loose.ReadWrite.csproj", "{2F7697FA-BF58-455E-A87C-1BF9AC137CC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.Amalgamation.WPF", "ESFA.DC.ILR.Amalgamation.WPF\ESFA.DC.ILR.Amalgamation.WPF.csproj", "{440A11B8-DFF6-4E85-922A-E0F9193C7093}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2F7697FA-BF58-455E-A87C-1BF9AC137CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F7697FA-BF58-455E-A87C-1BF9AC137CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F7697FA-BF58-455E-A87C-1BF9AC137CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{440A11B8-DFF6-4E85-922A-E0F9193C7093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{440A11B8-DFF6-4E85-922A-E0F9193C7093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{440A11B8-DFF6-4E85-922A-E0F9193C7093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{440A11B8-DFF6-4E85-922A-E0F9193C7093}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

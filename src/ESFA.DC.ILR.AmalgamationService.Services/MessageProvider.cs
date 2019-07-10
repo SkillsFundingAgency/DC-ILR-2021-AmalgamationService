@@ -1,6 +1,6 @@
 ﻿using ESFA.DC.FileService.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using ESFA.DC.Serialization.Interfaces;
 using System.IO;
 using System.Threading;

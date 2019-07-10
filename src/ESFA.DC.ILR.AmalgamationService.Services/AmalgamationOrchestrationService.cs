@@ -1,5 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.Model.Loose;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
