@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
 {
     public interface IAmalgamationRoot
     {
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnore]
         string Filename { get; set; }
 
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnore]
         ILooseMessage Message { get; set; }
     }
 }

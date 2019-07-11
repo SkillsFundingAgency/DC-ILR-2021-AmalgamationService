@@ -1,10 +1,12 @@
 ﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
     public partial class MessageLearnerLLDDandHealthProblem : AbstractLooseReadWriteModel<ILooseLearner>, ILooseLLDDAndHealthProblem
     {
+        [XmlIgnore]
         public long? LLDDCatNullable
         {
             get => lLDDCatFieldSpecified ? lLDDCatField : default(long?);
@@ -15,6 +17,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? PrimaryLLDDNullable
         {
             get => primaryLLDDFieldSpecified ? primaryLLDDField : default(long?);
@@ -24,7 +27,11 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 primaryLLDDField = value.GetValueOrDefault();
             }
         }
+
+        [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
+
+        [XmlIgnore]
         public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

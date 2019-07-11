@@ -49,8 +49,8 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Button Content="Add File" Command="{Binding ChooseFileCommand}" FontSize="14" Margin="0,5"/>
-                        
-                        <ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Files}" HorizontalAlignment="Left" Height="100">
+
+                        <ListView Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" Height="100" Margin="0,5,0,5">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
