@@ -1,7 +1,7 @@
 ﻿using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
 using Microsoft.Win32;
-using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 using DialogResult = System.Windows.Forms.DialogResult;
+using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.Service
 {
@@ -9,16 +9,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
     {
         private const string ChooseOutputDirectoryDescription = @"Choose Output Directory";
 
-        public string GetFileNameFromOpenFileDialog()
+        public string[] GetFileNamesFromOpenFileDialog()
         {
-            var openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog() { Multiselect = true, Filter = "ILR Files (*.xml)|*.xml" };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                return openFileDialog.FileName;
+                return openFileDialog.FileNames;
             }
 
-            return string.Empty;
+            return null;
         }
 
         public string GetFolderNameFromFolderBrowserDialog(string outputDirectoryPath, string outputDirectoryDescription)

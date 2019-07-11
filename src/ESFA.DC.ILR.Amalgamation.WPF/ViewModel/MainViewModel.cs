@@ -22,7 +22,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private readonly IDialogInteractionService _dialogInteractionService;
 
         private CancellationTokenSource _cancellationTokenSource;
-        private ObservableCollection<string> files = new ObservableCollection<string>();
+        private ObservableCollection<string> _files = new ObservableCollection<string>();
         private bool _canSubmit;
         private string _taskName;
         private int _currentTask;
@@ -76,13 +76,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public ObservableCollection<string> Files
         {
-            get { return files; }
+            get { return _files; }
 
             set
             {
-                if (value != this.files)
-                    files = value;
-                this.RaisePropertyChanged("Files");
+                if (value != _files)
+                {
+                    _files = value;
+                }
+
+                RaisePropertyChanged("Files");
             }
         }
 
@@ -129,12 +132,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void ShowChooseFileDialog()
         {
-            var fileName = _dialogInteractionService.GetFileNameFromOpenFileDialog();
+            var files = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
 
-            if (!string.IsNullOrWhiteSpace(fileName))
+            if (files != null && files.Length > 0)
             {
-                files.Add(fileName);
-                if (files.Count > 1)
+                foreach (var file in files)
+                {
+                    _files.Add(file);
+                }
+
+                if (_files.Count > 1)
                 {
                     CanSubmit = true;
                 }
@@ -151,7 +158,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CancelCommand.RaiseCanExecuteChanged();
 
-                await _iAmalgamationOrchestrationService.ProcessAsync(new List<string>(files), _reportsLocation, _cancellationTokenSource.Token);
+                await _iAmalgamationOrchestrationService.ProcessAsync(new List<string>(_files), _reportsLocation, _cancellationTokenSource.Token);
             }
             catch (Exception ex) //OperationCanceledException operationCanceledException)
             {

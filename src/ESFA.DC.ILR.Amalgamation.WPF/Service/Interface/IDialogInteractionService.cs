@@ -2,7 +2,7 @@
 {
     public interface IDialogInteractionService
     {
-        string GetFileNameFromOpenFileDialog();
+        string[] GetFileNamesFromOpenFileDialog();
 
         string GetFolderNameFromFolderBrowserDialog(string outputDirectoryPath, string outputDirectoryDescription);
     }
