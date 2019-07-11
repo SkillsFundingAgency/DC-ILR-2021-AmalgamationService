@@ -11,6 +11,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Interface
         string Filename { get; set; }
 
         [XmlIgnore]
-        Message Message { get; set; }
+        ILooseMessage Message { get; set; }
     }
 }

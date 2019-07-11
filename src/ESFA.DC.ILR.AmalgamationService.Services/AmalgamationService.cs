@@ -2,6 +2,7 @@
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,15 +22,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         public Task<IAmalgamationResult> AmalgamateAsync(IEnumerable<AmalgamationRoot> amalgamationRoots, CancellationToken cancellationToken)
         {
             AmalgamationResult result = new AmalgamationResult();
-            List<Message> messages = new List<Message>();
             foreach (var amalgamationRoot in amalgamationRoots)
             {
-                var mappedAmalgamationRoot = _parentRelationshipMapper.MapChildren(amalgamationRoot);
-                messages.Add(mappedAmalgamationRoot.Message);
+                _parentRelationshipMapper.MapChildren(amalgamationRoot as IAmalgamationRoot);
             }
 
-            var message = _messageAmalgamator.Amalgamate(messages);
-            result.Messaage = message;
+            var message = _messageAmalgamator.Amalgamate(amalgamationRoots.Select(r => r.Message as Message));
+            result.Messaage = message as Message;
 
             return Task.FromResult<IAmalgamationResult>(result);
         }
