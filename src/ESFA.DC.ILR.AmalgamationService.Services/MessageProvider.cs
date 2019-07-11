@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
-    public class MessageProvider : IMessageProvider<Message>
+    public class MessageProvider : IMessageProvider<AmalgamationRoot>
     {
         private readonly IXmlSerializationService _xmlSerializationService;
         private readonly IFileService _fileService;
@@ -21,14 +21,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _fileService = fileService;
         }
 
-        public async Task<Message> ProvideAsync(string filepath, CancellationToken cancellationToken)
+        public async Task<AmalgamationRoot> ProvideAsync(string filepath, CancellationToken cancellationToken)
         {
             string filename = Path.GetFileName(filepath);
             string container = Path.GetDirectoryName(filepath);
             using (var stream = await _fileService.OpenReadStreamAsync(filename, container, cancellationToken))
             {
                 var message = _xmlSerializationService.Deserialize<Message>(stream);
-                return message;
+                return new AmalgamationRoot() { Filename = filename, Message = message };
             }
         }
     }

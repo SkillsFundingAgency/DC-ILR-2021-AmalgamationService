@@ -21,10 +21,12 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
+            containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>().SingleInstance();
+
             containerBuilder.RegisterType<AmalgamationOrchestrationService>().As<IAmalgamationOrchestrationService>().SingleInstance();
 
             //AmalgamationOrchestrationService dependencies
-            containerBuilder.RegisterType<MessageProvider>().As<IMessageProvider<ilrModelRw.Message>>().SingleInstance();
+            containerBuilder.RegisterType<MessageProvider>().As<IMessageProvider<ilrModelRw.AmalgamationRoot>>().SingleInstance();
             containerBuilder.RegisterType<service.AmalgamationService>().As<IAmalgamationService>().SingleInstance();
             containerBuilder.RegisterType<AmalgamationOutputService>().As<IAmalgamationOutputService>().SingleInstance();
 

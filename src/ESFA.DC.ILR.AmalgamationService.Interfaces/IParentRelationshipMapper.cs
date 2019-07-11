@@ -5,8 +5,8 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
-    public interface IAmalgamationService
+    public interface IParentRelationshipMapper
     {
-        Task<IAmalgamationResult> AmalgamateAsync(IEnumerable<AmalgamationRoot> messages, CancellationToken cancellationToken);
+        T MapChildren<T>(T input);
     }
 }
