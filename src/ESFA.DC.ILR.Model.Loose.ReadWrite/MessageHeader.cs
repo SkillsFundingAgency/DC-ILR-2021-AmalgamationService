@@ -5,12 +5,14 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
     public partial class MessageHeader : AbstractLooseReadWriteModel<ILooseMessage>, ILooseHeader
     {
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public ILooseCollectionDetails CollectionDetailsEntity
         {
             get => collectionDetailsField;
             set => collectionDetailsField = (MessageHeaderCollectionDetails) value;
         }
 
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
         public ILooseSource SourceEntity
         {
             get => sourceField;

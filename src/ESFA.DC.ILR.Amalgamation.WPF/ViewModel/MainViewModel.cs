@@ -14,29 +14,14 @@ using GalaSoft.MvvmLight.CommandWpf;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private const string _filenamePlaceholder = "No file chosen";
-
         private readonly IAmalgamationOrchestrationService _iAmalgamationOrchestrationService;
 
         private readonly IMessengerService _messengerService;
         private readonly IDialogInteractionService _dialogInteractionService;
 
         private CancellationTokenSource _cancellationTokenSource;
-        private string _fileName = _filenamePlaceholder;
         private ObservableCollection<string> files = new ObservableCollection<string>();
         private bool _canSubmit;
         private string _taskName;
@@ -56,9 +41,9 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
 
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
-            ProcessFileCommand = new AsyncCommand(ProcessFile, () => CanSubmit);
+            AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanSubmit);
 
-            CancelAndReuploadCommand = new RelayCommand(CancelAndReupload, () => !_cancellationTokenSource?.IsCancellationRequested ?? false);
+            CancelCommand = new RelayCommand(Cancel, () => !_cancellationTokenSource?.IsCancellationRequested ?? false);
         }
 
         public StageKeys CurrentStage
@@ -70,9 +55,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 RaisePropertyChanged(nameof(ChooseFileVisibility));
                 RaisePropertyChanged(nameof(ProcessingVisibility));
-                RaisePropertyChanged(nameof(ProcessedSuccessfullyVisibility));
-                RaisePropertyChanged(nameof(ProcessFailureHandledVisibility));
-                RaisePropertyChanged(nameof(ProcessFailureUnhandledVisibility));
             }
         }
 
@@ -82,7 +64,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             set
             {
                 Set(ref _canSubmit, value);
-                ProcessFileCommand.RaiseCanExecuteChanged();
+                AmalgamateFilesCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -91,20 +73,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         public bool ProcessingVisibility => CurrentStage == StageKeys.Processing;
 
         public bool ProcessedSuccessfullyVisibility => CurrentStage == StageKeys.ProcessedSuccessfully;
-
-        public bool ProcessFailureHandledVisibility => CurrentStage == StageKeys.ProcessHandledFailure;
-
-        public bool ProcessFailureUnhandledVisibility => CurrentStage == StageKeys.ProcessUnhandledFailure;
-
-        public string FileName
-        {
-            get => _fileName;
-            set
-            {
-                _fileName = value;
-                RaisePropertyChanged();
-            }
-        }
 
         public ObservableCollection<string> Files
         {
@@ -146,11 +114,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public RelayCommand RemoveFileCommand { get; set; }
 
-        public AsyncCommand ProcessFileCommand { get; set; }
+        public AsyncCommand AmalgamateFilesCommand { get; set; }
 
         public RelayCommand ReportsFolderCommand { get; set; }
 
-        public RelayCommand CancelAndReuploadCommand { get; set; }
+        public RelayCommand CancelCommand { get; set; }
 
         public void HandleTaskProgressMessage(TaskProgressMessage taskProgressMessage)
         {
@@ -163,7 +131,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         {
             var fileName = _dialogInteractionService.GetFileNameFromOpenFileDialog();
 
-            if (!string.IsNullOrWhiteSpace(fileName) && fileName != _filenamePlaceholder)
+            if (!string.IsNullOrWhiteSpace(fileName))
             {
                 files.Add(fileName);
                 if (files.Count > 1)
@@ -173,7 +141,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
         }
 
-        private async Task ProcessFile()
+        private async Task AmalgamateFiles()
         {
             CurrentStage = StageKeys.Processing;
             CanSubmit = false;
@@ -181,7 +149,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             {
                 _cancellationTokenSource = new CancellationTokenSource();
 
-                CancelAndReuploadCommand.RaiseCanExecuteChanged();
+                CancelCommand.RaiseCanExecuteChanged();
 
                 await _iAmalgamationOrchestrationService.ProcessAsync(new List<string>(files), _reportsLocation, _cancellationTokenSource.Token);
             }
@@ -197,12 +165,12 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
         }
 
-        private void CancelAndReupload()
+        private void Cancel()
         {
             TaskName = "Cancelling";
             _cancellationTokenSource?.Cancel();
 
-            CancelAndReuploadCommand.RaiseCanExecuteChanged();
+            CancelCommand.RaiseCanExecuteChanged();
         }
     }
 }

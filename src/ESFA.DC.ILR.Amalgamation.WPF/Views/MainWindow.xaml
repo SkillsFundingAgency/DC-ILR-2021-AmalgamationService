@@ -64,7 +64,7 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        <Button Grid.Row="2" Command="{Binding ProcessFileCommand}" Content="Amalgamate" FontSize="14" Margin="0,5" Height="35"/>
+                        <Button Grid.Row="2" Command="{Binding AmalgamateFilesCommand}" Content="Amalgamate" FontSize="14" Margin="0,5" Height="35"/>
                     </Grid>
                 </StackPanel>
             </Grid>
@@ -91,7 +91,7 @@
                         <Label Grid.Column="1" Grid.Row="1" Content="{Binding TaskName}" FontSize="14"/>
                         <ProgressBar Grid.Row="2" Grid.ColumnSpan="2" Height="20" Value="{Binding CurrentTask}" Maximum="{Binding TaskCount}" Margin="0,5" />
                     </Grid>
-                    <Button Content="Cancel" Command="{Binding CancelAndReuploadCommand}" FontSize="14" HorizontalAlignment="Left" Margin="0,8" Width="180" Height="35"/>
+                    <Button Content="Cancel" Command="{Binding CancelCommand}" FontSize="14" HorizontalAlignment="Left" Margin="0,8" Width="180" Height="35"/>
                 </StackPanel>
             </Grid>
 

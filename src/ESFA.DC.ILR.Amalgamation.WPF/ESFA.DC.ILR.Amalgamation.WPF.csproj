@@ -96,13 +96,9 @@
     <Compile Include="Modules\AmalgamationServiceModule.cs" />
     <Compile Include="Modules\DesktopServicesModule.cs" />
     <Compile Include="Modules\ViewModelsModule.cs" />
-    <Compile Include="Service\DesktopContextFactory.cs" />
     <Compile Include="Service\DialogInteractionService.cs" />
     <Compile Include="Service\Interface\ICloseable.cs" />
-    <Compile Include="Service\Interface\IDesktopContextFactory.cs" />
     <Compile Include="Service\Interface\IDialogInteractionService.cs" />
-    <Compile Include="Service\Interface\IVersionInformationService.cs" />
-    <Compile Include="Service\Interface\IWindowService.cs" />
     <Compile Include="Service\Interface\IWindowsProcessService.cs" />
     <Compile Include="Service\MessengerService.cs" />
     <Compile Include="Service\WindowsProcessService.cs" />
