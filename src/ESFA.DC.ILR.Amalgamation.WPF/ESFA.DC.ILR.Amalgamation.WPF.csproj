@@ -88,8 +88,6 @@
     <Compile Include="Command\Interface\IAsyncCommand.cs" />
     <Compile Include="Command\Interface\IErrorHandler.cs" />
     <Compile Include="Command\Extensions\TaskExtensions.cs" />
-    <Compile Include="Config\DesktopServiceConfiguration.cs" />
-    <Compile Include="Config\FileSystemKeyValuePersistenceServiceConfig.cs" />
     <Compile Include="Enum\StageKeys.cs" />
     <Compile Include="Interface\IMessengerService.cs" />
     <Compile Include="Message\TaskProgressMessage.cs" />

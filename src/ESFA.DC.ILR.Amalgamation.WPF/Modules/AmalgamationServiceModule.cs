@@ -21,17 +21,18 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>().SingleInstance();
+            containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>();
+            containerBuilder.RegisterType<CsvService>().As<ICsvService>();
 
-            containerBuilder.RegisterType<AmalgamationOrchestrationService>().As<IAmalgamationOrchestrationService>().SingleInstance();
+            containerBuilder.RegisterType<AmalgamationOrchestrationService>().As<IAmalgamationOrchestrationService>();
 
             //AmalgamationOrchestrationService dependencies
-            containerBuilder.RegisterType<MessageProvider>().As<IMessageProvider<ilrModelRw.AmalgamationRoot>>().SingleInstance();
-            containerBuilder.RegisterType<service.AmalgamationService>().As<IAmalgamationService>().SingleInstance();
-            containerBuilder.RegisterType<AmalgamationOutputService>().As<IAmalgamationOutputService>().SingleInstance();
+            containerBuilder.RegisterType<MessageProvider>().As<IMessageProvider<ilrModelRw.AmalgamationRoot>>();
+            containerBuilder.RegisterType<service.AmalgamationService>().As<IAmalgamationService>();
+            containerBuilder.RegisterType<AmalgamationOutputService>().As<IAmalgamationOutputService>();
 
             //MessageProvider dependencies
-            containerBuilder.RegisterType<XmlSerializationService>().As<IXmlSerializationService>().SingleInstance();
+            containerBuilder.RegisterType<XmlSerializationService>().As<IXmlSerializationService>();
             containerBuilder.RegisterType<FileSystemFileService>().As<IFileService>();
             containerBuilder.RegisterType<FileSystemKeyValuePersistenceService>()
                 .As<IKeyValuePersistenceService>()

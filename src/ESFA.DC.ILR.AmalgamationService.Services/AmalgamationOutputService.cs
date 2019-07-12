@@ -1,5 +1,5 @@
-﻿using ESFA.DC.FileService.Interface;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
+﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Services.Mapper;
 using ESFA.DC.Serialization.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,19 +9,22 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
     public class AmalgamationOutputService : IAmalgamationOutputService
     {
         private readonly IXmlSerializationService _xmlSerializationService;
-        private readonly IFileService _fileService;
+        private readonly ICsvService _csvService;
 
         public AmalgamationOutputService(
             IXmlSerializationService xmlSerializationService,
-            IFileService fileService)
+            ICsvService csvService)
         {
             _xmlSerializationService = xmlSerializationService;
-            _fileService = fileService;
+            _csvService = csvService;
         }
 
-        public Task ProcessAsync(IAmalgamationResult amalgamatedMessage, string outputFilePath, CancellationToken cancellationToken)
+        public async Task ProcessAsync(IAmalgamationResult amalgamationResult, string outputFilePath, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            if (amalgamationResult.ValidationErrors != null)
+            {
+                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, "AmalgamationValidationError.csv", outputFilePath, cancellationToken);
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using ESFA.DC.FileService;
 using ESFA.DC.FileService.Interface;
-using ESFA.DC.ILR.Amalgamation.WPF.Config;
 using ESFA.DC.ILR.Amalgamation.WPF.Modules;
 using ESFA.DC.IO.FileSystem;
 using ESFA.DC.IO.FileSystem.Config.Interfaces;
@@ -48,18 +47,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF
             containerBuilder.RegisterType<XmlSerializationService>().As<IXmlSerializationService>();
 
             containerBuilder.RegisterType<FileSystemFileService>().As<IFileService>();
-            containerBuilder.RegisterType<FileSystemKeyValuePersistenceService>()
-                .As<IKeyValuePersistenceService>()
-                .As<IStreamableKeyValuePersistenceService>();
-
-            containerBuilder.RegisterType<DecompressionService>().As<IDecompressionService>();
-
-            var fileSystemKeyValuePersistenceServiceConfiguration = new FileSystemKeyValuePersistenceServiceConfig()
-            {
-                Directory = "Sandbox"
-            };
-
-            containerBuilder.RegisterInstance(fileSystemKeyValuePersistenceServiceConfiguration).As<IFileSystemKeyValuePersistenceServiceConfig>();
 
             return containerBuilder;
         }

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 using ESFA.DC.ILR.Amalgamation.WPF.Command;
 using ESFA.DC.ILR.Amalgamation.WPF.Enum;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
@@ -11,6 +6,11 @@ using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 {
@@ -175,7 +175,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private void Cancel()
         {
             TaskName = "Cancelling";
-            _cancellationTokenSource?.Cancel();
+
+            if (_cancellationTokenSource != null)
+            {
+                _cancellationTokenSource?.Cancel();
+            }
 
             CancelCommand.RaiseCanExecuteChanged();
         }
