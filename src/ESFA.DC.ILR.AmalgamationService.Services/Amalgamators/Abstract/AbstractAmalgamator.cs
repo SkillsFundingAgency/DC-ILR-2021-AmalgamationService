@@ -47,9 +47,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                 AmalgamationValidationErrors.AddRange(inputEntities.Select(x => new AmalgamationValidationError()
                 {
                     File = x.SourceFileName,
-                    LearnRefNumber = x.LearnRefNumber,
+                    LearnRefNumber = x.LearnRefNumber ?? string.Empty,
                     Entity = Enum.GetName(typeof(Entity), _entityType),
-                    Key = string.Format("{0} : {1}", _entityType.GetAttribute<KeyProperty>().PropertyName, _keyValueSelectorFunc(x)),
+                    Key = string.Format("{0} : {1}", GetKeyPropertyName(), _keyValueSelectorFunc(x)),
                     Value = prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name
                 }));
@@ -102,6 +102,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             }
 
             return entity;
+        }
+
+        private string GetKeyPropertyName()
+        {
+            var properties = _entityType.GetAttribute<KeyProperty>();
+            return properties == null ? string.Empty : properties.PropertyName;
         }
     }
 }

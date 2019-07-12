@@ -9,11 +9,11 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class SourceAmalgamator : AbstractAmalgamator<MessageHeaderSource>, IAmalgamator<MessageHeaderSource>
+    public class HeaderSourceAmalgamator : AbstractAmalgamator<MessageHeaderSource>, IAmalgamator<MessageHeaderSource>
     {
         private IRule<DateTime> _standardRuleDateTime;
 
-        public SourceAmalgamator(IRuleProvider ruleProvider)
+        public HeaderSourceAmalgamator(IRuleProvider ruleProvider)
             : base(Entity.Source, (x) => null)
         {
             _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime>();

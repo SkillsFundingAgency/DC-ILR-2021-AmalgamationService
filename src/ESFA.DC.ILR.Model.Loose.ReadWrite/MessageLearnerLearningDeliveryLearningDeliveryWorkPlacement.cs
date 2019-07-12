@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
@@ -6,6 +7,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
     public partial class MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement : AbstractLooseReadWriteModel<ILooseLearningDelivery>, ILooseLearningDeliveryWorkPlacement
     {
+        [XmlIgnore]
         public DateTime? WorkPlaceStartDateNullable
         {
             get => workPlaceStartDateFieldSpecified ? workPlaceStartDateField : default(DateTime?);
@@ -16,6 +18,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? WorkPlaceHoursNullable
         {
             get => workPlaceHoursFieldSpecified ? workPlaceHoursField : default(long?);
@@ -26,6 +29,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? WorkPlaceModeNullable
         {
             get => workPlaceModeFieldSpecified ? workPlaceModeField : default(long?);
@@ -36,6 +40,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? WorkPlaceEmpIdNullable
         {
             get => workPlaceEmpIdFieldSpecified ? workPlaceEmpIdField : default(long?);
@@ -46,6 +51,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? WorkPlaceEndDateNullable
         {
             get => workPlaceEndDateFieldSpecified ? workPlaceEndDateField : default(DateTime?);
@@ -55,9 +61,11 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 workPlaceEndDateField = value.GetValueOrDefault();
             }
         }
-        
+
+        [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
 
+        [XmlIgnore]
         public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

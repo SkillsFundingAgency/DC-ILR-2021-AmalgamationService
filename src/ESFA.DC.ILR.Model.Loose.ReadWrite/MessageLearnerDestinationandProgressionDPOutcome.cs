@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
@@ -6,6 +7,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
     public partial class MessageLearnerDestinationandProgressionDPOutcome : AbstractLooseReadWriteModel<ILooseLearnerDestinationAndProgression>, ILooseDPOutcome
     {
+        [XmlIgnore]
         public long? OutCodeNullable
         {
             get => outCodeFieldSpecified ? outCodeField : default(long?);
@@ -16,6 +18,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? OutStartDateNullable
         {
             get => outStartDateFieldSpecified ? outStartDateField : default(DateTime?);
@@ -26,6 +29,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? OutCollDateNullable
         {
             get => outCollDateFieldSpecified ? outCollDateField : default(DateTime?);
@@ -36,6 +40,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? OutEndDateNullable
         {
             get => outEndDateFieldSpecified ? outEndDateField : default(DateTime?);
@@ -45,7 +50,11 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
                 outEndDateField = value.GetValueOrDefault();
             }
         }
+
+        [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
+
+        [XmlIgnore]
         public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
@@ -7,6 +8,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
     public partial class MessageLearnerLearningDelivery : AbstractLooseReadWriteModel<ILooseLearner>, ILooseLearningDelivery
     {
+        [XmlIgnore]
         public long? AimTypeNullable
         {
             get => aimTypeFieldSpecified ? aimTypeField : default(long?);
@@ -17,6 +19,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? AimSeqNumberNullable
         {
             get => aimSeqNumberFieldSpecified ? aimSeqNumberField : default(long?);
@@ -27,6 +30,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? FundModelNullable
         {
             get => fundModelFieldSpecified ? fundModelField : default(long?);
@@ -37,6 +41,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? ProgTypeNullable
         {
             get => progTypeFieldSpecified ? progTypeField : default(long?);
@@ -47,6 +52,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? FworkCodeNullable
         {
             get => fworkCodeFieldSpecified ? fworkCodeField : default(long?);
@@ -57,6 +63,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? PHoursNullable
         {
             get => pHoursFieldSpecified ? pHoursField : default(long?);
@@ -67,6 +74,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? PwayCodeNullable
         {
             get => pwayCodeFieldSpecified ? pwayCodeField : default(long?);
@@ -77,6 +85,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? StdCodeNullable
         {
             get => stdCodeFieldSpecified ? stdCodeField : default(long?);
@@ -87,6 +96,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? CompStatusNullable
         {
             get => compStatusFieldSpecified ? compStatusField : default(long?);
@@ -97,6 +107,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? OrigLearnStartDateNullable
         {
             get => OrigLearnStartDateSpecified ? OrigLearnStartDate : default(DateTime?);
@@ -107,6 +118,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? LearnStartDateNullable
         {
             get => learnStartDateFieldSpecified ? learnStartDateField : default(DateTime?);
@@ -117,6 +129,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? LearnPlanEndDateNullable
         {
             get => learnPlanEndDateFieldSpecified ? learnPlanEndDateField : default(DateTime?);
@@ -127,6 +140,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? LearnActEndDateNullable
         {
             get => LearnActEndDateSpecified ? LearnActEndDate : default(DateTime?);
@@ -137,6 +151,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public DateTime? AchDateNullable
         {
             get => AchDateSpecified ? AchDate : default(DateTime?);
@@ -147,6 +162,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? PartnerUKPRNNullable
         {
             get => partnerUKPRNFieldSpecified ? partnerUKPRNField : default(long?);
@@ -157,6 +173,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? OutcomeNullable
         {
             get => outcomeFieldSpecified ? outcomeField : default(long?);
@@ -167,6 +184,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? AddHoursNullable
         {
             get => addHoursFieldSpecified ? addHoursField : default(long?);
@@ -177,6 +195,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? PriorLearnFundAdjNullable
         {
             get => priorLearnFundAdjFieldSpecified ? priorLearnFundAdjField : default(long?);
@@ -187,6 +206,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? OtherFundAdjNullable
         {
             get => otherFundAdjFieldSpecified ? otherFundAdjField : default(long?);
@@ -197,6 +217,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? EmpOutcomeNullable
         {
             get => empOutcomeFieldSpecified ? empOutcomeField : default(long?);
@@ -207,6 +228,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public long? WithdrawReasonNullable
         {
             get => withdrawReasonFieldSpecified ? withdrawReasonField : default(long?);
@@ -217,38 +239,45 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
         }
 
+        [XmlIgnore]
         public IReadOnlyCollection<ILooseLearningDeliveryFAM> LearningDeliveryFAMs
         {
             get => learningDeliveryFAMField;
             set => learningDeliveryFAMField = (MessageLearnerLearningDeliveryLearningDeliveryFAM[]) value;
         }
 
+        [XmlIgnore]
         public IReadOnlyCollection<ILooseAppFinRecord> AppFinRecords
         {
             get => appFinRecordField;
             set => appFinRecordField = (MessageLearnerLearningDeliveryAppFinRecord[]) value;
         }
 
+        [XmlIgnore]
         public IReadOnlyCollection<ILooseProviderSpecDeliveryMonitoring> ProviderSpecDeliveryMonitorings
         {
             get => providerSpecDeliveryMonitoringField;
             set => providerSpecDeliveryMonitoringField = (MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring[]) value;
         }
 
+        [XmlIgnore]
         public IReadOnlyCollection<ILooseLearningDeliveryHE> LearningDeliveryHEs
         {
             get => learningDeliveryHEField;
             set => learningDeliveryHEField = (MessageLearnerLearningDeliveryLearningDeliveryHE[]) value;
         }
 
+        [XmlIgnore]
         public IReadOnlyCollection<ILooseLearningDeliveryWorkPlacement> LearningDeliveryWorkPlacements
         {
             get => learningDeliveryWorkPlacementField;
             set => learningDeliveryWorkPlacementField = (MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement[]) value;
         }
 
+        [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
 
+        [XmlIgnore]
         public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }

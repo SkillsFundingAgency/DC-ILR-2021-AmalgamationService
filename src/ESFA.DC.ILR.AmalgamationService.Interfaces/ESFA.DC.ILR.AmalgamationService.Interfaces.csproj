@@ -13,12 +13,15 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="ESFA.DC.ILR.1920.Model.Interface" Version="0.1.4-beta0001" />
-    <PackageReference Include="ESFA.DC.ILR.1920.Model.Loose" Version="0.1.5-beta0001" />
+    <PackageReference Include="CsvHelper" Version="12.1.2" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ESFA.DC.ILR.Model.Loose.ReadWrite\ESFA.DC.ILR.Model.Loose.ReadWrite.csproj" />
   </ItemGroup>
 
 </Project>

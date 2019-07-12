@@ -1,14 +1,13 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
-    public class ParentRelationshipMapper
+    public class ParentRelationshipMapper : IParentRelationshipMapper
     {
         public T MapChildren<T>(T input)
         {
