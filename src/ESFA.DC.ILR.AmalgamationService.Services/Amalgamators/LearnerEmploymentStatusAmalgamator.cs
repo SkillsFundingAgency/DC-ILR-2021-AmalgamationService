@@ -14,8 +14,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<long> _standardRuleLong;
         private IRule<DateTime> _standardRuleDateTime;
 
-        public LearnerEmploymentStatusAmalgamator(IRuleProvider ruleProvider)
-            : base(Entity.LearnerEmploymentStatus, (x) => x.DateEmpStatApp.ToString())
+        public LearnerEmploymentStatusAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
+            : base(Entity.LearnerEmploymentStatus, (x) => x.DateEmpStatApp.ToString(), amalgamationErrorHandler)
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long>();

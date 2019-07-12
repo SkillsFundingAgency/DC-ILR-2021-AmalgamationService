@@ -13,8 +13,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     {
         private IRule<DateTime> _standardRuleDateTime;
 
-        public HeaderSourceAmalgamator(IRuleProvider ruleProvider)
-            : base(Entity.Source, (x) => null)
+        public HeaderSourceAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
+            : base(Entity.Source, (x) => null, amalgamationErrorHandler)
         {
             _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime>();
         }

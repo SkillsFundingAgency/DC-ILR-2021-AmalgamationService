@@ -93,6 +93,7 @@
     <Compile Include="Message\TaskProgressMessage.cs" />
     <Compile Include="Modules\AmalgamationServiceModule.cs" />
     <Compile Include="Modules\DesktopServicesModule.cs" />
+    <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Modules\ViewModelsModule.cs" />
     <Compile Include="Service\DialogInteractionService.cs" />
     <Compile Include="Service\Interface\ICloseable.cs" />

@@ -13,8 +13,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
     public class AbstractAmalgamatorCaller<T> : AbstractAmalgamator<T>
         where T : IAmalgamationModel
     {
-        public AbstractAmalgamatorCaller(Entity entityType)
-            : base(entityType, (x) => string.Empty)
+        public AbstractAmalgamatorCaller(Entity entityType, IAmalgamationErrorHandler amalgamationErrorHandler)
+            : base(entityType, (x) => string.Empty, amalgamationErrorHandler)
         {
         }
 

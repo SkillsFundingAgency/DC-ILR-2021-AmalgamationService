@@ -23,18 +23,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
         private IRuleProvider _ruleProvider = new RuleProvider();
         private LearnerAmalgamator _learnerAmalgamator;
-
-        public LearnerAmalgamatorTest()
-        {
-            LearnerEmploymentStatusAmalgamator learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider);
-            LearnerHEAmalgamator learnerHEAmalgamator = new LearnerHEAmalgamator(_ruleProvider);
-
-            _learnerAmalgamator = BuildAmalgamator(learnerEmploymentStatusAmalgamator, learnerHEAmalgamator, _ruleProvider);
-        }
+        private AmalgamationErrorHandler _amalgamationErrorHandler;
 
         [Fact]
         public void Amalgamate_Success()
         {
+            InitializeAmalgamator();
             MessageLearner messageLearner1 = new MessageLearner() { LearnRefNumber = _testString1, PrevLearnRefNumber = _testString1, PMUKPRN = _testLong1, PrevUKPRN = _testLong1, DateOfBirth = _testDateTime1, FamilyName = _testString1, GivenNames = _testString1 };
             MessageLearner messageLearner2 = new MessageLearner() { LearnRefNumber = _testString1, PMUKPRN = _testLong1, PrevUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
             List<MessageLearner> messageLearners = new List<MessageLearner>() { messageLearner1, messageLearner2 };
@@ -55,12 +49,23 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         public LearnerAmalgamator BuildAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator = null,
             IAmalgamator<MessageLearnerLearnerHE> learnerHEAmalgamator = null,
-            IRuleProvider ruleProvider = null)
+            IRuleProvider ruleProvider = null,
+            IAmalgamationErrorHandler amalgamationErrorHandler = null)
         {
             return new LearnerAmalgamator(
                 learnerEmploymentStatusAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerEmploymentStatus>>(),
                 learnerHEAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerHE>>(),
-                ruleProvider ?? Mock.Of<IRuleProvider>());
+                ruleProvider ?? Mock.Of<IRuleProvider>(),
+                amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
+        }
+
+        private void InitializeAmalgamator()
+        {
+            _amalgamationErrorHandler = new AmalgamationErrorHandler();
+            LearnerEmploymentStatusAmalgamator learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider, _amalgamationErrorHandler);
+            LearnerHEAmalgamator learnerHEAmalgamator = new LearnerHEAmalgamator(_ruleProvider, _amalgamationErrorHandler);
+
+            _learnerAmalgamator = BuildAmalgamator(learnerEmploymentStatusAmalgamator, learnerHEAmalgamator, _ruleProvider, _amalgamationErrorHandler);
         }
     }
 }

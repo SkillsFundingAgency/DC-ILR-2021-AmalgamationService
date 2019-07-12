@@ -13,15 +13,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         private IRuleProvider _ruleProvider = new RuleProvider();
 
         private LearnerEmploymentStatusAmalgamator _learnerEmploymentStatusAmalgamator;
-
-        public LearnerEmploymentStatusAmalgamatorTest()
-        {
-            _learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider);
-        }
+        private AmalgamationErrorHandler _amalgamationErrorHandler;
 
         [Fact]
         public void AmalgamateEmploymentStatus_Success()
         {
+            InitializeAmalgamator();
             MessageLearner messageLearner = new MessageLearner() { Parent = new Message() { Parent = new AmalgamationRoot() { Filename = "xyz.xml", Message = new Message() } } };
 
             MessageLearnerLearnerEmploymentStatus[] messageLearnerLearnerEmploymentStatuses =
@@ -43,6 +40,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void AmalgamateEmploymentStatus_Fail()
         {
+            InitializeAmalgamator();
             MessageLearner messageLearner = new MessageLearner() { LearnRefNumber = "123", Parent = new Message() { Parent = new AmalgamationRoot() { Filename = "xyz.xml", Message = new Message() } } };
 
             MessageLearnerLearnerEmploymentStatus[] messageLearnerLearnerEmploymentStatuses =
@@ -54,9 +52,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, AgreeId = "4" };
 
             var amalgamated = _learnerEmploymentStatusAmalgamator.Amalgamate(messageLearnerLearnerEmploymentStatuses);
-            var validationError = _learnerEmploymentStatusAmalgamator.AmalgamationValidationErrors;
+            var validationError = _amalgamationErrorHandler.Errors;
 
             validationError.Count.Equals(2);
+        }
+
+        private void InitializeAmalgamator()
+        {
+            _amalgamationErrorHandler = new AmalgamationErrorHandler();
+            _learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider, _amalgamationErrorHandler);
         }
     }
 }

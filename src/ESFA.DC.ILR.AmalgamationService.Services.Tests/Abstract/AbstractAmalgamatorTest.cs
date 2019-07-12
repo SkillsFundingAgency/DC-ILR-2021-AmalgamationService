@@ -15,7 +15,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
             var testDataList = new List<TestData>() { GetTestData("11!", "Property11", 234234) };
             TestData testDataAmalgamated = new TestData();
 
-            NewAmalgamator(Entity.Learner).ApplyRuleCaller(d => d.PropertyStr, GetMockRuleSuccess().Object.Definition, testDataList, testDataAmalgamated);
+            AmalgamationErrorHandler amalgamationErrorHandler = new AmalgamationErrorHandler();
+
+            NewAmalgamator(Entity.Learner, amalgamationErrorHandler).ApplyRuleCaller(d => d.PropertyStr, GetMockRuleSuccess().Object.Definition, testDataList, testDataAmalgamated);
             Assert.Equal(testDataAmalgamated.PropertyStr, testDataList[0].PropertyStr);
         }
 
@@ -31,9 +33,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
             Assert.True(true);
         }
 
-        private AbstractAmalgamatorCaller<TestData> NewAmalgamator(Entity entityType)
+        private AbstractAmalgamatorCaller<TestData> NewAmalgamator(Entity entityType, IAmalgamationErrorHandler amalgamationErrorHandler)
         {
-            return new AbstractAmalgamatorCaller<TestData>(entityType);
+            return new AbstractAmalgamatorCaller<TestData>(entityType, amalgamationErrorHandler);
         }
 
         private Mock<IRule<string>> GetMockRuleSuccess()
