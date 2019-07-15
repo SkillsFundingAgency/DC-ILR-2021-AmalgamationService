@@ -19,7 +19,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _amalgamationOutputService = amalgamationOutputService;
         }
 
-        public async Task ProcessAsync(List<string> filePaths, string outputDirectory, CancellationToken cancellationToken)
+        public async Task ProcessAsync(IEnumerable<string> filePaths, string outputDirectory, CancellationToken cancellationToken)
         {
             // TODO:file level pre validation here
             List<AmalgamationRoot> amalgamationRoots = new List<AmalgamationRoot>();

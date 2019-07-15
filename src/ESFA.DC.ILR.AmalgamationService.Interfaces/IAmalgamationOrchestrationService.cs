@@ -6,6 +6,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IAmalgamationOrchestrationService
     {
-        Task ProcessAsync(List<string> filePaths, string outputPath, CancellationToken cancellationToken);
+        Task ProcessAsync(IEnumerable<string> filePaths, string outputPath, CancellationToken cancellationToken);
     }
 }

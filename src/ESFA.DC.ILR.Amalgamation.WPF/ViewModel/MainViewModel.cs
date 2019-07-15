@@ -64,6 +64,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 RaisePropertyChanged(nameof(ChooseFileVisibility));
                 RaisePropertyChanged(nameof(ProcessingVisibility));
+                RaisePropertyChanged(nameof(ProcessedSuccessfullyVisibility));
             }
         }
 
@@ -167,9 +168,10 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CancelCommand.RaiseCanExecuteChanged();
 
-                await _iAmalgamationOrchestrationService.ProcessAsync(new List<string>(_files), _outputDirectory, _cancellationTokenSource.Token);
+                await _iAmalgamationOrchestrationService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
+                CurrentStage = StageKeys.ProcessedSuccessfully;
             }
-            catch (Exception ex) //OperationCanceledException operationCanceledException)
+            catch (Exception ex)
             {
                 // Error handling
                 var str = ex.InnerException;
