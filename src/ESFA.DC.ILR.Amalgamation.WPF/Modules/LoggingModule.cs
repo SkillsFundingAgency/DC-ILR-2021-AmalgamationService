@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Autofac;
+using ESFA.DC.ILR.AmalgamationService.Services.Logger;
+using ILogger = ESFA.DC.Logging.Interfaces.ILogger;
 using NLog;
 using NLog.Config;
 using NLog.Layouts;
@@ -13,7 +15,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
         {
             LogManager.Configuration = BuildLoggingConfiguration();
 
-            containerBuilder.Register(c => (Logger)LogManager.GetLogger("Amalgamator", typeof(Logger))).As<ILogger>();
+            containerBuilder.Register(c => (AmalgamatorLogger)LogManager.GetLogger("Amalgamator", typeof(AmalgamatorLogger))).As<ILogger>();
         }
 
         private LoggingConfiguration BuildLoggingConfiguration()
