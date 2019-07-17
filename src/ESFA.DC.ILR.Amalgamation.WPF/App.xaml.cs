@@ -4,7 +4,9 @@ using Autofac.Extras.CommonServiceLocator;
 using CommonServiceLocator;
 using ESFA.DC.FileService;
 using ESFA.DC.FileService.Interface;
+using ESFA.DC.ILR.Amalgamation.WPF.Interface;
 using ESFA.DC.ILR.Amalgamation.WPF.Modules;
+using ESFA.DC.ILR.Amalgamation.WPF.Service;
 using ESFA.DC.Serialization.Interfaces;
 using ESFA.DC.Serialization.Xml;
 
@@ -36,6 +38,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF
             containerBuilder.RegisterModule<ViewModelsModule>();
 
             // Common Service Registration
+            containerBuilder.RegisterType<AmalgamationManagementService>().As<IAmalgamationManagementService>();
             containerBuilder.RegisterType<XmlSerializationService>().As<IXmlSerializationService>();
 
             containerBuilder.RegisterType<FileSystemFileService>().As<IFileService>();

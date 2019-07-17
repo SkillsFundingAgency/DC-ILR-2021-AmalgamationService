@@ -1,6 +1,6 @@
 ﻿using System;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
-using NLog;
+using ESFA.DC.Logging.Interfaces;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.Service
 {
@@ -21,7 +21,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, "Windows Process Failed to Start", ex);
+                _logger.LogError("Windows Process Failed to Start", ex);
             }
         }
     }

@@ -19,7 +19,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
     {
         private const string OutputDirectoryKey = "OutputDirectory";
 
-        private readonly IAmalgamationOrchestrationService _iAmalgamationOrchestrationService;
+        private readonly IAmalgamationManagementService _iAmalgamationManagementService;
 
         private readonly IMessengerService _messengerService;
         private readonly IDialogInteractionService _dialogInteractionService;
@@ -35,12 +35,12 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private string _outputDirectory;
 
         public MainViewModel(
-            IAmalgamationOrchestrationService iAmalgamationOrchestrationService,
+            IAmalgamationManagementService iAmalgamationManagementService,
             IMessengerService messengerService,
             IDialogInteractionService dialogInteractionService,
             IWindowsProcessService windowsProcessService)
         {
-            _iAmalgamationOrchestrationService = iAmalgamationOrchestrationService;
+            _iAmalgamationManagementService = iAmalgamationManagementService;
             _messengerService = messengerService;
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
@@ -168,7 +168,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CancelCommand.RaiseCanExecuteChanged();
 
-                await _iAmalgamationOrchestrationService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
+                await _iAmalgamationManagementService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
                 CurrentStage = StageKeys.ProcessedSuccessfully;
             }
             catch (Exception ex)
