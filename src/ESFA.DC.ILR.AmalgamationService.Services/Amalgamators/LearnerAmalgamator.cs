@@ -21,8 +21,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
             IAmalgamator<MessageLearnerLearnerHE> learnerHEAmalgamator,
-           IRuleProvider ruleProvider)
-            : base(Entity.Learner, (x) => x.LearnRefNumber)
+            IRuleProvider ruleProvider,
+            IAmalgamationErrorHandler amalgamationErrorHandler)
+            : base(Entity.Learner, (x) => x.LearnRefNumber, amalgamationErrorHandler)
         {
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
             _learnerHEAmalgamator = learnerHEAmalgamator;

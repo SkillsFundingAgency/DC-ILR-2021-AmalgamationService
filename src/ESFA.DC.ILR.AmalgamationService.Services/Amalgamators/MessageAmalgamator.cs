@@ -13,12 +13,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private readonly IAmalgamator<MessageHeader> _headerAmalgamator;
         private readonly IAmalgamator<MessageLearner> _learnerAmalgamator;
 
-        public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator, IAmalgamator<MessageLearner> learnerAmalgamator)
-            : base(Entity.Message, (x) => null)
+        public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator, IAmalgamator<MessageLearner> learnerAmalgamator, IAmalgamationErrorHandler amalgamationErrorHandler)
+            : base(Entity.Message, (x) => null, amalgamationErrorHandler)
         {
             _headerAmalgamator = headerAmalgamator;
             _learnerAmalgamator = learnerAmalgamator;
         }
+
+        public IAmalgamationErrorHandler AmalgamationErrorHandler { get; }
 
         public Message Amalgamate(IEnumerable<Message> models)
         {

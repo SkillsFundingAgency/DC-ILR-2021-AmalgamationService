@@ -14,15 +14,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
         where T : IAmalgamationModel
     {
         private readonly Entity _entityType;
+        private readonly IAmalgamationErrorHandler _amalgamationErrorHandler;
         private readonly Func<T, string> _keyValueSelectorFunc;
 
-        protected AbstractAmalgamator(Entity entityType, Expression<Func<T, string>> keyValueSelector)
+        protected AbstractAmalgamator(Entity entityType, Expression<Func<T, string>> keyValueSelector, IAmalgamationErrorHandler amalgamationErrorHandler)
         {
             _entityType = entityType;
+            _amalgamationErrorHandler = amalgamationErrorHandler;
             _keyValueSelectorFunc = keyValueSelector.Compile();
         }
-
-        public List<IAmalgamationValidationError> AmalgamationValidationErrors { get; } = new List<IAmalgamationValidationError>();
 
         protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
         {
@@ -44,7 +44,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             }
             else
             {
-                AmalgamationValidationErrors.AddRange(inputEntities.Select(x => new AmalgamationValidationError()
+                _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
                 {
                     File = x.SourceFileName,
                     LearnRefNumber = x.LearnRefNumber ?? string.Empty,

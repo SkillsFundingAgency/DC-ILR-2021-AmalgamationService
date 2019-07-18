@@ -21,6 +21,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
+            containerBuilder.RegisterType<AmalgamationErrorHandler>().As<IAmalgamationErrorHandler>().InstancePerLifetimeScope();
+
             containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>();
             containerBuilder.RegisterType<CsvService>().As<ICsvService>();
 

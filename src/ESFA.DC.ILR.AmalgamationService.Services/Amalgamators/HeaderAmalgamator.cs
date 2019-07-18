@@ -12,8 +12,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     {
         private readonly IAmalgamator<MessageHeaderSource> _sourceAmalgamator;
 
-        public HeaderAmalgamator(IAmalgamator<MessageHeaderSource> sourceAmalgamator)
-            : base(Entity.Header, (x) => x.SourceFileName)
+        public HeaderAmalgamator(IAmalgamator<MessageHeaderSource> sourceAmalgamator, IAmalgamationErrorHandler amalgamationErrorHandler)
+            : base(Entity.Header, (x) => x.SourceFileName, amalgamationErrorHandler)
         {
             _sourceAmalgamator = sourceAmalgamator;
         }

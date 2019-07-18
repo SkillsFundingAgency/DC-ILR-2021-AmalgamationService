@@ -12,23 +12,28 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
     {
         private readonly IAmalgamator<Message> _messageAmalgamator;
         private readonly IParentRelationshipMapper _parentRelationshipMapper;
+        private readonly IAmalgamationErrorHandler _amalgamationErrorHandler;
 
-        public AmalgamationService(IAmalgamator<Message> messageAmalgamator, IParentRelationshipMapper parentRelationshipMapper)
+        public AmalgamationService(IAmalgamator<Message> messageAmalgamator, IParentRelationshipMapper parentRelationshipMapper, IAmalgamationErrorHandler amalgamationErrorHandler)
         {
             _messageAmalgamator = messageAmalgamator;
             _parentRelationshipMapper = parentRelationshipMapper;
+            _amalgamationErrorHandler = amalgamationErrorHandler;
         }
 
         public Task<IAmalgamationResult> AmalgamateAsync(IEnumerable<AmalgamationRoot> amalgamationRoots, CancellationToken cancellationToken)
         {
-            AmalgamationResult result = new AmalgamationResult();
             foreach (var amalgamationRoot in amalgamationRoots)
             {
                 _parentRelationshipMapper.MapChildren(amalgamationRoot as IAmalgamationRoot);
             }
 
             var message = _messageAmalgamator.Amalgamate(amalgamationRoots.Select(r => r.Message as Message));
-            result.Messaage = message as Message;
+            AmalgamationResult result = new AmalgamationResult()
+            {
+                Messaage = message as Message,
+                ValidationErrors = _amalgamationErrorHandler.Errors
+            };
 
             return Task.FromResult<IAmalgamationResult>(result);
         }

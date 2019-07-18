@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.ILR.Amalgamation.WPF.Command;
@@ -16,10 +17,13 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly IAmalgamationOrchestrationService _iAmalgamationOrchestrationService;
+        private const string OutputDirectoryKey = "OutputDirectory";
+
+        private readonly IAmalgamationManagementService _iAmalgamationManagementService;
 
         private readonly IMessengerService _messengerService;
         private readonly IDialogInteractionService _dialogInteractionService;
+        private readonly IWindowsProcessService _windowsProcessService;
 
         private CancellationTokenSource _cancellationTokenSource;
         private ObservableCollection<string> _files = new ObservableCollection<string>();
@@ -28,20 +32,25 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private int _currentTask;
         private int _taskCount = 1;
         private StageKeys _currentStage = StageKeys.ChooseFile;
-        private string _reportsLocation;
+        private string _outputDirectory;
 
         public MainViewModel(
-            IAmalgamationOrchestrationService iAmalgamationOrchestrationService,
+            IAmalgamationManagementService iAmalgamationManagementService,
             IMessengerService messengerService,
-            IDialogInteractionService dialogInteractionService)
+            IDialogInteractionService dialogInteractionService,
+            IWindowsProcessService windowsProcessService)
         {
-            _iAmalgamationOrchestrationService = iAmalgamationOrchestrationService;
+            _iAmalgamationManagementService = iAmalgamationManagementService;
             _messengerService = messengerService;
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
+            _windowsProcessService = windowsProcessService;
+
+            _outputDirectory = ConfigurationManager.AppSettings[OutputDirectoryKey];
 
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
             AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanSubmit);
+            OutputDirectoryCommand = new RelayCommand(() => ProcessStart(_outputDirectory));
 
             CancelCommand = new RelayCommand(Cancel, () => !_cancellationTokenSource?.IsCancellationRequested ?? false);
         }
@@ -55,6 +64,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 RaisePropertyChanged(nameof(ChooseFileVisibility));
                 RaisePropertyChanged(nameof(ProcessingVisibility));
+                RaisePropertyChanged(nameof(ProcessedSuccessfullyVisibility));
             }
         }
 
@@ -89,10 +99,10 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
         }
 
-        public string ReportsLocation
+        public string OutputDirectory
         {
-            get => _reportsLocation;
-            set => Set(ref _reportsLocation, value);
+            get => _outputDirectory;
+            set => Set(ref _outputDirectory, value);
         }
 
         public string TaskName
@@ -119,7 +129,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public AsyncCommand AmalgamateFilesCommand { get; set; }
 
-        public RelayCommand ReportsFolderCommand { get; set; }
+        public RelayCommand OutputDirectoryCommand { get; set; }
 
         public RelayCommand CancelCommand { get; set; }
 
@@ -158,9 +168,10 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CancelCommand.RaiseCanExecuteChanged();
 
-                await _iAmalgamationOrchestrationService.ProcessAsync(new List<string>(_files), _reportsLocation, _cancellationTokenSource.Token);
+                await _iAmalgamationManagementService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
+                CurrentStage = StageKeys.ProcessedSuccessfully;
             }
-            catch (Exception ex) //OperationCanceledException operationCanceledException)
+            catch (Exception ex)
             {
                 // Error handling
                 var str = ex.InnerException;
@@ -182,6 +193,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
 
             CancelCommand.RaiseCanExecuteChanged();
+        }
+
+        private void ProcessStart(string url)
+        {
+            _windowsProcessService.ProcessStart(url);
         }
     }
 }
