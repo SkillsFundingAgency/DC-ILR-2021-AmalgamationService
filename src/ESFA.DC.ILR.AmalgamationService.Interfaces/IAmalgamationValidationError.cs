@@ -22,7 +22,5 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         string Value { get; set; }
 
         string Description { get; set; }
-
-        bool Warning { get; set; }
     }
 }

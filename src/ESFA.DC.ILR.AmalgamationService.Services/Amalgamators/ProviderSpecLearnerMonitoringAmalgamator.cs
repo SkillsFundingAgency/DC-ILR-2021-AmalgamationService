@@ -14,7 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<long?> _standardRuleLong;
 
         public ProviderSpecLearnerMonitoringAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
-            : base(Entity.LearnerEmploymentStatus, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
+            : base(Entity.ProviderSpecLearnerMonitoring, (x) => x.ProvSpecLearnMonOccur.ToString(), amalgamationErrorHandler)
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long?>();

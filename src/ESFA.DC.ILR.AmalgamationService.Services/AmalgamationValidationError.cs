@@ -8,7 +8,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationValidationError : IAmalgamationValidationError
     {
-        public Severity? Severity => throw new NotImplementedException();
+        public Severity? Severity { get; set; }
 
         public AmalgamationValidationRuleType? RuleName { get; set; }
 
@@ -25,7 +25,5 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         public string Value { get; set; }
 
         public string Description { get; set; }
-
-        public bool Warning { get; set; }
     }
 }

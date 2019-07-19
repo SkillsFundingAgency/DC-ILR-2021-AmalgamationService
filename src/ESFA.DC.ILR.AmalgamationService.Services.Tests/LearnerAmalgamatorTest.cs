@@ -53,11 +53,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             IRuleProvider ruleProvider = null,
             IAmalgamationErrorHandler amalgamationErrorHandler = null)
         {
-            return new LearnerAmalgamator(
-                learnerEmploymentStatusAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerEmploymentStatus>>(),
-                learnerHEAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerHE>>(),
-                ruleProvider ?? Mock.Of<IRuleProvider>(),
-                amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
+            return null;
+            //new LearnerAmalgamator(
+            //learnerEmploymentStatusAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerEmploymentStatus>>(),
+            //learnerHEAmalgamator ?? Mock.Of<IAmalgamator<MessageLearnerLearnerHE>>(),
+            //ruleProvider ?? Mock.Of<IRuleProvider>(),
+            //amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
         }
 
         private void InitializeAmalgamator()

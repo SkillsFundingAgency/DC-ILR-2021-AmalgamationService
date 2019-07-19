@@ -10,13 +10,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
     public class LLDDandHealthProblemAmalgamator : AbstractAmalgamator<MessageLearnerLLDDandHealthProblem>, IAmalgamator<MessageLearnerLLDDandHealthProblem>
     {
-        private IRule<string> _standardRuleString;
         private IRule<long?> _standardRuleLong;
 
         public LLDDandHealthProblemAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
-            : base(Entity.LearnerEmploymentStatus, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
+            : base(Entity.LLDDAndHealthProblems, (x) => x.LLDDCat.ToString(), amalgamationErrorHandler)
         {
-            _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
         }
 

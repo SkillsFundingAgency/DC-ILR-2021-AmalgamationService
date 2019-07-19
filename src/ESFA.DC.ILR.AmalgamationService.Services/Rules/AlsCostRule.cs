@@ -9,7 +9,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         public IRuleResult<long?> Definition(IEnumerable<long?> values)
         {
-            var distinctValues = values.Where(x => IsNon0(x)).Distinct().ToList();
+            var distinctValues = values.Where(x => x != 0).Distinct().ToList();
 
             if (distinctValues.Count <= 1)
             {
@@ -19,11 +19,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             {
                 return new RuleResult<long?>() { Success = false };
             }
-        }
-
-        private bool IsNon0(long? input)
-        {
-            return input != null && !Regex.IsMatch(input.ToString(), "[0*]");
         }
     }
 }
