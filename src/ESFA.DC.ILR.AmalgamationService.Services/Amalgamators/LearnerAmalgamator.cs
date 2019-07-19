@@ -14,9 +14,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
 
         private IRule<string> _standardRuleString;
-        private IRule<long> _standardRuleLong;
-        private IRule<DateTime> _standardRuleDateTime;
+        private IRule<long?> _standardRuleLong;
+        private IRule<DateTime?> _standardRuleDateTime;
         private IRule<string> _addressRule;
+        private IRule<long?> _ulnRule;
+        private IRule<long?> _alsCostrule;
 
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
@@ -29,9 +31,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             _learnerHEAmalgamator = learnerHEAmalgamator;
 
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
-            _standardRuleLong = ruleProvider.BuildStandardRule<long>();
-            _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime>();
+            _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
+            _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime?>();
             _addressRule = ruleProvider.BuildAddressRule();
+            _ulnRule = ruleProvider.BuildUlnRule();
+            _alsCostrule = ruleProvider.BuildAlsCostRule();
         }
 
         public MessageLearner Amalgamate(IEnumerable<MessageLearner> models)
@@ -40,14 +44,37 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.LearnRefNumber, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.PrevLearnRefNumber, _standardRuleString.Definition, models, messageLearner);
-            ApplyRule(s => s.PrevUKPRN, _standardRuleLong.Definition, models, messageLearner);
-            ApplyRule(s => s.PMUKPRN, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PrevUKPRNNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PMUKPRNNullable, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.CampId, _standardRuleString.Definition, models, messageLearner);
 
+            ApplyRule(s => s.ULNNullable, _ulnRule.Definition, models, messageLearner);
             ApplyRule(s => s.FamilyName, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.GivenNames, _standardRuleString.Definition, models, messageLearner);
-            ApplyRule(s => s.DateOfBirth, _standardRuleDateTime.Definition, models, messageLearner);
+            ApplyRule(s => s.DateOfBirthNullable, _standardRuleDateTime.Definition, models, messageLearner);
 
+            ApplyRule(s => s.EthnicityNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.Sex, _standardRuleString.Definition, models, messageLearner);
+            ApplyRule(s => s.LLDDHealthProbNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.NINumber, _standardRuleString.Definition, models, messageLearner);
+            ApplyRule(s => s.PriorAttainNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.AccomNullable, _standardRuleLong.Definition, models, messageLearner);
+
+            ApplyRule(s => s.ALSCostNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PlanLearnHoursNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PlanEEPHoursNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.MathGrade, _standardRuleString.Definition, models, messageLearner);
+            ApplyRule(s => s.EngGrade, _standardRuleString.Definition, models, messageLearner);
+
+            // TODO : PostcodePrior
+            // TODO : Postcode
+            ApplyRule(s => s.AddLine1, _addressRule.Definition, models, messageLearner);
+            ApplyRule(s => s.AddLine2, _addressRule.Definition, models, messageLearner);
+            ApplyRule(s => s.AddLine3, _addressRule.Definition, models, messageLearner);
+            ApplyRule(s => s.AddLine4, _addressRule.Definition, models, messageLearner);
+            ApplyRule(s => s.TelNo, _standardRuleString.Definition, models, messageLearner);
+
+            // TODO : Email
             ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
 

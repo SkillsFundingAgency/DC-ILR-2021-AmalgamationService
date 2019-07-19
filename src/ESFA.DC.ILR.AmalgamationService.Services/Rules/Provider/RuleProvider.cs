@@ -16,5 +16,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
         {
             return new AddressRule();
         }
+
+        public IRule<long?> BuildUlnRule()
+        {
+            return new UlnRule();
+        }
+
+        public IRule<long?> BuildAlsCostRule()
+        {
+            return new AlsCostRule();
+        }
     }
 }

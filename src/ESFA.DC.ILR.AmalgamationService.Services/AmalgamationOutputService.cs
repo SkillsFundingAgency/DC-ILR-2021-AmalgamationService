@@ -33,12 +33,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 Directory.CreateDirectory(outputDirectory);
             }
 
-            if (amalgamationResult.Messaage != null)
+            if (amalgamationResult.Message != null)
             {
                 // TODO derive file name from sourceFiles
                 using (var stream = await _fileService.OpenWriteStreamAsync("AmalgamatedFile.xml", outputDirectory, cancellationToken))
                 {
-                    var message = _xmlSerializationService.Serialize<Message>(amalgamationResult.Messaage);
+                    var message = _xmlSerializationService.Serialize<Message>(amalgamationResult.Message);
                     var messageByte = Encoding.ASCII.GetBytes(message);
                     await stream.WriteAsync(messageByte, 0, messageByte.Length, cancellationToken);
                 }
