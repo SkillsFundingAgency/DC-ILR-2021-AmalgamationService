@@ -48,8 +48,15 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<amalgamators.HeaderAmalgamator>().As<IAmalgamator<ilrModelRw.MessageHeader>>();
             containerBuilder.RegisterType<amalgamators.HeaderSourceAmalgamator>().As<IAmalgamator<ilrModelRw.MessageHeaderSource>>();
             containerBuilder.RegisterType<amalgamators.LearnerAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearner>>();
+
+            // TODO : LearnerAmalgamator dependencies
+            containerBuilder.RegisterType<amalgamators.ContactPreferenceAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerContactPreference>>();
+            containerBuilder.RegisterType<amalgamators.LLDDandHealthProblemAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLLDDandHealthProblem>>();
+            containerBuilder.RegisterType<amalgamators.LearnerFAMAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerFAM>>();
+            containerBuilder.RegisterType<amalgamators.ProviderSpecLearnerMonitoringAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerProviderSpecLearnerMonitoring>>();
             containerBuilder.RegisterType<amalgamators.LearnerEmploymentStatusAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerEmploymentStatus>>();
             containerBuilder.RegisterType<amalgamators.LearnerHEAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerHE>>();
+            containerBuilder.RegisterType<amalgamators.LearningDeliveryAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearningDelivery>>();
         }
     }
 }

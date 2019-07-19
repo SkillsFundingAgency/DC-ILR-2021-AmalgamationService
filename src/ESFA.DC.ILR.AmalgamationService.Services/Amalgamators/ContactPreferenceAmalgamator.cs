@@ -8,26 +8,26 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class LearnerHEAmalgamator : AbstractAmalgamator<MessageLearnerLearnerHE>, IAmalgamator<MessageLearnerLearnerHE>
+    public class ContactPreferenceAmalgamator : AbstractAmalgamator<MessageLearnerContactPreference>, IAmalgamator<MessageLearnerContactPreference>
     {
         private IRule<string> _standardRuleString;
         private IRule<long?> _standardRuleLong;
 
-        public LearnerHEAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
+        public ContactPreferenceAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.LearnerEmploymentStatus, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
         }
 
-        public MessageLearnerLearnerHE Amalgamate(IEnumerable<MessageLearnerLearnerHE> models)
+        public MessageLearnerContactPreference Amalgamate(IEnumerable<MessageLearnerContactPreference> models)
         {
-            var messageLearnerLearnerHE = new MessageLearnerLearnerHE();
+            var messageLearnerContactPreference = new MessageLearnerContactPreference();
 
-            ApplyRule(s => s.UCASPERID, _standardRuleString.Definition, models, messageLearnerLearnerHE);
-            ApplyRule(s => s.TTACCOMNullable, _standardRuleLong.Definition, models, messageLearnerLearnerHE);
+            ApplyRule(s => s.ContPrefCodeNullable, _standardRuleLong.Definition, models, messageLearnerContactPreference);
+            ApplyRule(s => s.ContPrefType, _standardRuleString.Definition, models, messageLearnerContactPreference);
 
-            return messageLearnerLearnerHE;
+            return messageLearnerContactPreference;
         }
     }
 }

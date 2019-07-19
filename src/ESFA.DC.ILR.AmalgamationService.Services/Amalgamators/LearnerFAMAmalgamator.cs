@@ -8,26 +8,24 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
-    public class LearnerHEAmalgamator : AbstractAmalgamator<MessageLearnerLearnerHE>, IAmalgamator<MessageLearnerLearnerHE>
+    public class LearnerFAMAmalgamator : AbstractAmalgamator<MessageLearnerLearnerFAM>, IAmalgamator<MessageLearnerLearnerFAM>
     {
         private IRule<string> _standardRuleString;
         private IRule<long?> _standardRuleLong;
 
-        public LearnerHEAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
+        public LearnerFAMAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.LearnerEmploymentStatus, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
         }
 
-        public MessageLearnerLearnerHE Amalgamate(IEnumerable<MessageLearnerLearnerHE> models)
+        public MessageLearnerLearnerFAM Amalgamate(IEnumerable<MessageLearnerLearnerFAM> models)
         {
-            var messageLearnerLearnerHE = new MessageLearnerLearnerHE();
+            var messageLearnerLearnerFAM = new MessageLearnerLearnerFAM();
 
-            ApplyRule(s => s.UCASPERID, _standardRuleString.Definition, models, messageLearnerLearnerHE);
-            ApplyRule(s => s.TTACCOMNullable, _standardRuleLong.Definition, models, messageLearnerLearnerHE);
-
-            return messageLearnerLearnerHE;
+            // TODO : apply rules
+            throw new NotImplementedException();
         }
     }
 }
