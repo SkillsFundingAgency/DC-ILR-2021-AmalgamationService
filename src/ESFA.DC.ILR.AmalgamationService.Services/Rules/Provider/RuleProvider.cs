@@ -26,5 +26,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
         {
             return new AlsCostRule();
         }
+
+        public IRule<string> BuildPostCodeRule()
+        {
+            return new PostCodeRule();
+        }
     }
 }

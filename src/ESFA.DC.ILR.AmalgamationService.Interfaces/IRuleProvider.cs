@@ -13,5 +13,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         IRule<long?> BuildUlnRule();
 
         IRule<long?> BuildAlsCostRule();
+
+        IRule<string> BuildPostCodeRule();
     }
 }

@@ -19,6 +19,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<string> _addressRule;
         private IRule<long?> _ulnRule;
         private IRule<long?> _alsCostrule;
+        private IRule<string> _postCodeRule;
 
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
@@ -36,6 +37,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             _addressRule = ruleProvider.BuildAddressRule();
             _ulnRule = ruleProvider.BuildUlnRule();
             _alsCostrule = ruleProvider.BuildAlsCostRule();
+            _postCodeRule = ruleProvider.BuildPostCodeRule();
         }
 
         public MessageLearner Amalgamate(IEnumerable<MessageLearner> models)
@@ -66,15 +68,17 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             ApplyRule(s => s.MathGrade, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.EngGrade, _standardRuleString.Definition, models, messageLearner);
 
-            // TODO : PostcodePrior
-            // TODO : Postcode
+            ApplyRule(s => s.PostcodePrior, _postCodeRule.Definition, models, messageLearner);
+            ApplyRule(s => s.Postcode, _postCodeRule.Definition, models, messageLearner);
             ApplyRule(s => s.AddLine1, _addressRule.Definition, models, messageLearner);
             ApplyRule(s => s.AddLine2, _addressRule.Definition, models, messageLearner);
             ApplyRule(s => s.AddLine3, _addressRule.Definition, models, messageLearner);
             ApplyRule(s => s.AddLine4, _addressRule.Definition, models, messageLearner);
             ApplyRule(s => s.TelNo, _standardRuleString.Definition, models, messageLearner);
 
-            // TODO : Email
+            // TODO : Email, raise warning rather than error
+            ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner);
+
             ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
 
