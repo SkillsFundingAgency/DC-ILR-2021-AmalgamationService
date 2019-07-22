@@ -35,7 +35,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
             MessageLearner expectedResult = new MessageLearner() { LearnRefNumber = _testString1, PrevLearnRefNumber = _testString1, PrevUKPRN = _testLong1, FamilyName = _testString1, GivenNames = _testString1, PMUKPRN = _testLong1, CampId = _testString1, DateOfBirth = _testDateTime1 };
 
-            var amalgamated = _learnerAmalgamator.Amalgamate(messageLearners);
+            //var amalgamated = _learnerAmalgamator.Amalgamate(messageLearners);
 
             // TODO : Need to revisit test strategy for entities.
             //Assert.Equal(amalgamated.LearnRefNumber, expectedResult.LearnRefNumber);
