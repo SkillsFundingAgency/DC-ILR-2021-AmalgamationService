@@ -5,7 +5,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IAmalgamationResult
     {
-        Message Messaage { get; }
+        Message Message { get; }
 
         IEnumerable<IAmalgamationValidationError> ValidationErrors { get; }
     }

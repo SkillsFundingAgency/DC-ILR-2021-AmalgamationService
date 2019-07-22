@@ -31,7 +31,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             var message = _messageAmalgamator.Amalgamate(amalgamationRoots.Select(r => r.Message as Message));
             AmalgamationResult result = new AmalgamationResult()
             {
-                Messaage = message as Message,
+                Message = message as Message,
                 ValidationErrors = _amalgamationErrorHandler.Errors
             };
 

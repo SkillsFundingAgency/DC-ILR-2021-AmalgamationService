@@ -24,7 +24,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             _keyValueSelectorFunc = keyValueSelector.Compile();
         }
 
-        protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity)
+        protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity, Severity severity = Severity.Error)
         {
             var selectorFunc = selector.Compile();
 
@@ -51,7 +51,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     Entity = Enum.GetName(typeof(Entity), _entityType),
                     Key = string.Format("{0} : {1}", GetKeyPropertyName(), _keyValueSelectorFunc(x)),
                     Value = prop.GetValue(x).ToString(),
-                    ConflictingAttribute = prop.Name
+                    ConflictingAttribute = prop.Name,
+                    Severity = severity
                 }));
             }
 

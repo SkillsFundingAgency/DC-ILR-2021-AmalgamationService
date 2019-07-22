@@ -11,15 +11,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     public class LearnerHEAmalgamator : AbstractAmalgamator<MessageLearnerLearnerHE>, IAmalgamator<MessageLearnerLearnerHE>
     {
         private IRule<string> _standardRuleString;
-        private IRule<long> _standardRuleLong;
-        private IRule<DateTime> _standardRuleDateTime;
+        private IRule<long?> _standardRuleLong;
 
         public LearnerHEAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
-            : base(Entity.LearnerEmploymentStatus, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
+            : base(Entity.LearnerHE, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
-            _standardRuleLong = ruleProvider.BuildStandardRule<long>();
-            _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime>();
+            _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
         }
 
         public MessageLearnerLearnerHE Amalgamate(IEnumerable<MessageLearnerLearnerHE> models)
@@ -27,7 +25,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var messageLearnerLearnerHE = new MessageLearnerLearnerHE();
 
             ApplyRule(s => s.UCASPERID, _standardRuleString.Definition, models, messageLearnerLearnerHE);
-            ApplyRule(s => s.TTACCOM, _standardRuleLong.Definition, models, messageLearnerLearnerHE);
+            ApplyRule(s => s.TTACCOMNullable, _standardRuleLong.Definition, models, messageLearnerLearnerHE);
 
             return messageLearnerLearnerHE;
         }

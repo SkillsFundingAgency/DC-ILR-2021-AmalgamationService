@@ -9,5 +9,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         IRule<T> BuildStandardRule<T>();
 
         IRule<string> BuildAddressRule();
+
+        IRule<long?> BuildUlnRule();
+
+        IRule<long?> BuildAlsCostRule();
+
+        IRule<string> BuildPostCodeRule();
     }
 }

@@ -8,7 +8,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationResult : IAmalgamationResult
     {
-        public Message Messaage { get; set; }
+        public Message Message { get; set; }
 
         public IEnumerable<IAmalgamationValidationError> ValidationErrors { get; set; }
     }
