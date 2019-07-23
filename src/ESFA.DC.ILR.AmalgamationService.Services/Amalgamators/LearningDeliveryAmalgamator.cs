@@ -22,10 +22,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
         public MessageLearnerLearningDelivery Amalgamate(IEnumerable<MessageLearnerLearningDelivery> models)
         {
-            var MessageLearnerLearningDelivery = new MessageLearnerLearningDelivery();
+            var messageLearnerLearningDelivery = new MessageLearnerLearningDelivery();
 
             // TODO : apply rules
-            throw new NotImplementedException();
+            return messageLearnerLearningDelivery;
         }
     }
 }

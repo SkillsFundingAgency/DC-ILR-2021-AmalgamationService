@@ -25,7 +25,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var messageLearnerProviderSpecLearnerMonitoring = new MessageLearnerProviderSpecLearnerMonitoring();
 
             // TODO : apply rules
-            throw new NotImplementedException();
+            return messageLearnerProviderSpecLearnerMonitoring;
         }
     }
 }

@@ -6,20 +6,36 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces.Enum
 {
     public enum Entity
     {
+        [KeyProperty("LearnRefNumber")]
+        [Description("Message")]
         Message,
-        Header,
-        CollectionDetails,
-        Source,
-        CollectionDetailsEntity,
-        SourceEntity,
 
+        [KeyProperty("LearnRefNumber")]
+        [Description("Header")]
+        Header,
+
+        [KeyProperty("LearnRefNumber")]
+        [Description("CollectionDetails")]
+        CollectionDetails,
+
+        [KeyProperty("LearnRefNumber")]
+        [Description("Source")]
+        Source,
+
+        [KeyProperty("LearnRefNumber")]
+        [Description("SourceFiles")]
         SourceFiles,
+
+        [KeyProperty("LearnRefNumber")]
+        [Description("Learning Provider")]
         LearningProvider,
 
         [KeyProperty("LearnRefNumber")]
         [Description("Learner")]
         Learner,
 
+        [KeyProperty("LearnRefNumber")]
+        [Description("Learner Destination and Progression")]
         LearnerDestinationandProgression,
 
         [KeyProperty("ContPrefType")]
@@ -46,13 +62,24 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces.Enum
         [Description("Learner HE")]
         LearnerHE,
 
+        [KeyProperty("LearnRefNumber")]
+        [Description("Learning Delivery")]
         LearningDelivery,
-        ContactPreferences,
-        LearnerFAMs,
-        ProviderSpecLearnerMonitorings,
-        LearnerEmploymentStatuses,
-        LearnerHEs,
-        LearningDeliveries,
+
+        [KeyProperty("FINTYPE")]
+        [Description("Learner HE Financial Support")]
+        LearnerHEFinancialSupport,
+
+        [KeyProperty("ESMType")]
+        [Description("Learner Employment Status Monitoring")]
+        EmploymentStatusMonitoring,
+
+        [KeyProperty("OutStartDate")]
+        [Description("Learner Destination and Progression DPOutcome")]
+        LearnerDestinationandProgressionDPOutcome,
+
+        [KeyProperty("LLDDCat")]
+        [Description("Learner LLDD and Health problem")]
         LLDDAndHealthProblems
     }
 }
