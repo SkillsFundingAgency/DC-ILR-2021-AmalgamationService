@@ -4,13 +4,15 @@
              xmlns:local="clr-namespace:ESFA.DC.ILR.Amalgamation.WPF" 
              xmlns:vm="clr-namespace:ESFA.DC.ILR.Amalgamation.WPF.ViewModel"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converter="clr-namespace:ESFA.DC.ILR.Amalgamation.WPF.Converters"
              d1p1:Ignorable="d" 
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True"/>
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converter:ParameterisedBoolToVisibilityConverter x:Key="paramBool2Visibility"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
