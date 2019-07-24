@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ESFA.DC.ILR.Amalgamation.WPF.Command;
@@ -95,7 +96,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
                     _files = value;
                 }
 
-                RaisePropertyChanged("Files");
+                RaisePropertyChanged(nameof(Files));
             }
         }
 
@@ -142,19 +143,12 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void ShowChooseFileDialog()
         {
-            var files = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
+            var selectedFiles = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
 
-            if (files != null && files.Length > 0)
+            if (selectedFiles?.Length > 0)
             {
-                foreach (var file in files)
-                {
-                    _files.Add(file);
-                }
-
-                if (_files.Count > 1)
-                {
-                    CanSubmit = true;
-                }
+                selectedFiles.ToList().ForEach(x => Files.Add(x));
+                CanSubmit = Files.Count > 1;
             }
         }
 
