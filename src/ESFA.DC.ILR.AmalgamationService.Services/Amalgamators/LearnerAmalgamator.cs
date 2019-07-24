@@ -1,6 +1,7 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
+using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<long?> _ulnRule;
         private IRule<long?> _alsCostrule;
         private IRule<string> _postCodeRule;
+        private IRule<MessageLearnerContactPreference[]> _learnerContactPreferenceCollectionRule;
 
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerContactPreference> contactPreferenceAmalgamator,
@@ -52,6 +54,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             _ulnRule = ruleProvider.BuildUlnRule();
             _alsCostrule = ruleProvider.BuildAlsCostRule();
             _postCodeRule = ruleProvider.BuildPostCodeRule();
+            _learnerContactPreferenceCollectionRule = ruleProvider.BuildLearnerContactPreferenceCollectionRule();
         }
 
         public MessageLearner Amalgamate(IEnumerable<MessageLearner> models)
@@ -92,7 +95,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, Severity.Warning);
 
-            ApplyGroupedChildCollectionRule(s => s.ContactPreference, g => g.ContPrefType, _contactPreferenceAmalgamator, models, messageLearner);
+            ApplyRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
+
             ApplyGroupedChildCollectionRule(s => s.LLDDandHealthProblem, g => g.LLDDCat, _lLDDandHealthProblemAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerFAM, g => g.LearnFAMType, _learnerFAMAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.ProviderSpecLearnerMonitoring, g => g.ProvSpecLearnMonOccur, _providerSpecLearnerMonitoringAmalgamator, models, messageLearner);

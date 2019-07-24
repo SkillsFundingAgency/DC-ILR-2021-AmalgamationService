@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,6 +31,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
         public IRule<string> BuildPostCodeRule()
         {
             return new PostCodeRule();
+        }
+
+        public IRule<MessageLearnerContactPreference[]> BuildLearnerContactPreferenceCollectionRule()
+        {
+            return new LearnerContactPreferenceCollectionRule();
         }
     }
 }
