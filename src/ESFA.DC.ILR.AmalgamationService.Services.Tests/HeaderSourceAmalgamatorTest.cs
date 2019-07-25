@@ -18,12 +18,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void ProtectiveMarkingString_Property_NotNull()
         {
+            var valToTest = "OFFICIAL-SENSITIVE-Personal";
+
             var msgHeaderSource = new MessageHeaderSource
             {
                 ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal"
             };
 
-            msgHeaderSource.ProtectiveMarkingString.Should().NotBeNullOrEmpty();
+            msgHeaderSource.ProtectiveMarkingString.Should().Be(valToTest);
         }
 
         [Fact]
@@ -34,7 +36,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 ProtectiveMarkingString = "123"
             };
 
-            msgHeaderSource.ProtectiveMarkingString.Should().BeNullOrEmpty();
+            msgHeaderSource.ProtectiveMarkingString.Should().BeNull();
         }
 
         [Fact]
