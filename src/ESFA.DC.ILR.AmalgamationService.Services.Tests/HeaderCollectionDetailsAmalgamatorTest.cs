@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
@@ -20,61 +21,32 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         {
             var collection = "ILR";
             var year = "1920";
-            var filePrepDate = new DateTime(2018, 08, 19);
+
+            var nowDateTime = DateTime.UtcNow;
+            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(nowDateTime);
 
             List<MessageHeaderCollectionDetails> msgHeaderCollection = new List<MessageHeaderCollectionDetails>()
             {
                 new MessageHeaderCollectionDetails()
                 {
                     CollectionString = collection,
-                    YearString = year,
-                    FilePreparationDate = filePrepDate,
                     Parent = GetParent()
                 },
                 new MessageHeaderCollectionDetails()
                 {
                     CollectionString = collection,
-                    YearString = year,
-                    FilePreparationDate = filePrepDate,
                     Parent = GetParent()
                 }
             };
 
-            var amalgamate = NewAmalgamator(_ruleProvider, _amalgamationErrorHandler).Amalgamate(msgHeaderCollection);
+            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _ruleProvider, _amalgamationErrorHandler).Amalgamate(msgHeaderCollection);
+
             amalgamate.CollectionString.Should().Be(collection);
             amalgamate.YearString.Should().Be(year);
-            amalgamate.FilePreparationDate.Should().Be(filePrepDate);
-        }
+            amalgamate.FilePreparationDate.Should().Be(nowDateTime);
 
-        [Fact]
-        public void Amalgamate_Errors_DueTOUnMatchDate()
-        {
-            var collection = "ILR";
-            var year = "1920";
-            var filePrepDate = new DateTime(2018, 08, 19);
-
-            List<MessageHeaderCollectionDetails> msgHeaderCollection = new List<MessageHeaderCollectionDetails>()
-            {
-                new MessageHeaderCollectionDetails()
-                {
-                    CollectionString = collection,
-                    YearString = year,
-                    FilePreparationDate = filePrepDate,
-                    Parent = GetParent()
-                },
-                new MessageHeaderCollectionDetails()
-                {
-                    CollectionString = collection,
-                    YearString = year,
-                    FilePreparationDate = new DateTime(2018, 08, 01),
-                    Parent = GetParent()
-                }
-            };
-
-            var amalgamate = NewAmalgamator(_ruleProvider, _amalgamationErrorHandler).Amalgamate(msgHeaderCollection);
-            var validationError = _amalgamationErrorHandler.Errors;
-
-            validationError.Should().HaveCount(2);
+            mockDateTimeProvider.Verify(d => d.GetNowUtc(), Times.AtLeastOnce);
         }
 
         public MessageHeader GetParent() => new MessageHeader()
@@ -90,10 +62,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         };
 
         public HeaderCollectionDetailsAmalgamator NewAmalgamator(
+                        IDateTimeProvider dateTimeProvider = null,
                         IRuleProvider ruleProvider = null,
                         IAmalgamationErrorHandler amalgamationErrorHandler = null)
         {
             return new HeaderCollectionDetailsAmalgamator(
+                                         dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
                                          ruleProvider ?? Mock.Of<IRuleProvider>(),
                                          amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
         }

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Autofac;
+using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.FileService;
 using ESFA.DC.FileService.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
@@ -25,6 +26,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 
             containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>();
             containerBuilder.RegisterType<CsvService>().As<ICsvService>();
+
+            containerBuilder.RegisterType<DateTimeProvider.DateTimeProvider>().As<IDateTimeProvider>();
 
             containerBuilder.RegisterType<AmalgamationOrchestrationService>().As<IAmalgamationOrchestrationService>();
 
