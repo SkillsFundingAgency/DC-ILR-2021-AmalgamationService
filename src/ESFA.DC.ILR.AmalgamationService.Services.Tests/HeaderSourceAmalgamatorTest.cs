@@ -16,6 +16,28 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         private readonly IAmalgamationErrorHandler _amalgamationErrorHandler = new AmalgamationErrorHandler();
 
         [Fact]
+        public void ProtectiveMarkingString_Property_NotNull()
+        {
+            var msgHeaderSource = new MessageHeaderSource
+            {
+                ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal"
+            };
+
+            msgHeaderSource.ProtectiveMarkingString.Should().NotBeNullOrEmpty();
+        }
+
+        [Fact]
+        public void ProtectiveMarkingString_Property_IsNull()
+        {
+            var msgHeaderSource = new MessageHeaderSource
+            {
+                ProtectiveMarkingString = "123"
+            };
+
+            msgHeaderSource.ProtectiveMarkingString.Should().BeNullOrEmpty();
+        }
+
+        [Fact]
         public void Amalgamate_Pass()
         {
             var date = new DateTime(2018, 08, 19);
