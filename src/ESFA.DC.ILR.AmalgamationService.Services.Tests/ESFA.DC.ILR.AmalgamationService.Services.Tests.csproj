@@ -88,6 +88,8 @@
     <Compile Include="Abstract\AbstractAmalgamatorTest.cs" />
     <Compile Include="BaseAmalgamatorTest.cs" />
     <Compile Include="Comparer\AddressComparerTest.cs" />
+    <Compile Include="HeaderCollectionDetailsAmalgamatorTest.cs" />
+    <Compile Include="HeaderSourceAmalgamatorTest.cs" />
     <Compile Include="LearnerEmploymentStatusAmalgamatorTest.cs" />
     <Compile Include="LLDDandHealthProblemAmalgamatorTest.cs" />
     <Compile Include="ParentRelationshipMapperTests.cs" />

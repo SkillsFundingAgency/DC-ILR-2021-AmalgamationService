@@ -47,6 +47,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<amalgamators.MessageAmalgamator>().As<IAmalgamator<ilrModelRw.Message>>();
             containerBuilder.RegisterType<amalgamators.HeaderAmalgamator>().As<IAmalgamator<ilrModelRw.MessageHeader>>();
             containerBuilder.RegisterType<amalgamators.HeaderSourceAmalgamator>().As<IAmalgamator<ilrModelRw.MessageHeaderSource>>();
+            containerBuilder.RegisterType<amalgamators.HeaderCollectionDetailsAmalgamator>().As<IAmalgamator<ilrModelRw.MessageHeaderCollectionDetails>>();
             containerBuilder.RegisterType<amalgamators.LearnerAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearner>>();
 
             //LearnerAmalgamator dependencies
