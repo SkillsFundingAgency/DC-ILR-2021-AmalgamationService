@@ -59,6 +59,70 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             return entity;
         }
 
+        protected T ApplyGroupedCollectionRule<TValue, TGroupBy>(Expression<Func<T, TValue[]>> selector, Expression<Func<TValue, TGroupBy>> groupBySelector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity, Severity severity = Severity.Error)
+        {
+            if (inputEntities == null || inputEntities.Count() < 1)
+            {
+                return default(T);
+            }
+
+            var selectorFunc = selector.Compile();
+            var groupByFunc = groupBySelector.Compile();
+
+            if (!inputEntities.Any(e => e != null && selectorFunc.Invoke(e) != null))
+            {
+                return default(T);
+            }
+
+            var inputCollection = inputEntities.Where(e => e != null).SelectMany(selectorFunc);
+
+            var inputGroups = inputCollection.GroupBy(groupByFunc);
+
+            foreach (var groupValue in inputGroups)
+            {
+                if (groupValue == null || groupValue.All(i => i == null))
+                {
+                    return default(T);
+                }
+
+                var listitem = new List<TValue[]>();
+                listitem.Add(groupValue.ToArray());
+
+                var value = rule.Invoke(listitem);
+                var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
+
+                if (value.Success)
+                {
+                    var existingValue = (TValue[])prop.GetValue(entity);
+                    var newlist = new List<TValue>();
+
+                    if (existingValue != null)
+                    {
+                        newlist.AddRange(existingValue);
+                    }
+
+                    newlist.AddRange(value.Result);
+
+                    prop.SetValue(entity, newlist.ToArray<TValue>());
+                }
+                else
+                {
+                    _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
+                    {
+                        File = x.SourceFileName,
+                        LearnRefNumber = x.LearnRefNumber ?? string.Empty,
+                        Entity = Enum.GetName(typeof(Entity), _entityType),
+                        Key = string.Format("{0} : {1}", GetKeyPropertyName(), _keyValueSelectorFunc(x)),
+                        Value = prop.GetValue(x).ToString(),
+                        ConflictingAttribute = prop.Name,
+                        Severity = severity
+                    }));
+                }
+            }
+
+            return entity;
+        }
+
         protected T ApplyChildRule<TValue>(Expression<Func<T, TValue>> selector, IAmalgamator<TValue> amalgamator, IEnumerable<T> inputEntities, T entity)
         {
             var selectorFunc = selector.Compile();
