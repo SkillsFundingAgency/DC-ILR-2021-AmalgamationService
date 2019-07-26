@@ -52,15 +52,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     Key = string.Format("{0} : {1}", GetKeyPropertyName(), _keyValueSelectorFunc(x)),
                     Value = prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name,
-                    Severity = severity
+                    Severity = severity,
+                    ErrorType = ErrorType.FieldValueConflict
                 }));
             }
 
             return entity;
         }
 
-        protected T ApplyGroupedCollectionRule<TValue, TGroupBy>(Expression<Func<T, TValue[]>> selector, Expression<Func<TValue, TGroupBy>> groupBySelector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity, Entity entityType, Expression<Func<TValue, string>> keyValueSelector, Severity severity = Severity.Error)
-            where TValue : IAmalgamationModel
+        protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, TValue[]>> selector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity)
         {
             if (inputEntities == null || !inputEntities.Any())
             {
@@ -68,54 +68,22 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             }
 
             var selectorFunc = selector.Compile();
-            var groupByFunc = groupBySelector.Compile();
 
-            if (inputEntities.All(e => e == null || selectorFunc.Invoke(e) == null))
+            var inputValues = inputEntities.Where(e => e != null).Select(e => selectorFunc.Invoke(e)).Where(f => f != null).ToList();
+
+            if (inputValues == null || inputValues.All(i => i == null))
             {
                 return default(T);
             }
 
-            var inputCollection = inputEntities.Where(e => e != null).SelectMany(selectorFunc);
-
-            var inputGroups = inputCollection.GroupBy(groupByFunc);
-            var amalgamatedValues = new List<TValue>();
+            var amalgamationResult = rule.Invoke(inputValues);
 
             var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
-            var keyValueSelectorFunc = keyValueSelector.Compile();
+            prop.SetValue(entity, amalgamationResult.AmalgamatedValue);
 
-            foreach (var groupValue in inputGroups)
+            if (amalgamationResult.AmalgamationValidationErrors != null)
             {
-                if (groupValue == null || groupValue.All(i => i == null))
-                {
-                    return default(T);
-                }
-
-                var inputList = new List<TValue[]>() { groupValue.ToArray() };
-
-                var amalgamationResult = rule.Invoke(inputList);
-
-                if (amalgamationResult.Success)
-                {
-                    amalgamatedValues.AddRange(amalgamationResult.AmalgamatedValue);
-                }
-                else
-                {
-                    _amalgamationErrorHandler.HandleErrors(groupValue.Select(x => new AmalgamationValidationError()
-                    {
-                        File = x.SourceFileName,
-                        LearnRefNumber = x.LearnRefNumber ?? string.Empty,
-                        Entity = Enum.GetName(typeof(Entity), entityType),
-                        Key = string.Format("{0} : {1}", GetKeyPropertyName(entityType), keyValueSelectorFunc(x)),
-                        //Value = prop.GetValue(x).ToString(),
-                        ConflictingAttribute = prop.Name,
-                        Severity = severity
-                    }));
-                }
-            }
-
-            if (amalgamatedValues.Count > 0)
-            {
-                prop.SetValue(entity, amalgamatedValues.ToArray<TValue>());
+                _amalgamationErrorHandler.HandleErrors(amalgamationResult.AmalgamationValidationErrors);
             }
 
             return entity;

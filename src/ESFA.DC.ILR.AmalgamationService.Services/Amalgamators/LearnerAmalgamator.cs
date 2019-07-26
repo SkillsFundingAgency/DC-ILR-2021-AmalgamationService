@@ -14,7 +14,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearningDelivery> _learningDeliveryAmalgamator;
-        private readonly IAmalgamator<MessageLearnerContactPreference> _contactPreferenceAmalgamator;
         private readonly IAmalgamator<MessageLearnerLLDDandHealthProblem> _lLDDandHealthProblemAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearnerFAM> _learnerFAMAmalgamator;
         private readonly IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> _providerSpecLearnerMonitoringAmalgamator;
@@ -28,7 +27,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<MessageLearnerContactPreference[]> _learnerContactPreferenceCollectionRule;
 
         public LearnerAmalgamator(
-            IAmalgamator<MessageLearnerContactPreference> contactPreferenceAmalgamator,
             IAmalgamator<MessageLearnerLLDDandHealthProblem> lLDDandHealthProblemAmalgamator,
             IAmalgamator<MessageLearnerLearnerFAM> learnerFAMAmalgamator,
             IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> providerSpecLearnerMonitoringAmalgamator,
@@ -39,7 +37,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.Learner, (x) => x.LearnRefNumber, amalgamationErrorHandler)
         {
-            _contactPreferenceAmalgamator = contactPreferenceAmalgamator;
             _lLDDandHealthProblemAmalgamator = lLDDandHealthProblemAmalgamator;
             _learnerFAMAmalgamator = learnerFAMAmalgamator;
             _providerSpecLearnerMonitoringAmalgamator = providerSpecLearnerMonitoringAmalgamator;
@@ -95,7 +92,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, Severity.Warning);
 
-            ApplyGroupedCollectionRule(s => s.ContactPreference, g => g.ContPrefType, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner, Entity.ContactPreference, x => x.ContPrefType.ToString());
+            ApplyGroupedCollectionRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
 
             ApplyGroupedChildCollectionRule(s => s.LLDDandHealthProblem, g => g.LLDDCat, _lLDDandHealthProblemAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerFAM, g => g.LearnFAMType, _learnerFAMAmalgamator, models, messageLearner);
