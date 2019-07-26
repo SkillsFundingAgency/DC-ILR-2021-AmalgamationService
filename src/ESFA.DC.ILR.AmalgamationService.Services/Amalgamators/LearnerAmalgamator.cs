@@ -94,9 +94,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyGroupedCollectionRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
             ApplyGroupedCollectionRule(s => s.LLDDandHealthProblem, new LLDDandHealthProblemCollectionRule().Definition, models, messageLearner);
+            ApplyGroupedCollectionRule(s => s.LearnerFAM, new LearnerFAMAmalgamationRule().Definition, models, messageLearner);
 
-            ApplyGroupedChildCollectionRule(s => s.LLDDandHealthProblem, g => g.LLDDCat, _lLDDandHealthProblemAmalgamator, models, messageLearner);
-            ApplyGroupedChildCollectionRule(s => s.LearnerFAM, g => g.LearnFAMType, _learnerFAMAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.ProviderSpecLearnerMonitoring, g => g.ProvSpecLearnMonOccur, _providerSpecLearnerMonitoringAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
