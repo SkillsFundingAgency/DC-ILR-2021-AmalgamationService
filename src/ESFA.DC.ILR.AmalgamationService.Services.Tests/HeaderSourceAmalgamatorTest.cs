@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
@@ -42,7 +43,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void Amalgamate_Pass()
         {
-            var date = new DateTime(2018, 08, 19);
+            DateTime date = new DateTime(2019, 07, 26);
+            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(date);
 
             var objToCompare = new MessageHeaderSource()
             {
@@ -87,7 +90,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 }
             };
 
-            var amalgamate = NewAmalgamator(_ruleProvider, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
+            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _ruleProvider, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
 
             amalgamate.DateTime.Should().Be(objToCompare.DateTime);
             amalgamate.ProtectiveMarkingString.Should().Be(objToCompare.ProtectiveMarkingString);
@@ -98,12 +101,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             amalgamate.SerialNo.Should().Be(objToCompare.SerialNo);
             amalgamate.ReferenceData.Should().Be(objToCompare.ReferenceData);
             amalgamate.ComponentSetVersion.Should().Be(objToCompare.ComponentSetVersion);
+
+            mockDateTimeProvider.Verify(d => d.GetNowUtc(), Times.AtLeastOnce);
         }
 
         [Fact]
         public void Amalgamate_Errors()
         {
-            var date = new DateTime(2018, 08, 19);
+            var date = DateTime.UtcNow;
+            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(date);
 
             var objToCompare = new MessageHeaderSource()
             {
@@ -148,7 +155,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 }
             };
 
-            var amalgamate = NewAmalgamator(_ruleProvider, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
+            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _ruleProvider, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
             var validationError = _amalgamationErrorHandler.Errors;
 
             validationError.Should().HaveCount(2);
@@ -167,10 +174,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         };
 
         public HeaderSourceAmalgamator NewAmalgamator(
+                                       IDateTimeProvider dateTimeProvider = null,
                                        IRuleProvider ruleProvider = null,
                                        IAmalgamationErrorHandler amalgamationErrorHandler = null)
         {
             return new HeaderSourceAmalgamator(
+                                         dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
                                          ruleProvider ?? Mock.Of<IRuleProvider>(),
                                          amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
         }
