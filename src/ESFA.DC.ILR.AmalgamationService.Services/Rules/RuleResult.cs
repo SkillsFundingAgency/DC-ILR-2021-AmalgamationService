@@ -9,6 +9,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         public bool Success { get; set; }
 
-        public T Result { get; set; } = default(T);
+        public T AmalgamatedValue { get; set; } = default(T);
     }
 }

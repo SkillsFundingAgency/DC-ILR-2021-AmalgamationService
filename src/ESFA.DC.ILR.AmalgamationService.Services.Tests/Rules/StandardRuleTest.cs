@@ -14,7 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             StandardRule<long> standardRule = new StandardRule<long>();
             List<long> items = new List<long>() { 123, 123 };
             var result = standardRule.Definition(items);
-            RuleResult<long> ruleResultExpected = new RuleResult<long>() { Success = true, Result = 123 };
+            RuleResult<long> ruleResultExpected = new RuleResult<long>() { Success = true, AmalgamatedValue = 123 };
             result.Should().BeEquivalentTo(ruleResultExpected);
         }
 

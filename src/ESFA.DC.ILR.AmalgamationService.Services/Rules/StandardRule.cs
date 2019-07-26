@@ -23,7 +23,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 return new RuleResult<T>()
                 {
                     Success = true,
-                    Result = distinctValues.First()
+                    AmalgamatedValue = distinctValues.First()
                 };
             }
             else

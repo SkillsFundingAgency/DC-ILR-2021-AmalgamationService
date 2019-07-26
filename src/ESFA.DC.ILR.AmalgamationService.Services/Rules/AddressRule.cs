@@ -14,7 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             if (distinctValues.Count <= 1)
             {
-                return new RuleResult<string>() { Success = true, Result = distinctValues.First() };
+                return new RuleResult<string>() { Success = true, AmalgamatedValue = distinctValues.First() };
             }
             else
             {

@@ -16,7 +16,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             AddressRule addressRule = new AddressRule();
             List<string> adresses = new List<string>() { strTestAddress, strTestAddress };
             var result = addressRule.Definition(adresses);
-            RuleResult<string> ruleResultExpected = new RuleResult<string>() { Success = true, Result = strTestAddress };
+            RuleResult<string> ruleResultExpected = new RuleResult<string>() { Success = true, AmalgamatedValue = strTestAddress };
             result.Should().BeEquivalentTo(ruleResultExpected);
         }
 
