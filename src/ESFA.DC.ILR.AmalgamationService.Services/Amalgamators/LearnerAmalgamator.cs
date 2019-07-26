@@ -93,6 +93,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, Severity.Warning);
 
             ApplyGroupedCollectionRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
+            ApplyGroupedCollectionRule(s => s.LLDDandHealthProblem, new LLDDandHealthProblemCollectionRule().Definition, models, messageLearner);
 
             ApplyGroupedChildCollectionRule(s => s.LLDDandHealthProblem, g => g.LLDDCat, _lLDDandHealthProblemAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerFAM, g => g.LearnFAMType, _learnerFAMAmalgamator, models, messageLearner);

@@ -81,7 +81,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
             prop.SetValue(entity, amalgamationResult.AmalgamatedValue);
 
-            if (amalgamationResult.AmalgamationValidationErrors != null)
+            if (amalgamationResult.AmalgamationValidationErrors != null && amalgamationResult.AmalgamationValidationErrors.Any())
             {
                 _amalgamationErrorHandler.HandleErrors(amalgamationResult.AmalgamationValidationErrors);
             }
