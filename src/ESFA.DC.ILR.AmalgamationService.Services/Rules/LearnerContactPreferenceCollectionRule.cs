@@ -11,27 +11,43 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
     public class LearnerContactPreferenceCollectionRule : IRule<MessageLearnerContactPreference[]>
     {
+        private readonly string contPrefTypeRUI = "RUI";
+        private readonly string contPrefTypePMC = "PMC";
+
         public IRuleResult<MessageLearnerContactPreference[]> Definition(IEnumerable<MessageLearnerContactPreference[]> contactPreferences)
+        {
+            if (contactPreferences.SelectMany(v => v).Any(x => x.ContPrefType.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase)))
+            {
+                return GetContractPreferences(contPrefTypeRUI, contactPreferences, 2);
+            }
+            else
+            {
+                return GetContractPreferences(contPrefTypePMC, contactPreferences, 3);
+            }
+        }
+
+        private RuleResult<MessageLearnerContactPreference[]> GetContractPreferences(string contPrefType, IEnumerable<IEnumerable<MessageLearnerContactPreference>> originalContactPreferences, int maxOccurrence)
         {
             var amlgamatedContactPreferences = new List<MessageLearnerContactPreference>();
 
-            GetContractPreferences("RUI", contactPreferences, 2, amlgamatedContactPreferences);
-            GetContractPreferences("PMC", contactPreferences, 3, amlgamatedContactPreferences);
+            var distinctContactPreferences = originalContactPreferences.SelectMany(v => v).Where(c => c.ContPrefType.Equals(contPrefType, StringComparison.OrdinalIgnoreCase)).GroupBy(g => g.ContPrefCodeNullable).Select(s => s.First());
 
-            return new RuleResult<MessageLearnerContactPreference[]>() { Success = true, Result = amlgamatedContactPreferences.ToArray<MessageLearnerContactPreference>() };
-        }
+            if (distinctContactPreferences.Count() > maxOccurrence)
+            {
+                return new RuleResult<MessageLearnerContactPreference[]>() { Success = false };
+            }
 
-        private static void GetContractPreferences(string contPrefType, IEnumerable<IEnumerable<MessageLearnerContactPreference>> originalContactPreferences, int maxOccurrence, List<MessageLearnerContactPreference> amlgamatedContactPreferences)
-        {
-            var distinctContactPreferences = originalContactPreferences.SelectMany(v => v).Where(c => c.ContPrefType.ToUpper().Equals(contPrefType)).GroupBy(g => g.ContPrefCodeNullable).Select(s => s.First());
             if (distinctContactPreferences.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
             {
                 amlgamatedContactPreferences.Add(distinctContactPreferences.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
             }
-            else
+
+            if (!(contPrefType.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase) && amlgamatedContactPreferences.Count() > 0))
             {
-                amlgamatedContactPreferences.AddRange(distinctContactPreferences.Take(maxOccurrence));
+                amlgamatedContactPreferences.AddRange(distinctContactPreferences.Where(x => x.ContPrefCodeNullable != 3 && x.ContPrefCodeNullable != 4 && x.ContPrefCodeNullable != 5).Take(maxOccurrence - amlgamatedContactPreferences.Count()));
             }
+
+            return new RuleResult<MessageLearnerContactPreference[]>() { Success = true, AmalgamatedValue = amlgamatedContactPreferences.ToArray<MessageLearnerContactPreference>() };
         }
     }
 }
