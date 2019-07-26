@@ -12,7 +12,11 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         public string ProtectiveMarkingString
         {
             get => protectiveMarkingField.XmlEnumToString();
-            set => protectiveMarkingField = (MessageHeaderSourceProtectiveMarking)Enum.Parse(typeof(MessageHeaderSourceProtectiveMarking), value);
+            set
+            {                
+                Enum.TryParse(value, out MessageHeaderSourceProtectiveMarking enumHeaderSourceProMarking);
+                protectiveMarkingField = enumHeaderSourceProMarking;
+            }
         }
 
         [XmlIgnore]
