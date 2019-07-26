@@ -38,6 +38,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             }
             catch (Exception ex)
             {
+                // TODO : do proper exception handling, logging etc.
                 var error = ex;
             }
         }
