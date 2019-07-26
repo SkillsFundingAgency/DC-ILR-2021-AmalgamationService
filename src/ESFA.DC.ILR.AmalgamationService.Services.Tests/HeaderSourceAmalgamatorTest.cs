@@ -43,7 +43,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void Amalgamate_Pass()
         {
-            var date = DateTime.UtcNow;
+            DateTime date = new DateTime(2019, 07, 26);
             var mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(date);
 
