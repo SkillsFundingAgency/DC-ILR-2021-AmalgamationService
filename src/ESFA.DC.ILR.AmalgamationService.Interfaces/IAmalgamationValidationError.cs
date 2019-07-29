@@ -7,7 +7,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
     {
         Severity? Severity { get; }
 
-        AmalgamationValidationRuleType? RuleName { get; set; }
+        ErrorType? ErrorType { get; set; }
 
         string LearnRefNumber { get; set; }
 
@@ -21,6 +21,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 
         string Value { get; set; }
 
-        string Description { get; set; }
+        string ReportDescription { get; }
     }
 }
