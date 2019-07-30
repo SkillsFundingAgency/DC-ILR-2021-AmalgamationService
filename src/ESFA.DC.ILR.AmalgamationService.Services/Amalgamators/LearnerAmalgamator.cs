@@ -98,7 +98,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyGroupedChildCollectionRule(s => s.ProviderSpecLearnerMonitoring, g => g.ProvSpecLearnMonOccur, _providerSpecLearnerMonitoringAmalgamator, models, messageLearner);
             ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
-            ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);            
+            ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
             messageLearner.LearningDelivery = models.SelectMany(v => v.LearningDelivery).ToArray();
 
             return messageLearner;
