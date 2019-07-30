@@ -173,6 +173,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
             finally
             {
+                Files.Clear();
                 _cancellationTokenSource.Dispose();
             }
         }
