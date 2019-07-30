@@ -8,9 +8,8 @@
 
     public class XsdValidationService : IXsdValidationService
     {
-        private bool _isSchemaValid = true;
-
         private readonly IValidationErrorHandler _validationErrorHandler;
+        private bool _isSchemaValid = true;
 
         public XsdValidationService(IValidationErrorHandler validationErrorHandler)
         {
