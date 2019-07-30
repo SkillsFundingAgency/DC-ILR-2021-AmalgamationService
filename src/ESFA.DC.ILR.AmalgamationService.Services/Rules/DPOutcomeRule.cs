@@ -1,5 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
+using ESFA.DC.ILR.AmalgamationService.Services.Comparer;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             foreach (var groupedDpOutcome in groupedDpOutcomes)
             {
-                if (groupedDpOutcome.Count() > 1)
+                if (groupedDpOutcome.Select(v => new { v.OutCodeNullable, v.OutEndDateNullable }).Distinct().Count() > 1)
                 {
                     amalgamationValidationErrors.AddRange(groupedDpOutcome.Select(c => new AmalgamationValidationError()
                     {
@@ -28,14 +29,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                         LearnRefNumber = c.LearnRefNumber,
                         ErrorType = ErrorType.FieldValueConflict,
                         Entity = _entityName,
-                        Key = string.Format("OutType : {0}, OutCode : {1}, OutStartDate : {2}", c.OutType, c.OutCodeNullable, c.OutStartDateNullable),
-                        Value = string.Format("OutEndDate : {0}, OutCollDate : {1}", c.OutEndDateNullable, c.OutCollDateNullable),
+                        Key = $"OutType : {c.OutType}, OutCode : {c.OutCodeNullable}, OutStartDate : {c.OutStartDateNullable}",
+                        Value = $"OutEndDate : {c.OutEndDateNullable}, OutCollDate : {c.OutCollDateNullable}",
                     }));
 
                     continue;
                 }
 
-                amalgamatedDpOutcomes.AddRange(groupedDpOutcome);
+                amalgamatedDpOutcomes.Add(groupedDpOutcome.Select(v => v).First());
             }
 
             return new RuleResult<MessageLearnerDestinationandProgressionDPOutcome[]> { AmalgamatedValue = amalgamatedDpOutcomes.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };

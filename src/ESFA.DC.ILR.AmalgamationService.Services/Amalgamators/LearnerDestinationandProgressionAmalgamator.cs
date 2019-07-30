@@ -11,20 +11,20 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
     public class LearnerDestinationandProgressionAmalgamator : AbstractAmalgamator<MessageLearnerDestinationandProgression>, IAmalgamator<MessageLearnerDestinationandProgression>
     {
-        private IRule<long?> _ulnRule;
+        private IRuleProvider _ruleProvider;
 
         public LearnerDestinationandProgressionAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.LearnerDestinationandProgression, (x) => x.LearnRefNumber.ToString(), amalgamationErrorHandler)
         {
-            _ulnRule = ruleProvider.BuildUlnRule();
+            _ruleProvider = ruleProvider;
         }
 
         public MessageLearnerDestinationandProgression Amalgamate(IEnumerable<MessageLearnerDestinationandProgression> models)
         {
             var messageLearnerDestinationandProgression = new MessageLearnerDestinationandProgression();
 
-            ApplyRule(s => s.ULNNullable, _ulnRule.Definition, models, messageLearnerDestinationandProgression);
-
+            ApplyRule(s => s.LearnRefNumber, _ruleProvider.BuildStandardRule<string>().Definition, models, messageLearnerDestinationandProgression);
+            ApplyRule(s => s.ULNNullable, _ruleProvider.BuildUlnRule().Definition, models, messageLearnerDestinationandProgression);
             ApplyGroupedCollectionRule(s => s.DPOutcome, new DPOutcomeRule().Definition, models, messageLearnerDestinationandProgression);
 
             return messageLearnerDestinationandProgression;
