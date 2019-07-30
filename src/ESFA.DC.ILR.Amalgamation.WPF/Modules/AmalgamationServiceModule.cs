@@ -6,6 +6,8 @@ using ESFA.DC.FileService.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using ESFA.DC.IO.FileSystem;
 using ESFA.DC.IO.FileSystem.Config.Interfaces;
 using ESFA.DC.IO.Interfaces;
@@ -26,6 +28,9 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 
             containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>();
             containerBuilder.RegisterType<CsvService>().As<ICsvService>();
+
+            containerBuilder.RegisterType<ValidationErrorHandler>().As<IValidationErrorHandler>();
+            containerBuilder.RegisterType<XsdValidationService>().As<IXsdValidationService>();
 
             containerBuilder.RegisterType<DateTimeProvider.DateTimeProvider>().As<IDateTimeProvider>();
 

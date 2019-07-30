@@ -10,5 +10,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Interface
     public interface IAmalgamationManagementService
     {
         Task ProcessAsync(IEnumerable<string> filePaths, string outputPath, CancellationToken cancellationToken);
+
+        bool IsValidSchema(IEnumerable<string> filePaths);
     }
 }

@@ -8,7 +8,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationValidationError : IAmalgamationValidationError
     {
-        public Severity? Severity { get; set; }
+        public XmlSeverityType? Severity { get; set; }
 
         public AmalgamationValidationRuleType? RuleName { get; set; }
 

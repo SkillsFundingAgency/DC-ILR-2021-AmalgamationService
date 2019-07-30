@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Message xmlns="ESFA/ILR/2019-20">
+  <Header>
+    <CollectionDetails>
+      <Collection>ILR</Collection>
+      <Year>1920</Year>
+      <FilePreparationDate>1900-01-01</FilePreparationDate>
+    </CollectionDetails>
+    <Source>
+      <ProtectiveMarking>OFFICIAL-SENSITIVE-Personal</ProtectiveMarking>
+      <UKPRN>10000000</UKPRN>
+      <SoftwareSupplier>SoftwareSupplier1</SoftwareSupplier>
+      <SoftwarePackage>SoftwarePackage1</SoftwarePackage>
+      <Release>Release1</Release>
+      <SerialNo>01</SerialNo>
+      <DateTime>1900-01-01T01:01:01+00:00</DateTime>
+      <ReferenceData>ReferenceData1</ReferenceData>
+      <ComponentSetVersion>ComponentSetVersion1</ComponentSetVersion>
+    </Source>
+  </Header>
+</Message>

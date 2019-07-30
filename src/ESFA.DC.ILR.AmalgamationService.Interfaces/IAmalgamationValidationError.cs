@@ -5,7 +5,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IAmalgamationValidationError
     {
-        Severity? Severity { get; }
+        XmlSeverityType? Severity { get; }
 
         AmalgamationValidationRuleType? RuleName { get; set; }
 

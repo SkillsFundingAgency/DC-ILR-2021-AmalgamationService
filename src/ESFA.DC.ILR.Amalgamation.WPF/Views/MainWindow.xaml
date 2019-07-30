@@ -107,8 +107,12 @@
             <ProgressBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Height="17" Value="{Binding CurrentTask}" Maximum="{Binding TaskCount}" Margin="4 0 4 0" 
                          Visibility="{Binding ProcessingVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}"/>
 
-            <Button Grid.Row="4" Content="Cancel" VerticalAlignment="Center" Height="32" Command="{Binding CancelCommand}" 
-                    Visibility="{Binding ProcessingVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}"/>
+            <!--<Button Grid.Row="4" Content="Cancel" VerticalAlignment="Center" Height="32" Command="{Binding CancelCommand}" 
+                    Visibility="{Binding ProcessingVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}"/>-->
+
+            <Button Grid.Row="4" Content="Cancel" VerticalAlignment="Center" Height="32" Command="{Binding CancelCommand}"/>
+
+            <TextBlock Grid.Column="1" Grid.Row="4" Text="Validation Error found within XML document. Please see error report." Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" Visibility="{Binding ShowErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </Window>
