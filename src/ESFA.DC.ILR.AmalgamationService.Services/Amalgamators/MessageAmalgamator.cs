@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
+using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
@@ -29,11 +31,31 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var message = new Message();
 
             ApplyChildRule(m => m.Header, _headerAmalgamator, models, message);
-
+            message.SourceFiles = GetSourceFiles(models);
+            message.LearningProvider = GetLearningProvider(models);
             ApplyGroupedChildCollectionRule(m => m.Learner, g => g.LearnRefNumber, _learnerAmalgamator, models, message);
             ApplyGroupedChildCollectionRule(m => m.LearnerDestinationandProgression, g => g.LearnRefNumber, _learnerDestinationandProgressionAmalgamator, models, message);
 
             return message;
+        }
+
+        private MessageSourceFile[] GetSourceFiles(IEnumerable<Message> models)
+        {
+            return models.Select(x => new MessageSourceFile()
+            {
+                SourceFileName = x.Parent.Filename,
+                FilePreparationDate = x.Header.CollectionDetails.FilePreparationDate,
+                SoftwareSupplier = x.Header.Source.SoftwareSupplier,
+                SoftwarePackage = x.Header.Source.SoftwarePackage,
+                Release = x.Header.Source.Release,
+                SerialNo = x.Header.Source.SerialNo,
+                DateTime = x.Header.Source.DateTime
+            }).ToArray();
+        }
+
+        private MessageLearningProvider GetLearningProvider(IEnumerable<Message> models)
+        {
+            return models.Where(x => x.LearningProvider != null && x.LearningProvider.UKPRN != 0).Select(s => s.LearningProvider).First();
         }
     }
 }
