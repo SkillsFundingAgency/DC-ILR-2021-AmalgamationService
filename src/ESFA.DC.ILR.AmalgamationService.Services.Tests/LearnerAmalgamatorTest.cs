@@ -64,7 +64,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         private void InitializeAmalgamator()
         {
             _amalgamationErrorHandler = new AmalgamationErrorHandler();
-            LearnerEmploymentStatusAmalgamator learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(_ruleProvider, _amalgamationErrorHandler);
+            LearnerEmploymentStatusMonitoringAmalgamator learnerEmploymentStatusMonitoringAmalgamator = new LearnerEmploymentStatusMonitoringAmalgamator(_ruleProvider, _amalgamationErrorHandler);
+            LearnerEmploymentStatusAmalgamator learnerEmploymentStatusAmalgamator = new LearnerEmploymentStatusAmalgamator(learnerEmploymentStatusMonitoringAmalgamator, _ruleProvider, _amalgamationErrorHandler);
             LearnerHEFinancialSupportAmalgamator learnerHEFinancialSupportAmalgamator = new LearnerHEFinancialSupportAmalgamator(_ruleProvider, _amalgamationErrorHandler);
             LearnerHEAmalgamator learnerHEAmalgamator = new LearnerHEAmalgamator(learnerHEFinancialSupportAmalgamator, _ruleProvider, _amalgamationErrorHandler);
 

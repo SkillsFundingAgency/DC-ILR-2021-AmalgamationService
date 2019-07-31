@@ -8,6 +8,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
     {
         bool Success { get; }
 
-        T Result { get; }
+        T AmalgamatedValue { get; }
+
+        IEnumerable<IAmalgamationValidationError> AmalgamationValidationErrors { get; }
     }
 }

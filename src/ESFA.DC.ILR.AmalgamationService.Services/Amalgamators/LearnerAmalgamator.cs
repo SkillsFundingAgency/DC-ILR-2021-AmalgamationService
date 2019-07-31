@@ -1,6 +1,7 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
+using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearningDelivery> _learningDeliveryAmalgamator;
-        private readonly IAmalgamator<MessageLearnerContactPreference> _contactPreferenceAmalgamator;
         private readonly IAmalgamator<MessageLearnerLLDDandHealthProblem> _lLDDandHealthProblemAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearnerFAM> _learnerFAMAmalgamator;
         private readonly IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> _providerSpecLearnerMonitoringAmalgamator;
@@ -24,9 +24,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<long?> _ulnRule;
         private IRule<long?> _alsCostrule;
         private IRule<string> _postCodeRule;
+        private IRule<MessageLearnerContactPreference[]> _learnerContactPreferenceCollectionRule;
 
         public LearnerAmalgamator(
-            IAmalgamator<MessageLearnerContactPreference> contactPreferenceAmalgamator,
             IAmalgamator<MessageLearnerLLDDandHealthProblem> lLDDandHealthProblemAmalgamator,
             IAmalgamator<MessageLearnerLearnerFAM> learnerFAMAmalgamator,
             IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> providerSpecLearnerMonitoringAmalgamator,
@@ -37,7 +37,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.Learner, (x) => x.LearnRefNumber, amalgamationErrorHandler)
         {
-            _contactPreferenceAmalgamator = contactPreferenceAmalgamator;
             _lLDDandHealthProblemAmalgamator = lLDDandHealthProblemAmalgamator;
             _learnerFAMAmalgamator = learnerFAMAmalgamator;
             _providerSpecLearnerMonitoringAmalgamator = providerSpecLearnerMonitoringAmalgamator;
@@ -52,6 +51,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             _ulnRule = ruleProvider.BuildUlnRule();
             _alsCostrule = ruleProvider.BuildAlsCostRule();
             _postCodeRule = ruleProvider.BuildPostCodeRule();
+            _learnerContactPreferenceCollectionRule = ruleProvider.BuildLearnerContactPreferenceCollectionRule();
         }
 
         public MessageLearner Amalgamate(IEnumerable<MessageLearner> models)
@@ -92,14 +92,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, XmlSeverityType.Warning);
 
-            // TO DO: following commented code
-            // ApplyGroupedChildCollectionRule(s => s.ContactPreference, g => g.ContPrefType, _contactPreferenceAmalgamator, models, messageLearner);
-            // ApplyGroupedChildCollectionRule(s => s.LLDDandHealthProblem, g => g.LLDDCat, _lLDDandHealthProblemAmalgamator, models, messageLearner);
-            // ApplyGroupedChildCollectionRule(s => s.LearnerFAM, g => g.LearnFAMType, _learnerFAMAmalgamator, models, messageLearner);
-            // ApplyGroupedChildCollectionRule(s => s.ProviderSpecLearnerMonitoring, g => g.ProvSpecLearnMonOccur, _providerSpecLearnerMonitoringAmalgamator, models, messageLearner);
-            // ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
-            // ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
-            // ApplyGroupedChildCollectionRule(s => s.LearningDelivery, g => g.LearnRefNumber, _learningDeliveryAmalgamator, models, messageLearner);
+            ApplyGroupedCollectionRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
+            ApplyGroupedCollectionRule(s => s.LLDDandHealthProblem, new LLDDandHealthProblemCollectionRule().Definition, models, messageLearner);
+            ApplyGroupedCollectionRule(s => s.LearnerFAM, new LearnerFAMAmalgamationRule().Definition, models, messageLearner);
+
+            ApplyGroupedChildCollectionRule(s => s.ProviderSpecLearnerMonitoring, g => g.ProvSpecLearnMonOccur, _providerSpecLearnerMonitoringAmalgamator, models, messageLearner);
+            ApplyGroupedChildCollectionRule(s => s.LearnerEmploymentStatus, g => g.DateEmpStatApp, _learnerEmploymentStatusAmalgamator, models, messageLearner);
+            ApplyGroupedChildCollectionRule(s => s.LearnerHE, g => g.LearnRefNumber, _learnerHEAmalgamator, models, messageLearner);
+            ApplyGroupedChildCollectionRule(s => s.LearningDelivery, g => g.LearnRefNumber, _learningDeliveryAmalgamator, models, messageLearner);
+
             return messageLearner;
         }
     }

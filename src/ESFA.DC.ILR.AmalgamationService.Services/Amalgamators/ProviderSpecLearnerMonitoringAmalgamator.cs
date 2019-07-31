@@ -24,7 +24,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         {
             var messageLearnerProviderSpecLearnerMonitoring = new MessageLearnerProviderSpecLearnerMonitoring();
 
-            // TODO : apply rules
+            ApplyRule(s => s.ProvSpecLearnMon, _standardRuleString.Definition, models, messageLearnerProviderSpecLearnerMonitoring, Severity.Warning);
+            ApplyRule(s => s.ProvSpecLearnMonOccur, _standardRuleString.Definition, models, messageLearnerProviderSpecLearnerMonitoring);
+
             return messageLearnerProviderSpecLearnerMonitoring;
         }
     }

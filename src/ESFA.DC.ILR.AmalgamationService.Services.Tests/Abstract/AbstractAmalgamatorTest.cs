@@ -42,7 +42,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
         {
             var mockRule = new Mock<IRule<string>>();
 
-            mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => new RuleResult<string>() { Success = true, Result = s[0] });
+            mockRule.Setup(m => m.Definition(It.IsAny<List<string>>())).Returns((List<string> s) => new RuleResult<string>() { Success = true, AmalgamatedValue = s[0] });
 
             return mockRule;
         }

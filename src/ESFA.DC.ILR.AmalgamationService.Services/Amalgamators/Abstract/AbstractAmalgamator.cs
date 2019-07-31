@@ -40,7 +40,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
 
             if (value.Success)
             {
-                prop.SetValue(entity, value.Result);
+                prop.SetValue(entity, value.AmalgamatedValue);
             }
             else
             {
@@ -52,8 +52,38 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     Key = string.Format("{0} : {1}", GetKeyPropertyName(), _keyValueSelectorFunc(x)),
                     Value = prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name,
-                    Severity = severity
+                    Severity = severity,
+                    ErrorType = ErrorType.FieldValueConflict
                 }));
+            }
+
+            return entity;
+        }
+
+        protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, TValue[]>> selector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity)
+        {
+            if (inputEntities == null || !inputEntities.Any())
+            {
+                return default(T);
+            }
+
+            var selectorFunc = selector.Compile();
+
+            var inputValues = inputEntities.Where(e => e != null).Select(e => selectorFunc.Invoke(e)).Where(f => f != null).ToList();
+
+            if (inputValues == null || inputValues.All(i => i == null))
+            {
+                return default(T);
+            }
+
+            var amalgamationResult = rule.Invoke(inputValues);
+
+            var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
+            prop.SetValue(entity, amalgamationResult.AmalgamatedValue);
+
+            if (amalgamationResult.AmalgamationValidationErrors != null && amalgamationResult.AmalgamationValidationErrors.Any())
+            {
+                _amalgamationErrorHandler.HandleErrors(amalgamationResult.AmalgamationValidationErrors);
             }
 
             return entity;
@@ -105,10 +135,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             return entity;
         }
 
+        private string GetKeyPropertyName(Entity entityType)
+        {
+            var properties = entityType.GetAttribute<KeyProperty>();
+            return properties == null ? string.Empty : properties.PropertyName;
+        }
+
         private string GetKeyPropertyName()
         {
-            var properties = _entityType.GetAttribute<KeyProperty>();
-            return properties == null ? string.Empty : properties.PropertyName;
+            return GetKeyPropertyName(_entityType);
         }
     }
 }

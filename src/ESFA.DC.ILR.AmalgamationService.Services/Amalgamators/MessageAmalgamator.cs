@@ -12,12 +12,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     {
         private readonly IAmalgamator<MessageHeader> _headerAmalgamator;
         private readonly IAmalgamator<MessageLearner> _learnerAmalgamator;
+        private readonly IAmalgamator<MessageLearnerDestinationandProgression> _learnerDestinationandProgressionAmalgamator;
 
-        public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator, IAmalgamator<MessageLearner> learnerAmalgamator, IAmalgamationErrorHandler amalgamationErrorHandler)
+        public MessageAmalgamator(IAmalgamator<MessageHeader> headerAmalgamator, IAmalgamator<MessageLearner> learnerAmalgamator, IAmalgamator<MessageLearnerDestinationandProgression> learnerDestinationandProgressionAmalgamator, IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.Message, (x) => null, amalgamationErrorHandler)
         {
             _headerAmalgamator = headerAmalgamator;
             _learnerAmalgamator = learnerAmalgamator;
+            _learnerDestinationandProgressionAmalgamator = learnerDestinationandProgressionAmalgamator;
         }
 
         public IAmalgamationErrorHandler AmalgamationErrorHandler { get; }
@@ -29,6 +31,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             ApplyChildRule(m => m.Header, _headerAmalgamator, models, message);
 
             ApplyGroupedChildCollectionRule(m => m.Learner, g => g.LearnRefNumber, _learnerAmalgamator, models, message);
+            ApplyGroupedChildCollectionRule(m => m.LearnerDestinationandProgression, g => g.LearnRefNumber, _learnerDestinationandProgressionAmalgamator, models, message);
 
             return message;
         }

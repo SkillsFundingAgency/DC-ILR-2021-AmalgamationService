@@ -10,7 +10,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
     {
         public XmlSeverityType? Severity { get; set; }
 
-        public AmalgamationValidationRuleType? RuleName { get; set; }
+        public ErrorType? ErrorType { get; set; }
 
         public string LearnRefNumber { get; set; }
 
@@ -24,6 +24,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public string Value { get; set; }
 
-        public string Description { get; set; }
+        public string ReportDescription => ErrorType != null ? Enum.GetName(typeof(ErrorType), ErrorType) : string.Empty;
     }
 }
