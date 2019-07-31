@@ -124,9 +124,10 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="SchemaValidation\SampleXml.xsd">
+    <Content Include="SchemaValidation\SampleXml.xsd">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />

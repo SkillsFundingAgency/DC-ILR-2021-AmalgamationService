@@ -6,6 +6,8 @@ using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
 using ESFA.DC.ILR.AmalgamationService.Services.Validation;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema.Interface;
 using ESFA.DC.IO.FileSystem;
 using ESFA.DC.IO.Interfaces;
 using ESFA.DC.Serialization.Interfaces;
@@ -26,6 +28,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<CsvService>().As<ICsvService>();
 
             // XSD Validation
+            containerBuilder.RegisterType<SchemaProvider>().As<ISchemaProvider>();
             containerBuilder.RegisterType<ValidationErrorHandler>().As<IValidationErrorHandler>();
             containerBuilder.RegisterType<XsdValidationService>().As<IXsdValidationService>();
 

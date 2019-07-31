@@ -44,7 +44,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
                 var xsdValidationService = executionLifetimeScope.Resolve<IXsdValidationService>();
                 foreach (var file in filePaths)
                 {
-                    validSchema = xsdValidationService.ValidateSchema(file, GetSchemaStream());
+                    validSchema = xsdValidationService.ValidateSchema(file);
 
                     if (!validSchema)
                     {

@@ -13,5 +13,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? severity);
 
         void XsdValidationErrorHandler(object sender, ValidationEventArgs e);
+
+        void AddUniqueItems(IValidationError errorObj);
     }
 }

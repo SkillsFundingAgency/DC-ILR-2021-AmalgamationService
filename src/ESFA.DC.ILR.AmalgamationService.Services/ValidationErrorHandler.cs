@@ -15,19 +15,33 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? xmlSeverity)
         {
-            _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition));
+            var objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
+            AddUniqueItems(objToAdd);
         }
 
         public void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? xmlSeverity)
         {
-            _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition));
+            var objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
+            AddUniqueItems(objToAdd);
         }
 
         public void XsdValidationErrorHandler(object sender, ValidationEventArgs e)
         {
             if (sender is IXmlLineInfo xmlLineInfo)
             {
-                _validationErrors.Add(new ValidationError(e.Message, e.Severity, xmlLineInfo.LineNumber, xmlLineInfo.LinePosition));
+               var objToAdd = new ValidationError(e.Message, e.Severity, xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
+                AddUniqueItems(objToAdd);
+            }
+        }
+
+        public void AddUniqueItems(IValidationError errorObj)
+        {
+            IValidationError objToAdd = new ValidationError(errorObj.Message, errorObj.XmlSeverity, errorObj.LineNumber, errorObj.LinePosition);
+            var existting = _validationErrors.TryPeek(out objToAdd);
+
+            if (!existting)
+            {
+                _validationErrors.Add(objToAdd);
             }
         }
     }

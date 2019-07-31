@@ -1,5 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services.Validation;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema.Interface;
 using FluentAssertions;
 using Moq;
 using System.Collections.Generic;
@@ -16,20 +17,28 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
         [Fact]
         public void ValidSchema_True()
         {
-            var validationErrorHandlerMock = new Mock<IValidationErrorHandler>();
             var sampleFile = @"SchemaValidation\SampleXml.xml";
 
-            using (var testStream = GetSchemaSctream())
-            {
-                var res = ValidationService(validationErrorHandler: validationErrorHandlerMock.Object).ValidateSchema(sampleFile, testStream);
+            var mockSchemaProvider = new Mock<ISchemaProvider>();
+            mockSchemaProvider.Setup(x => x.Provide()).Returns(GetSchema());
 
-                res.Should().BeTrue();
-            }
+            var validationErrorHandlerMock = new Mock<IValidationErrorHandler>();
+            var service = ValidationService(schemaProvider: mockSchemaProvider.Object, validationErrorHandler: validationErrorHandlerMock.Object);
+
+            var res = service.ValidateSchema(sampleFile);
+            res.Should().BeTrue();
+
+            mockSchemaProvider.Verify(x => x.Provide(), Times.AtLeastOnce);
         }
 
         [Fact]
         public void ValidSchema_Fails_WrongNameSpace()
         {
+            var sampleFile = @"SchemaValidation\WrongNameSpaceXml.xml";
+
+            var mockSchemaProvider = new Mock<ISchemaProvider>();
+            mockSchemaProvider.Setup(x => x.Provide()).Returns(GetSchema());
+
             var errorList = new List<IValidationError>();
             XmlSchemaValidationException exception = new XmlSchemaValidationException();
 
@@ -41,16 +50,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
                     errorList.Add(new ValidationError(exception.Message, XmlSeverityType.Error | XmlSeverityType.Warning, exception.LineNumber, exception.LinePosition));
                 });
 
-            var sampleFile = @"SchemaValidation\WrongNameSpaceXml.xml";
+            var service = ValidationService(schemaProvider: mockSchemaProvider.Object, validationErrorHandler: validationErrorHandlerMock.Object);
 
-            using (var testStream = GetSchemaSctream())
-            {
-                var res = ValidationService(validationErrorHandler: validationErrorHandlerMock.Object).ValidateSchema(sampleFile, testStream);
+            var res = service.ValidateSchema(sampleFile);
 
-                res.Should().BeFalse();
-                validationErrorHandlerMock.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(1);
-            }
+            res.Should().BeFalse();
+            validationErrorHandlerMock.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(1);
 
+            mockSchemaProvider.Verify(x => x.Provide(), Times.AtLeastOnce);
             validationErrorHandlerMock.VerifyGet(x => x.ValidationErrors, Times.AtLeastOnce);
             validationErrorHandlerMock.Verify(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>()), Times.AtLeastOnce);
         }
@@ -59,24 +66,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
         public void TestBuildReaderSettings()
         {
             var validationErrorHandlerMock = new Mock<IValidationErrorHandler>();
-            var schema = new XmlSchema();
+            var schema = GetSchema();
+
             var xmlReaderSettings = ValidationService(validationErrorHandler: validationErrorHandlerMock.Object).GetSettingsWithSchema(schema);
 
             xmlReaderSettings.CloseInput.Should().BeFalse();
             xmlReaderSettings.ValidationType.Should().Be(ValidationType.Schema);
-            xmlReaderSettings.ValidationFlags.Should().Be(XmlSchemaValidationFlags.ProcessIdentityConstraints);
+            xmlReaderSettings.ValidationFlags.Should().Be(XmlSchemaValidationFlags.ProcessIdentityConstraints | XmlSchemaValidationFlags.ProcessInlineSchema);
+
+            xmlReaderSettings.Schemas.Count.Should().Be(1);
         }
 
-        public XsdValidationService ValidationService(IValidationErrorHandler validationErrorHandler = null)
+        public XsdValidationService ValidationService(ISchemaProvider schemaProvider = null, IValidationErrorHandler validationErrorHandler = null)
         {
-            return new XsdValidationService(validationErrorHandler);
+            return new XsdValidationService(schemaProvider, validationErrorHandler);
         }
 
-        public Stream GetSchemaSctream()
+        public XmlSchema GetSchema()
         {
-            return Assembly
-                    .Load("ESFA.DC.ILR.AmalgamationService.Services.Tests")
-                    .GetManifestResourceStream("ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation.SampleXml.xsd");
+            XmlTextReader reader = new XmlTextReader(@"SchemaValidation\SampleXml.xsd");
+            XmlSchema xmlSchema = XmlSchema.Read(reader, null);
+            return xmlSchema;
         }
     }
 }
