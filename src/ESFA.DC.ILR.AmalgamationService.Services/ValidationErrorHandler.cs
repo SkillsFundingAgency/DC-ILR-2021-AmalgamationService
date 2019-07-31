@@ -15,13 +15,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? xmlSeverity)
         {
-            var objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
+            IValidationError objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
             AddUniqueItems(objToAdd);
         }
 
         public void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? xmlSeverity)
         {
-            var objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
+            IValidationError objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
             AddUniqueItems(objToAdd);
         }
 
@@ -29,19 +29,19 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
             if (sender is IXmlLineInfo xmlLineInfo)
             {
-               var objToAdd = new ValidationError(e.Message, e.Severity, xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
+                IValidationError objToAdd = new ValidationError(e.Message, e.Severity, xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
                 AddUniqueItems(objToAdd);
             }
         }
 
         public void AddUniqueItems(IValidationError errorObj)
         {
-            IValidationError objToAdd = new ValidationError(errorObj.Message, errorObj.XmlSeverity, errorObj.LineNumber, errorObj.LinePosition);
-            var existting = _validationErrors.TryPeek(out objToAdd);
+            IValidationError objToAdd;
+            var existing = _validationErrors.TryPeek(out objToAdd);
 
-            if (!existting)
+            if (!existing)
             {
-                _validationErrors.Add(objToAdd);
+                _validationErrors.Add(errorObj);
             }
         }
     }
