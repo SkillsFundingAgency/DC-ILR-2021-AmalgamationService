@@ -13,14 +13,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public IEnumerable<IValidationError> ValidationErrors => _validationErrors;
 
-        public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? severity)
+        public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? xmlSeverity)
         {
-            _validationErrors.Add(new ValidationError(xmlException.Message, severity, xmlException.LineNumber, xmlException.LinePosition));
+            _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition));
         }
 
-        public void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? severity)
+        public void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? xmlSeverity)
         {
-            _validationErrors.Add(new ValidationError(xmlException.Message, severity, xmlException.LineNumber, xmlException.LinePosition));
+            _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition));
         }
 
         public void XsdValidationErrorHandler(object sender, ValidationEventArgs e)

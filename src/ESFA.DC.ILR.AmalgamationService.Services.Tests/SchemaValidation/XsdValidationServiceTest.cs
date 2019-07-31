@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Services.Validation;
 using FluentAssertions;
 using Moq;
 using System.Collections.Generic;
@@ -29,8 +30,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
         [Fact]
         public void ValidSchema_Fails_WrongNameSpace()
         {
+            var errorList = new List<IValidationError>();
+            XmlSchemaValidationException exception = new XmlSchemaValidationException();
+
             var validationErrorHandlerMock = new Mock<IValidationErrorHandler>();
-            validationErrorHandlerMock.SetupGet(x => x.ValidationErrors).Returns(new List<IValidationError>());
+            validationErrorHandlerMock.SetupGet(x => x.ValidationErrors).Returns(errorList);
+            validationErrorHandlerMock.Setup(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>()))
+                .Callback(() =>
+                {
+                    errorList.Add(new ValidationError(exception.Message, XmlSeverityType.Error | XmlSeverityType.Warning, exception.LineNumber, exception.LinePosition));
+                });
 
             var sampleFile = @"SchemaValidation\WrongNameSpaceXml.xml";
 
@@ -39,7 +48,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
                 var res = ValidationService(validationErrorHandler: validationErrorHandlerMock.Object).ValidateSchema(sampleFile, testStream);
 
                 res.Should().BeFalse();
+                validationErrorHandlerMock.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(1);
             }
+
+            validationErrorHandlerMock.VerifyGet(x => x.ValidationErrors, Times.AtLeastOnce);
+            validationErrorHandlerMock.Verify(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>()), Times.AtLeastOnce);
         }
 
         [Fact]

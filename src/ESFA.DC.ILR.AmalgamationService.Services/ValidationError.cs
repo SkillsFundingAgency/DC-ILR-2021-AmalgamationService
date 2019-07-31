@@ -10,15 +10,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
         }
 
-        public ValidationError(string message, XmlSeverityType? severity, int? lineNumber, int? linePosition)
+        public ValidationError(string message, XmlSeverityType? xmlSeverity, int? lineNumber, int? linePosition)
         {
             Message = message;
-            Severity = severity;
+            XmlSeverity = xmlSeverity;
             LineNumber = lineNumber;
             LinePosition = linePosition;
         }
 
-        public XmlSeverityType? Severity { get; set; }
+        public XmlSeverityType? XmlSeverity { get; set; }
 
         public string Message { get; set; }
 

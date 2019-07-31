@@ -24,7 +24,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             _keyValueSelectorFunc = keyValueSelector.Compile();
         }
 
-        protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity, XmlSeverityType severity = XmlSeverityType.Error)
+        protected T ApplyRule<TValue>(Expression<Func<T, TValue>> selector, Func<IEnumerable<TValue>, IRuleResult<TValue>> rule, IEnumerable<T> inputEntities, T entity, Severity severity = Severity.Error)
         {
             var selectorFunc = selector.Compile();
 

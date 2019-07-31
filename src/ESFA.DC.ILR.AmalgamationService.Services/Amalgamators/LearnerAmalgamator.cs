@@ -84,13 +84,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.PostcodePrior, _postCodeRule.Definition, models, messageLearner);
             ApplyRule(s => s.Postcode, _postCodeRule.Definition, models, messageLearner);
-            ApplyRule(s => s.AddLine1, _addressRule.Definition, models, messageLearner, XmlSeverityType.Warning);
-            ApplyRule(s => s.AddLine2, _addressRule.Definition, models, messageLearner, XmlSeverityType.Warning);
-            ApplyRule(s => s.AddLine3, _addressRule.Definition, models, messageLearner, XmlSeverityType.Warning);
-            ApplyRule(s => s.AddLine4, _addressRule.Definition, models, messageLearner, XmlSeverityType.Warning);
+            ApplyRule(s => s.AddLine1, _addressRule.Definition, models, messageLearner, Severity.Warning);
+            ApplyRule(s => s.AddLine2, _addressRule.Definition, models, messageLearner, Severity.Warning);
+            ApplyRule(s => s.AddLine3, _addressRule.Definition, models, messageLearner, Severity.Warning);
+            ApplyRule(s => s.AddLine4, _addressRule.Definition, models, messageLearner, Severity.Warning);
             ApplyRule(s => s.TelNo, _standardRuleString.Definition, models, messageLearner);
 
-            ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, XmlSeverityType.Warning);
+            ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, Severity.Warning);
 
             ApplyGroupedCollectionRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
             ApplyGroupedCollectionRule(s => s.LLDDandHealthProblem, new LLDDandHealthProblemCollectionRule().Definition, models, messageLearner);

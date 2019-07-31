@@ -1,4 +1,4 @@
-﻿namespace ESFA.DC.ILR.AmalgamationService.Services
+﻿namespace ESFA.DC.ILR.AmalgamationService.Services.Validation
 {
     using ESFA.DC.ILR.AmalgamationService.Interfaces;
     using System;

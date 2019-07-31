@@ -1,18 +1,14 @@
-﻿using System.Threading;
-using Autofac;
+﻿using Autofac;
 using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.FileService;
 using ESFA.DC.FileService.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
-using ESFA.DC.ILR.Model.Loose.ReadWrite;
-using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using ESFA.DC.ILR.AmalgamationService.Services.Validation;
 using ESFA.DC.IO.FileSystem;
-using ESFA.DC.IO.FileSystem.Config.Interfaces;
 using ESFA.DC.IO.Interfaces;
 using ESFA.DC.Serialization.Interfaces;
-using ESFA.DC.Serialization.Json;
 using ESFA.DC.Serialization.Xml;
 using amalgamators = ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ilrModelRw = ESFA.DC.ILR.Model.Loose.ReadWrite;
@@ -29,6 +25,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<ParentRelationshipMapper>().As<IParentRelationshipMapper>();
             containerBuilder.RegisterType<CsvService>().As<ICsvService>();
 
+            // XSD Validation
             containerBuilder.RegisterType<ValidationErrorHandler>().As<IValidationErrorHandler>();
             containerBuilder.RegisterType<XsdValidationService>().As<IXsdValidationService>();
 
@@ -36,12 +33,12 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 
             containerBuilder.RegisterType<AmalgamationOrchestrationService>().As<IAmalgamationOrchestrationService>();
 
-            //AmalgamationOrchestrationService dependencies
+            // AmalgamationOrchestrationService dependencies
             containerBuilder.RegisterType<MessageProvider>().As<IMessageProvider<ilrModelRw.AmalgamationRoot>>();
             containerBuilder.RegisterType<service.AmalgamationService>().As<IAmalgamationService>();
             containerBuilder.RegisterType<AmalgamationOutputService>().As<IAmalgamationOutputService>();
 
-            //MessageProvider dependencies
+            // MessageProvider dependencies
             containerBuilder.RegisterType<XmlSerializationService>().As<IXmlSerializationService>();
             containerBuilder.RegisterType<FileSystemFileService>().As<IFileService>();
             containerBuilder.RegisterType<FileSystemKeyValuePersistenceService>()
@@ -59,7 +56,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<amalgamators.LearnerAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearner>>();
             containerBuilder.RegisterType<amalgamators.LearnerDestinationandProgressionAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerDestinationandProgression>>();
 
-            //LearnerAmalgamator dependencies
+            // LearnerAmalgamator dependencies
             containerBuilder.RegisterType<amalgamators.LLDDandHealthProblemAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLLDDandHealthProblem>>();
             containerBuilder.RegisterType<amalgamators.LearnerFAMAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerFAM>>();
             containerBuilder.RegisterType<amalgamators.ProviderSpecLearnerMonitoringAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerProviderSpecLearnerMonitoring>>();
@@ -67,7 +64,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<amalgamators.LearnerHEAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerHE>>();
             containerBuilder.RegisterType<amalgamators.LearningDeliveryAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearningDelivery>>();
 
-            //LearnerHEAmalgamator dependencies
+            // LearnerHEAmalgamator dependencies
             containerBuilder.RegisterType<amalgamators.LearnerHEFinancialSupportAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerHELearnerHEFinancialSupport>>();
 
             containerBuilder.RegisterType<amalgamators.LearnerEmploymentStatusMonitoringAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring>>();

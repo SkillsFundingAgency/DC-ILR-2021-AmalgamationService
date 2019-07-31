@@ -76,6 +76,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             set
             {
                 Set(ref _canSubmit, value);
+                if (_canSubmit)
+                {
+                    ShowErrorMessage = false;
+                }
+
                 AmalgamateFilesCommand.RaiseCanExecuteChanged();
             }
         }
@@ -166,6 +171,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private async Task AmalgamateFiles()
         {
+            CurrentStage = StageKeys.ChooseFile;
             if (!_iAmalgamationManagementService.IsValidSchema(_files))
             {
                 ShowErrorMessage = true;
