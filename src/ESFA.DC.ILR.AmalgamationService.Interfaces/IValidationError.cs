@@ -11,5 +11,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         int? LineNumber { get; }
 
         int? LinePosition { get; }
+
+        string XMLFileName { get; }
     }
 }

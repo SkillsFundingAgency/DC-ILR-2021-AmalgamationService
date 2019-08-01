@@ -44,7 +44,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
 
             var validationErrorHandlerMock = new Mock<IValidationErrorHandler>();
             validationErrorHandlerMock.SetupGet(x => x.ValidationErrors).Returns(errorList);
-            validationErrorHandlerMock.Setup(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>()))
+            validationErrorHandlerMock.Setup(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>(), It.IsAny<string>()))
                 .Callback(() =>
                 {
                     errorList.Add(new ValidationError(exception.Message, XmlSeverityType.Error | XmlSeverityType.Warning, exception.LineNumber, exception.LinePosition));
@@ -59,7 +59,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
 
             mockSchemaProvider.Verify(x => x.Provide(), Times.AtLeastOnce);
             validationErrorHandlerMock.VerifyGet(x => x.ValidationErrors, Times.AtLeastOnce);
-            validationErrorHandlerMock.Verify(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>()), Times.AtLeastOnce);
+            validationErrorHandlerMock.Verify(x => x.XmlValidationErrorHandler(It.IsAny<XmlSchemaValidationException>(), It.IsAny<XmlSeverityType>(), It.IsAny<string>()), Times.AtLeastOnce);
         }
 
         [Fact]
@@ -68,11 +68,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.SchemaValidation
             var validationErrorHandlerMock = new Mock<IValidationErrorHandler>();
             var schema = GetSchema();
 
-            var xmlReaderSettings = ValidationService(validationErrorHandler: validationErrorHandlerMock.Object).GetSettingsWithSchema(schema);
+            var xmlReaderSettings = ValidationService(validationErrorHandler: validationErrorHandlerMock.Object).GetReaderSettings(schema);
 
             xmlReaderSettings.CloseInput.Should().BeFalse();
             xmlReaderSettings.ValidationType.Should().Be(ValidationType.Schema);
-            xmlReaderSettings.ValidationFlags.Should().Be(XmlSchemaValidationFlags.ProcessIdentityConstraints | XmlSchemaValidationFlags.ProcessInlineSchema);
+            xmlReaderSettings.ValidationFlags.Should().Be(XmlSchemaValidationFlags.ProcessIdentityConstraints | XmlSchemaValidationFlags.ReportValidationWarnings);
 
             xmlReaderSettings.Schemas.Count.Should().Be(1);
         }

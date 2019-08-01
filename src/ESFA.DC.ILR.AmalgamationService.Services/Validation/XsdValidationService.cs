@@ -4,6 +4,7 @@
     using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema.Interface;
     using System;
     using System.IO;
+    using System.Linq;
     using System.Xml;
     using System.Xml.Schema;
 
@@ -12,6 +13,7 @@
         private readonly ISchemaProvider _schemaProvider;
         private readonly IValidationErrorHandler _validationErrorHandler;
         private bool _isSchemaValid;
+        private string _fileName;
 
         public XsdValidationService(ISchemaProvider schemaProvider, IValidationErrorHandler validationErrorHandler)
         {
@@ -22,26 +24,36 @@
         public bool ValidateSchema(string xmlFileName)
         {
             _isSchemaValid = true;
+            _fileName = Path.GetFileName(xmlFileName);
 
             XmlSchema schema = _schemaProvider.Provide();
-            var readerSettings = BuildReaderSettings(schema);
+            var readerSettings = GetReaderSettings(schema);
 
             using (var reader = XmlReader.Create(xmlFileName, readerSettings))
             {
-                try
-                {
-                    while (reader.Read())
-                    {
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _isSchemaValid = false;
+                reader.ReadToFollowing(RetrieveRootElemenForNameSpaceValidation());
 
-                    var xmlException = ex as XmlException;
-                    if (xmlException != null)
+                if (!_isSchemaValid)
+                {
+                    return _isSchemaValid;
+                }
+                else
+                {
+                    try
                     {
-                        _validationErrorHandler.XmlValidationErrorHandler(xmlException, XmlSeverityType.Error);
+                        while (reader.Read())
+                        {
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _isSchemaValid = false;
+
+                        var xmlException = ex as XmlException;
+                        if (xmlException != null)
+                        {
+                            _validationErrorHandler.XmlValidationErrorHandler(xmlException, XmlSeverityType.Error, _fileName);
+                        }
                     }
                 }
             }
@@ -49,24 +61,27 @@
             return _isSchemaValid;
         }
 
-        public XmlReaderSettings BuildReaderSettings(XmlSchema schema)
-        {
-            var readerSettings = GetSettingsWithSchema(schema);
-            readerSettings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
-            return readerSettings;
-        }
-
-        public XmlReaderSettings GetSettingsWithSchema(XmlSchema schema)
+        public XmlReaderSettings GetReaderSettings(XmlSchema schema)
         {
             var settings = new XmlReaderSettings
             {
                 CloseInput = false,
                 ValidationType = ValidationType.Schema,
-                ValidationFlags = XmlSchemaValidationFlags.ProcessIdentityConstraints | XmlSchemaValidationFlags.ProcessInlineSchema
+                ValidationFlags = XmlSchemaValidationFlags.ProcessIdentityConstraints | XmlSchemaValidationFlags.ReportValidationWarnings
             };
             settings.ValidationEventHandler += Settings_ValidationEventHandler;
             settings.Schemas.Add(schema);
             return settings;
+        }
+
+        /// <summary>
+        ///     Namespace validation triggering 'Settings_ValidationEventHandler'
+        /// </summary>
+        /// <returns>Root Namespace [string ] value</returns>
+        public string RetrieveRootElemenForNameSpaceValidation()
+        {
+            var xmlSchema = _schemaProvider.Provide();
+            return xmlSchema.Items.OfType<XmlSchemaElement>().FirstOrDefault()?.Name;
         }
 
         private void Settings_ValidationEventHandler(object sender, ValidationEventArgs e)
@@ -77,7 +92,7 @@
 
             if (exType != null)
             {
-                _validationErrorHandler.XmlValidationErrorHandler(exType, e.Severity);
+                _validationErrorHandler.XmlValidationErrorHandler(exType, e.Severity, _fileName);
             }
         }
     }

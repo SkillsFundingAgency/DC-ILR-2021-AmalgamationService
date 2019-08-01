@@ -10,12 +10,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
         }
 
-        public ValidationError(string message, XmlSeverityType? xmlSeverity, int? lineNumber, int? linePosition)
+        public ValidationError(string message, XmlSeverityType? xmlSeverity, int? lineNumber, int? linePosition, string fileName = null)
         {
             Message = message;
             XmlSeverity = xmlSeverity;
             LineNumber = lineNumber;
             LinePosition = linePosition;
+            XMLFileName = fileName;
         }
 
         public XmlSeverityType? XmlSeverity { get; set; }
@@ -25,5 +26,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         public int? LineNumber { get; set; }
 
         public int? LinePosition { get; set; }
+
+        public string XMLFileName { get; set; }
     }
 }

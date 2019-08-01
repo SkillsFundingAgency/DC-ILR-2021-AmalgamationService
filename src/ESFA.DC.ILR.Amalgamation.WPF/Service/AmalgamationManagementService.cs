@@ -56,13 +56,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
             return validSchema;
         }
 
-        public Stream GetSchemaStream()
-        {
-            return Assembly
-                     .Load(_assemblyName)
-                     .GetManifestResourceStream(_assemblyName + _xsdResourceName);
-        }
-
         private async Task ExecuteAsyncAction(IEnumerable<string> filePaths, string outputPath, CancellationToken cancellationToken)
         {
             using (var executionLifetimeScope = _lifetimeScope.BeginLifetimeScope())

@@ -8,12 +8,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
     {
         IEnumerable<IValidationError> ValidationErrors { get; }
 
-        void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? severity);
+        void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? severity, string fileName = null);
 
-        void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? severity);
+        void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? severity, string fileName = null);
 
-        void XsdValidationErrorHandler(object sender, ValidationEventArgs e);
-
-        void AddUniqueItems(IValidationError errorObj);
+        void XsdValidationErrorHandler(object sender, ValidationEventArgs e, string fileName = null);
     }
 }

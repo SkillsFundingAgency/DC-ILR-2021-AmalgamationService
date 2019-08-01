@@ -13,35 +13,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public IEnumerable<IValidationError> ValidationErrors => _validationErrors;
 
-        public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? xmlSeverity)
+        public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? xmlSeverity, string fileName = null)
         {
-            IValidationError objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
-            AddUniqueItems(objToAdd);
+            _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition, fileName));
         }
 
-        public void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? xmlSeverity)
+        public void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? xmlSeverity, string fileName = null)
         {
-            IValidationError objToAdd = new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition);
-            AddUniqueItems(objToAdd);
+            _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition, fileName));
         }
 
-        public void XsdValidationErrorHandler(object sender, ValidationEventArgs e)
+        public void XsdValidationErrorHandler(object sender, ValidationEventArgs e, string fileName = null)
         {
             if (sender is IXmlLineInfo xmlLineInfo)
             {
-                IValidationError objToAdd = new ValidationError(e.Message, e.Severity, xmlLineInfo.LineNumber, xmlLineInfo.LinePosition);
-                AddUniqueItems(objToAdd);
-            }
-        }
-
-        public void AddUniqueItems(IValidationError errorObj)
-        {
-            IValidationError objToAdd;
-            var existing = _validationErrors.TryPeek(out objToAdd);
-
-            if (!existing)
-            {
-                _validationErrors.Add(errorObj);
+                _validationErrors.Add(new ValidationError(e.Message, e.Severity, xmlLineInfo.LineNumber, xmlLineInfo.LinePosition, fileName));
             }
         }
     }
