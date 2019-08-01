@@ -31,7 +31,7 @@
 
             using (var reader = XmlReader.Create(xmlFileName, readerSettings))
             {
-                reader.ReadToFollowing(RetrieveRootElemenForNameSpaceValidation());
+                ValidateNameSpace(reader);
 
                 if (!_isSchemaValid)
                 {
@@ -74,14 +74,11 @@
             return settings;
         }
 
-        /// <summary>
-        ///     Namespace validation triggering 'Settings_ValidationEventHandler'
-        /// </summary>
-        /// <returns>Root Namespace [string ] value</returns>
-        public string RetrieveRootElemenForNameSpaceValidation()
+        public void ValidateNameSpace(XmlReader reader)
         {
             var xmlSchema = _schemaProvider.Provide();
-            return xmlSchema.Items.OfType<XmlSchemaElement>().FirstOrDefault()?.Name;
+            var rootElement = xmlSchema.Items.OfType<XmlSchemaElement>().FirstOrDefault()?.Name;
+            reader.ReadToFollowing(rootElement);
         }
 
         private void Settings_ValidationEventHandler(object sender, ValidationEventArgs e)
