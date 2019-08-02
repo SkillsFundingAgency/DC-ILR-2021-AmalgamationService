@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="ESFA/ILR/2019-20" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Message">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Header">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CollectionDetails">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Collection" type="xs:string" />
+                    <xs:element name="Year" type="xs:unsignedShort" />
+                    <xs:element name="FilePreparationDate" type="xs:date" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Source">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ProtectiveMarking" type="xs:string" />
+                    <xs:element name="UKPRN" type="xs:unsignedInt" />
+                    <xs:element name="SoftwareSupplier" type="xs:string" />
+                    <xs:element name="SoftwarePackage" type="xs:string" />
+                    <xs:element name="Release" type="xs:string" />
+                    <xs:element name="SerialNo" type="xs:string" />
+                    <xs:element name="DateTime" type="xs:dateTime" />
+                    <xs:element name="ReferenceData" type="xs:string" />
+                    <xs:element name="ComponentSetVersion" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

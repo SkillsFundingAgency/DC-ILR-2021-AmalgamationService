@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +14,9 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
 {
     public class AmalgamationManagementService : IAmalgamationManagementService
     {
+        private const string _assemblyName = "ESFA.DC.ILR.Model.Loose.ReadWrite";
+        private const string _xsdResourceName = ".Schema.ILR-2019-20-v2.xsd";
+
         private readonly ILifetimeScope _lifetimeScope;
 
         public AmalgamationManagementService(ILifetimeScope lifetimeScope)
@@ -28,6 +33,27 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
                 TaskScheduler.Default);
 
             return;
+        }
+
+        public bool IsValidSchema(IEnumerable<string> filePaths)
+        {
+            bool validSchema = false;
+
+            using (var executionLifetimeScope = _lifetimeScope.BeginLifetimeScope())
+            {
+                var xsdValidationService = executionLifetimeScope.Resolve<IXsdValidationService>();
+                foreach (var file in filePaths)
+                {
+                    validSchema = xsdValidationService.ValidateSchema(file);
+
+                    if (!validSchema)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return validSchema;
         }
 
         private async Task ExecuteAsyncAction(IEnumerable<string> filePaths, string outputPath, CancellationToken cancellationToken)

@@ -34,6 +34,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private int _taskCount = 1;
         private StageKeys _currentStage = StageKeys.ChooseFile;
         private string _outputDirectory;
+        private bool _showErrorMessage;
 
         public MainViewModel(
             IAmalgamationManagementService iAmalgamationManagementService,
@@ -75,6 +76,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             set
             {
                 Set(ref _canSubmit, value);
+                if (_canSubmit)
+                {
+                    ShowErrorMessage = false;
+                }
+
                 AmalgamateFilesCommand.RaiseCanExecuteChanged();
             }
         }
@@ -124,6 +130,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             set => Set(ref _taskCount, value);
         }
 
+        public bool ShowErrorMessage
+        {
+            get { return _showErrorMessage; }
+
+            set
+            {
+                Set(ref _showErrorMessage, value);
+            }
+        }
+
         public RelayCommand ChooseFileCommand { get; set; }
 
         public RelayCommand RemoveFileCommand { get; set; }
@@ -143,6 +159,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void ShowChooseFileDialog()
         {
+            Files = new ObservableCollection<string>();
             var selectedFiles = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
 
             if (selectedFiles?.Length > 0)
@@ -154,8 +171,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private async Task AmalgamateFiles()
         {
+            CurrentStage = StageKeys.ChooseFile;
+            if (!_iAmalgamationManagementService.IsValidSchema(_files))
+            {
+                ShowErrorMessage = true;
+                return;
+            }
+
             CurrentStage = StageKeys.Processing;
             CanSubmit = false;
+            ShowErrorMessage = false;
             try
             {
                 _cancellationTokenSource = new CancellationTokenSource();
