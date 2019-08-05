@@ -55,7 +55,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                     LearnRefNumber = c.LearnRefNumber,
                     ErrorType = maxOccurrence > 1 ? ErrorType.MaxOccurrenceExceeded : ErrorType.FieldValueConflict,
                     Entity = _entityName,
-                    Key = string.Format("LearnFAMType : {0}", c.LearnFAMType),
+                    Key = $"LearnFAMType : {c.LearnFAMType}",
                     Value = c.LearnFAMType.ToString()
                 }));
 

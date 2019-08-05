@@ -1,5 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
+using ESFA.DC.ILR.AmalgamationService.Services.Comparer;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
@@ -11,65 +12,60 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         private static string _entityName = Enum.GetName(typeof(Entity), Entity.ContactPreference);
 
-        private readonly string contPrefTypeRUI = "RUI";
-        private readonly string contPrefTypePMC = "PMC";
+        private static string contPrefTypeRUI = "RUI";
+        private static string contPrefTypePMC = "PMC";
 
-        private List<AmalgamationValidationError> amalgamationValidationErrors = new List<AmalgamationValidationError>();
-        private List<MessageLearnerContactPreference> amalgamatedContactPreferences = new List<MessageLearnerContactPreference>();
+        private readonly List<KeyValuePair<string, int>> contPrefTypes = new List<KeyValuePair<string, int>>()
+        {
+            new KeyValuePair<string, int>(contPrefTypeRUI, 2),
+            new KeyValuePair<string, int>(contPrefTypePMC, 3)
+        };
 
         public IRuleResult<MessageLearnerContactPreference[]> Definition(IEnumerable<MessageLearnerContactPreference[]> contactPreferences)
         {
-            RuleResult<MessageLearnerContactPreference[]> ruleResult = new RuleResult<MessageLearnerContactPreference[]>();
+            List<AmalgamationValidationError> amalgamationValidationErrors = new List<AmalgamationValidationError>();
+            List<MessageLearnerContactPreference> amalgamatedContactPreferences = new List<MessageLearnerContactPreference>();
 
-            var groupedConactPreferences = contactPreferences.SelectMany(v => v).GroupBy(g => g.ContPrefType);
-            foreach (var contactPreference in groupedConactPreferences)
+            var contactPreferencesList = contactPreferences.SelectMany(v => v).ToList();
+
+            foreach (var type in contPrefTypes)
             {
-                if (contactPreference.Key.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase))
+                var groupedContactPreferencesForType =
+                    contactPreferencesList
+                    .Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase))
+                    .Distinct(new LambdaEqualityComparer<MessageLearnerContactPreference>((c1, c2) => c1.ContPrefType == c2.ContPrefType && c1.ContPrefCodeNullable == c2.ContPrefCodeNullable));
+
+                var amlgamatedContactPreferencesForType = new List<MessageLearnerContactPreference>();
+
+                if (groupedContactPreferencesForType.Count() > type.Value)
                 {
-                    AmalgamateContactPreference(contPrefTypeRUI, contactPreference, 2);
+                    amalgamationValidationErrors.AddRange(contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).Select(c => new AmalgamationValidationError()
+                    {
+                        File = c.SourceFileName,
+                        LearnRefNumber = c.LearnRefNumber,
+                        ErrorType = ErrorType.MaxOccurrenceExceeded,
+                        Entity = _entityName,
+                        Key = $"ContPrefType : {c.ContPrefType}",
+                        Value = c.ContPrefCode.ToString()
+                    }));
+
+                    continue;
                 }
 
-                if (contactPreference.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase))
+                if (groupedContactPreferencesForType.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
                 {
-                    AmalgamateContactPreference(contPrefTypePMC, contactPreference, 3);
+                    amlgamatedContactPreferencesForType.Add(groupedContactPreferencesForType.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
                 }
+
+                if (!(type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase) && amlgamatedContactPreferencesForType.Count() > 0))
+                {
+                    amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Where(x => x.ContPrefCodeNullable != 3 && x.ContPrefCodeNullable != 4 && x.ContPrefCodeNullable != 5).Take(type.Value - amlgamatedContactPreferencesForType.Count()));
+                }
+
+                amalgamatedContactPreferences.AddRange(amlgamatedContactPreferencesForType);
             }
 
             return new RuleResult<MessageLearnerContactPreference[]> { AmalgamatedValue = amalgamatedContactPreferences.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
-        }
-
-        private void AmalgamateContactPreference(string contPrefType, IEnumerable<MessageLearnerContactPreference> originalContactPreferences, int maxOccurrence)
-        {
-            var amlgamatedContactPreferencesForType = new List<MessageLearnerContactPreference>();
-
-            var distinctContactPreferences = originalContactPreferences.GroupBy(g => g.ContPrefCodeNullable).Select(s => s.First());
-
-            if (distinctContactPreferences.Count() > maxOccurrence)
-            {
-                amalgamationValidationErrors.AddRange(originalContactPreferences.Select(c => new AmalgamationValidationError()
-                {
-                    File = c.SourceFileName,
-                    LearnRefNumber = c.LearnRefNumber,
-                    ErrorType = ErrorType.MaxOccurrenceExceeded,
-                    Entity = _entityName,
-                    Key = string.Format("ContPrefType : {0}", c.ContPrefType),
-                    Value = c.ContPrefCode.ToString()
-                }));
-
-                return;
-            }
-
-            if (distinctContactPreferences.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
-            {
-                amlgamatedContactPreferencesForType.Add(distinctContactPreferences.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
-            }
-
-            if (!(contPrefType.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase) && amlgamatedContactPreferencesForType.Count() > 0))
-            {
-                amlgamatedContactPreferencesForType.AddRange(distinctContactPreferences.Where(x => x.ContPrefCodeNullable != 3 && x.ContPrefCodeNullable != 4 && x.ContPrefCodeNullable != 5).Take(maxOccurrence - amlgamatedContactPreferencesForType.Count()));
-            }
-
-            amalgamatedContactPreferences.AddRange(amlgamatedContactPreferencesForType);
         }
     }
 }
