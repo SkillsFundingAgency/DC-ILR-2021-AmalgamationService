@@ -15,8 +15,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
 
-            var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(1, contPrefTypePMC) };
-            var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(11, contPrefTypeRUI), GetMessageLearnerContactPreference(12, contPrefTypeRUI), GetMessageLearnerContactPreference(11, contPrefTypePMC) };
+            var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypePMC), GetMessageLearnerContactPreference(1, contPrefTypePMC) };
+            var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(12, contPrefTypeRUI), GetMessageLearnerContactPreference(11, contPrefTypePMC) };
 
             IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
             {
