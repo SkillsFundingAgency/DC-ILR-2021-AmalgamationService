@@ -37,5 +37,20 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
         {
             return new LearnerContactPreferenceCollectionRule();
         }
+
+        public IRule<MessageLearnerLLDDandHealthProblem[]> BuildLLDDandHealthProblemCollectionRule()
+        {
+            return new LLDDandHealthProblemCollectionRule();
+        }
+
+        public IRule<MessageLearnerLearnerFAM[]> BuildLearnerFAMAmalgamationRule()
+        {
+            return new LearnerFAMAmalgamationRule();
+        }
+
+        public IRule<MessageLearnerLearningDelivery[]> BuildLearningDeliveryRule()
+        {
+            return new LearningDeliveryRule();
+        }
     }
 }
