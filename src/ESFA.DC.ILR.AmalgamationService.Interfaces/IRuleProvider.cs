@@ -18,5 +18,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         IRule<string> BuildPostCodeRule();
 
         IRule<MessageLearnerContactPreference[]> BuildLearnerContactPreferenceCollectionRule();
+
+        IRule<MessageLearnerLLDDandHealthProblem[]> BuildLLDDandHealthProblemCollectionRule();
+
+        IRule<MessageLearnerLearnerFAM[]> BuildLearnerFAMAmalgamationRule();
+
+        IRule<MessageLearnerLearningDelivery[]> BuildLearningDeliveryRule();
     }
 }

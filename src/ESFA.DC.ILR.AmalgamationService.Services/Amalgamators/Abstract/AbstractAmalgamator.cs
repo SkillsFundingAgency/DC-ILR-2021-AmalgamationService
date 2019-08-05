@@ -49,7 +49,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     File = x.SourceFileName,
                     LearnRefNumber = x.LearnRefNumber ?? string.Empty,
                     Entity = Enum.GetName(typeof(Entity), _entityType),
-                    Key = string.Format("{0} : {1}", GetKeyPropertyName(), _keyValueSelectorFunc(x)),
+                    Key = $"{GetKeyPropertyName()} : {_keyValueSelectorFunc(x)}",
                     Value = prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name,
                     Severity = severity,
