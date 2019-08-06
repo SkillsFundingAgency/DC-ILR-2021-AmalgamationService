@@ -1,5 +1,4 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using XmlSeverityType = System.Xml.Schema.XmlSeverityType;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services

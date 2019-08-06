@@ -1,7 +1,5 @@
 ﻿using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests

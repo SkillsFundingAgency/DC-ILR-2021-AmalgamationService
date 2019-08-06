@@ -4,7 +4,6 @@ using ESFA.DC.ILR.AmalgamationService.Services.Mapper;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using ESFA.DC.Serialization.Interfaces;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,9 +37,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 // TODO derive file name from sourceFiles
                 using (var stream = await _fileService.OpenWriteStreamAsync("AmalgamatedFile.xml", outputDirectory, cancellationToken))
                 {
-                    var message = _xmlSerializationService.Serialize<Message>(amalgamationResult.Message);
-                    var messageByte = Encoding.UTF8.GetBytes(message);
-                    await stream.WriteAsync(messageByte, 0, messageByte.Length, cancellationToken);
+                    _xmlSerializationService.Serialize<Message>(amalgamationResult.Message, stream);
                 }
             }
 

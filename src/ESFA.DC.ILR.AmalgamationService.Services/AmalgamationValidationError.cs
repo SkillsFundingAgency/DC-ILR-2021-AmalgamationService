@@ -1,8 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {

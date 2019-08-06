@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;

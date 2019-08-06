@@ -1,5 +1,4 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
-using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {

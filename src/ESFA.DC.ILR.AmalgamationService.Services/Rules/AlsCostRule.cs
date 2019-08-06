@@ -1,7 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {

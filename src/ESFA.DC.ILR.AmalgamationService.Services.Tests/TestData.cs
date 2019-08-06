@@ -1,9 +1,5 @@
 ﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 {
