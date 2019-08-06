@@ -1,78 +1,165 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ESFA.DC.ILR.AmalgamationService.Services.Rules;
+﻿using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using FluentAssertions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
 {
     public class LearnerFAMAmalgamationRuleTest
     {
-        private readonly List<KeyValuePair<string, int>> famTypes = new List<KeyValuePair<string, int>>()
+        private readonly IDictionary<string, int> famTypesMaxOccurenceDictionary = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
-            new KeyValuePair<string, int>("HNS", 1),
-            new KeyValuePair<string, int>("EHC", 1),
-            new KeyValuePair<string, int>("DLA", 1),
-            new KeyValuePair<string, int>("LSR", 4),
-            new KeyValuePair<string, int>("SEN", 1),
-            new KeyValuePair<string, int>("NLM", 2),
-            new KeyValuePair<string, int>("EDF", 2),
-            new KeyValuePair<string, int>("MCF", 1),
-            new KeyValuePair<string, int>("ECF", 1),
-            new KeyValuePair<string, int>("FME", 1),
-            new KeyValuePair<string, int>("PPE", 2),
+            ["HNS"] = 1,
+            ["EHC"] = 1,
+            ["DLA"] = 1,
+            ["LSR"] = 4,
+            ["SEN"] = 1,
+            ["NLM"] = 2,
+            ["EDF"] = 2,
+            ["MCF"] = 1,
+            ["ECF"] = 1,
+            ["FME"] = 1,
+            ["PPE"] = 2,
         };
+
+        [InlineData("HNS", 1)]
+        [InlineData("EHC", 1)]
+        [InlineData("DLA", 1)]
+        [InlineData("LSR", 4)]
+        [InlineData("SEN", 1)]
+        [InlineData("NLM", 2)]
+        [InlineData("EDF", 2)]
+        [InlineData("MCF", 1)]
+        [InlineData("ECF", 1)]
+        [InlineData("FME", 1)]
+        [InlineData("PPE", 2)]
+        [Theory]
+        public void TestEachFamtypeInIsolationPass(string famType, int occurrences)
+        {
+            var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
+
+            var famsOne = GetFam("ILR-99999999-1920-20190704-092701-05.xml", famType, occurrences);
+            var famsTwo = GetFam("ILR-99999999-1920-20190704-092701-06.xml", famType, occurrences);
+
+            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            {
+                famsOne,
+                famsTwo,
+            };
+
+            var result = learnerFAMAmalgamationRule.Definition(fams);
+
+            result.AmalgamatedValue.Should().HaveCount(occurrences);
+
+            result.AmalgamatedValue.Where(x => x.LearnFAMType.Equals(famType, StringComparison.OrdinalIgnoreCase)).Should().HaveCount(occurrences);
+        }
+
+        [InlineData("HNS", 1)]
+        [InlineData("EHC", 1)]
+        [InlineData("DLA", 1)]
+        [InlineData("LSR", 4)]
+        [InlineData("SEN", 1)]
+        [InlineData("NLM", 2)]
+        [InlineData("EDF", 2)]
+        [InlineData("MCF", 1)]
+        [InlineData("ECF", 1)]
+        [InlineData("FME", 1)]
+        [InlineData("PPE", 2)]
+        [Theory]
+        public void TestEachFamtypeInIsolationFail(string famType, int occurrences)
+        {
+            var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
+
+            var famsOne = GetFam("ILR-99999999-1920-20190704-092701-05.xml", famType, occurrences + 1);
+            var famsTwo = GetFam("ILR-99999999-1920-20190704-092701-06.xml", famType, occurrences + 1);
+
+            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            {
+                famsOne,
+                famsTwo,
+            };
+
+            var result = learnerFAMAmalgamationRule.Definition(fams);
+
+            result.AmalgamatedValue.Should().HaveCount(0);
+            result.AmalgamationValidationErrors.Should().HaveCount((occurrences + 1) * 2);
+        }
+
+        [InlineData("XFME", 1)]
+        [InlineData("XPPE", 2)]
+        [Theory]
+        public void TestNotInListFail(string famType, int occurrences)
+        {
+            var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
+
+            var famsOne = GetFam("ILR-99999999-1920-20190704-092701-05.xml", famType, occurrences);
+            var famsTwo = GetFam("ILR-99999999-1920-20190704-092701-06.xml", famType, occurrences);
+
+            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            {
+                famsOne,
+                famsTwo,
+            };
+
+            var result = learnerFAMAmalgamationRule.Definition(fams);
+
+            result.AmalgamatedValue.Should().HaveCount(0);
+        }
 
         [Fact]
         public void AlwaysTrue()
         {
             var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
 
-            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
-            {
-                GetAllFams("ILR-99999999-1920-20190704-092701-05.xml", 10), GetAllFams("ILR-99999999-1920-20190704-092701-06.xml", 10)
-            };
-
-            var result = learnerFAMAmalgamationRule.Definition(fams);
-            fams.Count().Equals(22);
-            result.AmalgamatedValue.Count().Equals(11);
-            foreach (var famType in famTypes)
-            {
-                result.AmalgamatedValue.Where(x => x.LearnFAMType.Equals(famType.Key, StringComparison.OrdinalIgnoreCase)).Count().Equals(1);
-            }
-        }
-
-        [Fact]
-        public void FailDuetoCount()
-        {
-            var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
+            var famsOne = GetAllValidFams("ILR-99999999-1920-20190704-092701-05.xml");
+            var famsTwo = GetAllValidFams("ILR-99999999-1920-20190704-092701-06.xml");
 
             IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
             {
-                GetAllFams("ILR-99999999-1920-20190704-092701-05.xml", 10), GetAllFams("ILR-99999999-1920-20190704-092701-06.xml", 11)
+                famsOne, famsTwo,
             };
 
             var result = learnerFAMAmalgamationRule.Definition(fams);
-            fams.Count().Equals(20);
-            result.AmalgamationValidationErrors.Count().Equals(14);
-            result.AmalgamatedValue.Count().Equals(8);
-            foreach (var famType in famTypes.Where(x => x.Value > 1))
+
+            result.AmalgamatedValue.Should().HaveCount(17);
+
+            foreach (var famType in famTypesMaxOccurenceDictionary)
             {
-                result.AmalgamatedValue.Where(x => x.LearnFAMType.Equals(famType.Key, StringComparison.OrdinalIgnoreCase)).Count().Equals(2);
+                result.AmalgamatedValue.Where(x => x.LearnFAMType.Equals(famType.Key, StringComparison.OrdinalIgnoreCase)).Should().HaveCount(famType.Value);
             }
         }
 
-        private MessageLearnerLearnerFAM[] GetAllFams(string filename, long famcode)
+        private MessageLearnerLearnerFAM[] GetAllValidFams(string filename)
         {
             List<MessageLearnerLearnerFAM> fams = new List<MessageLearnerLearnerFAM>();
 
             var parent = GetMessageLearner(filename);
 
-            foreach (var famType in famTypes)
+            foreach (var famType in famTypesMaxOccurenceDictionary)
             {
-                fams.Add(GetMessageLearnerLearnerFAM(famType.Key, famcode, parent));
+                for (var occurence = 0; occurence < famType.Value; occurence++)
+                {
+                    fams.Add(GetMessageLearnerLearnerFAM(famType.Key, occurence, parent));
+                }
+            }
+
+            return fams.ToArray();
+        }
+
+        private MessageLearnerLearnerFAM[] GetFam(string filename, string famType, int occurences)
+        {
+            List<MessageLearnerLearnerFAM> fams = new List<MessageLearnerLearnerFAM>();
+
+            var parent = GetMessageLearner(filename);
+
+            var famCode = 0;
+
+            for (var occurence = 0; occurence < occurences; occurence++)
+            {
+                fams.Add(GetMessageLearnerLearnerFAM(famType, famCode++, parent));
             }
 
             return fams.ToArray();
