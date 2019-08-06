@@ -1,6 +1,9 @@
-﻿using ESFA.DC.ILR.AmalgamationService.Services.Rules;
-using ESFA.DC.ILR.Model.Loose.ReadWrite;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using ESFA.DC.ILR.AmalgamationService.Services.Rules;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using FluentAssertions;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
@@ -16,7 +19,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
 
             var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypePMC), GetMessageLearnerContactPreference(1, contPrefTypePMC) };
-            var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(12, contPrefTypeRUI), GetMessageLearnerContactPreference(11, contPrefTypePMC) };
+            var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(11, contPrefTypePMC) };
 
             IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
             {
@@ -24,13 +27,45 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
+            result.AmalgamatedValue.Count().Equals(5);
+            result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase)).Count().Equals(2);
+            result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase)).Count().Equals(3);
         }
 
-        private MessageLearnerContactPreference GetMessageLearnerContactPreference(long contPrefCode, string contPrefType)
+        [Fact]
+        public void FailRUIPassPMC()
         {
-            MessageLearnerContactPreference messageLearnerContactPreference = new MessageLearnerContactPreference() { ContPrefCodeNullable = contPrefCode, ContPrefType = contPrefType };
+            var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
+
+            var file1 = GetMessageLearner("ILR-99999999-1920-20190704-092701-05.xml");
+            var file2 = GetMessageLearner("ILR-99999999-1920-20190704-092701-06.xml");
+
+            var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI, file1), GetMessageLearnerContactPreference(2, contPrefTypePMC, file1), GetMessageLearnerContactPreference(1, contPrefTypePMC, file1) };
+            var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(2, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(12, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(3, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(12, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(11, contPrefTypePMC, file2) };
+
+            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            {
+                input1, input2
+            };
+
+            var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
+
+            result.AmalgamationValidationErrors.Count().Equals(5);
+            result.AmalgamatedValue.Count().Equals(2);
+            result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase)).Count().Equals(0);
+            result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase)).Count().Equals(2);
+        }
+
+        private MessageLearnerContactPreference GetMessageLearnerContactPreference(long contPrefCode, string contPrefType, MessageLearner parent = null)
+        {
+            MessageLearnerContactPreference messageLearnerContactPreference = new MessageLearnerContactPreference() { ContPrefCodeNullable = contPrefCode, ContPrefType = contPrefType, Parent = parent };
 
             return messageLearnerContactPreference;
+        }
+
+        private MessageLearner GetMessageLearner(string filename)
+        {
+            return new MessageLearner() { Parent = new Message() { Parent = new AmalgamationRoot() { Filename = filename } } };
         }
     }
 }

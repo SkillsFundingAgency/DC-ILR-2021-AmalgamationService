@@ -30,10 +30,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             foreach (var type in contPrefTypes)
             {
-                var groupedContactPreferencesForType =
-                    contactPreferencesList
-                    .Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase))
-                    .Distinct(new LambdaEqualityComparer<MessageLearnerContactPreference>((c1, c2) => c1.ContPrefType == c2.ContPrefType && c1.ContPrefCodeNullable == c2.ContPrefCodeNullable));
+                var groupedContactPreferencesForType = contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).GroupBy(x => new { x.ContPrefType, x.ContPrefCodeNullable }).Select(c => c.First());
 
                 var amlgamatedContactPreferencesForType = new List<MessageLearnerContactPreference>();
 
