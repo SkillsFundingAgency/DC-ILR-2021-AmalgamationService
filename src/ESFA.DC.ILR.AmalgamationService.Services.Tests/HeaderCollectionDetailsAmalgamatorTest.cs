@@ -22,31 +22,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             var collection = "ILR";
             var year = "1920";
 
-            var nowDateTime = DateTime.UtcNow;
-            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
-            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(nowDateTime);
-
             List<MessageHeaderCollectionDetails> msgHeaderCollection = new List<MessageHeaderCollectionDetails>()
             {
                 new MessageHeaderCollectionDetails()
                 {
                     CollectionString = collection,
+                    FilePreparationDate = new DateTime(2019, 08, 02),
                     Parent = GetParent()
                 },
                 new MessageHeaderCollectionDetails()
                 {
                     CollectionString = collection,
+                    FilePreparationDate = new DateTime(2019, 08, 10),
                     Parent = GetParent()
                 }
             };
 
-            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _ruleProvider, _amalgamationErrorHandler).Amalgamate(msgHeaderCollection);
+            var amalgamate = NewAmalgamator(_amalgamationErrorHandler).Amalgamate(msgHeaderCollection);
 
             amalgamate.CollectionString.Should().Be(collection);
             amalgamate.YearString.Should().Be(year);
-            amalgamate.FilePreparationDate.Should().Be(nowDateTime);
-
-            mockDateTimeProvider.Verify(d => d.GetNowUtc(), Times.AtLeastOnce);
+            amalgamate.FilePreparationDate.Should().Be(new DateTime(2019, 08, 10));
         }
 
         public MessageHeader GetParent() => new MessageHeader()
@@ -62,13 +58,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         };
 
         public HeaderCollectionDetailsAmalgamator NewAmalgamator(
-                        IDateTimeProvider dateTimeProvider = null,
-                        IRuleProvider ruleProvider = null,
                         IAmalgamationErrorHandler amalgamationErrorHandler = null)
         {
             return new HeaderCollectionDetailsAmalgamator(
-                                         dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
-                                         ruleProvider ?? Mock.Of<IRuleProvider>(),
                                          amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
         }
     }

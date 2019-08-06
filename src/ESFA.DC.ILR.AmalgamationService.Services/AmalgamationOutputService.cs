@@ -39,7 +39,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 using (var stream = await _fileService.OpenWriteStreamAsync("AmalgamatedFile.xml", outputDirectory, cancellationToken))
                 {
                     var message = _xmlSerializationService.Serialize<Message>(amalgamationResult.Message);
-                    var messageByte = Encoding.ASCII.GetBytes(message);
+                    var messageByte = Encoding.UTF8.GetBytes(message);
                     await stream.WriteAsync(messageByte, 0, messageByte.Length, cancellationToken);
                 }
             }
