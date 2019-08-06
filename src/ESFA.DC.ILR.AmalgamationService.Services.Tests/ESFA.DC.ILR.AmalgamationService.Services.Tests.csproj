@@ -103,6 +103,7 @@
     <Compile Include="LearnerAmalgamatorTest.cs" />
     <Compile Include="Rules\AddressRuleTest.cs" />
     <Compile Include="Rules\LearnerContactPreferenceCollectionRuleTest.cs" />
+    <Compile Include="Rules\LearnerFAMAmalgamationRuleTest.cs" />
     <Compile Include="Rules\StandardRuleTest.cs" />
     <Compile Include="SchemaValidation\XsdValidationServiceTest.cs" />
     <Compile Include="TestData.cs" />

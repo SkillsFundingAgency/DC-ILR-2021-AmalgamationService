@@ -37,15 +37,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             foreach (var fam in groupedFams)
             {
                 var famtype = famTypes.First(x => fam.Key.Equals(x.Key, StringComparison.OrdinalIgnoreCase));
-                AmalgamateContactPreference(famtype.Key, fam, famtype.Value);
+                AmalgamateFams(famtype.Key, fam, famtype.Value);
             }
 
             return new RuleResult<MessageLearnerLearnerFAM[]> { AmalgamatedValue = amalgamatedFams.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
         }
 
-        private void AmalgamateContactPreference(string contPrefType, IEnumerable<MessageLearnerLearnerFAM> originalFams, int maxOccurrence)
+        private void AmalgamateFams(string contPrefType, IEnumerable<MessageLearnerLearnerFAM> originalFams, int maxOccurrence)
         {
-            var distinctFams = originalFams.GroupBy(g => g.LearnFAMType).Select(s => s.First());
+            var distinctFams = originalFams.GroupBy(g => new { g.LearnFAMType, g.LearnFAMCodeNullable }).Select(s => s.First());
 
             if (distinctFams.Count() > maxOccurrence)
             {
