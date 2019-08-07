@@ -58,7 +58,6 @@ steps:
     configuration: '$(BuildConfiguration)'
     clean: true
 
-
 - task: CopyFiles@2
   displayName: 'Copy Nuget Interface Packages Files - Artifact NugetInterface Directory'
   inputs:
@@ -145,3 +144,4 @@ steps:
   inputs:
     ArtifactName: StorageAccount
     PathtoPublish: '$(build.artifactstagingdirectory)\StorageAccount'
+
