@@ -37,7 +37,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             {
                 if (famTypesMaxOccurenceDictionary.TryGetValue(famGroup.Key, out var maxOccurences))
                 {
-                    AmalgamateFams(famGroup.Key, famGroup, maxOccurences);
+                    AmalgamateFAMs(amalgamationValidationErrors, amalgamatedFams, famGroup, maxOccurences);
                 }
             }
 
@@ -67,7 +67,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 return;
             }
 
-            learnerFams.AddRange(distinctFams);
+            learnerFams.AddRange(distinctFamCodes);
         }
     }
 }
