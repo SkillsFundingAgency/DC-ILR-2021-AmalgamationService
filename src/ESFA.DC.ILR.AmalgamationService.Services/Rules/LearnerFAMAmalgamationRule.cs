@@ -11,19 +11,19 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         private static string _entityName = Enum.GetName(typeof(Entity), Entity.LearnerFAM);
 
-        private readonly Dictionary<string, int> famTypes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        private readonly IDictionary<string, int> famTypesMaxOccurenceDictionary = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
-            ["HNS"] = 1,
-            ["EHC"] = 1,
-            ["DLA"] = 1,
-            ["LSR"] = 4,
-            ["SEN"] = 1,
-            ["NLM"] = 2,
-            ["EDF"] = 2,
-            ["MCF"] = 1,
-            ["ECF"] = 1,
-            ["FME"] = 1,
-            ["PPE"] = 2,
+           ["HNS"] = 1,
+           ["EHC"] = 1,
+           ["DLA"] = 1,
+           ["LSR"] = 4,
+           ["SEN"] = 1,
+           ["NLM"] = 2,
+           ["EDF"] = 2,
+           ["MCF"] = 1,
+           ["ECF"] = 1,
+           ["FME"] = 1,
+           ["PPE"] = 2,
         };
 
         public IRuleResult<MessageLearnerLearnerFAM[]> Definition(IEnumerable<MessageLearnerLearnerFAM[]> fams)
@@ -32,21 +32,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             var amalgamatedFams = new List<MessageLearnerLearnerFAM>();
 
             var groupedFams = fams.SelectMany(v => v).GroupBy(g => g.LearnFAMType);
-            foreach (var fam in groupedFams)
-            {
-                var famtype = famTypes.First(x => fam.Key.Equals(x.Key, StringComparison.OrdinalIgnoreCase));
 
-                AmalgamateFAMs(amalgamationValidationErrors, amalgamatedFams, fam, famtype.Value);
+            foreach (var famGroup in groupedFams)
+            {
+                if (famTypesMaxOccurenceDictionary.TryGetValue(famGroup.Key, out var maxOccurences))
+                {
+                    AmalgamateFams(famGroup.Key, famGroup, maxOccurences);
+                }
             }
 
-            return new RuleResult<MessageLearnerLearnerFAM[]> { AmalgamatedValue = amalgamatedFams.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
+            return new RuleResult<MessageLearnerLearnerFAM[]>
+            {
+                AmalgamatedValue = amalgamatedFams.ToArray(),
+                AmalgamationValidationErrors = amalgamationValidationErrors
+            };
         }
 
         private void AmalgamateFAMs(List<AmalgamationValidationError> validationErrors, List<MessageLearnerLearnerFAM> learnerFams, IEnumerable<MessageLearnerLearnerFAM> originalFams, int maxOccurrence)
         {
-            var distinctFams = originalFams.GroupBy(g => g.LearnFAMType).Select(s => s.First());
+            var distinctFamCodes = originalFams.GroupBy(g => g.LearnFAMCodeNullable).Select(s => s.FirstOrDefault());
 
-            if (distinctFams.Count() > maxOccurrence)
+            if (distinctFamCodes?.Count() > maxOccurrence)
             {
                 validationErrors.AddRange(originalFams.Select(c => new AmalgamationValidationError()
                 {
