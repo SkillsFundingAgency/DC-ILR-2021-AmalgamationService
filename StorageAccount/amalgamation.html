@@ -36,7 +36,7 @@
 		const blobUri = 'https://' + account.name + '.blob.core.windows.net';
 		const blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, account.sas);
 		
-		blobService.listBlobsSegmented('AMLG-downloads', null, (error, results) => {
+		blobService.listBlobsSegmented(account.container, null, (error, results) => {
         if (error) {
 				document.getElementById('Release').innerHTML = 'Error Getting Data.' + '<br>' + error;
 				return;
