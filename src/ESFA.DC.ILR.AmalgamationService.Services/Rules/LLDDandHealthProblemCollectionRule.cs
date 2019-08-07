@@ -18,8 +18,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             var amalgamationValidationErrors = new List<AmalgamationValidationError>();
             var amalgamatedlLDDandHealthProblems = new List<MessageLearnerLLDDandHealthProblem>();
 
-            AmalgamateContactPreference(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
-            AmalgamateContactPreference(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
+            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
+            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
 
             return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
             {
