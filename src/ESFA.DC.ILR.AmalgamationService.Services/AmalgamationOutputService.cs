@@ -50,7 +50,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             if (validMessage != null)
             {
                 // TODO derive file name from sourceFiles
-                using (var stream = await _fileService.OpenWriteStreamAsync("AmalgamatedFile.xml", outputDirectoryForInstance, cancellationToken))
+                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}-01.xml";
+                using (var stream = await _fileService.OpenWriteStreamAsync(amalgamatedFileName, outputDirectoryForInstance, cancellationToken))
                 {
                     _xmlSerializationService.Serialize(validMessage, stream);
                 }
