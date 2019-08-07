@@ -40,7 +40,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 Directory.CreateDirectory(outputDirectory);
             }
 
-            var outputDirectoryForInstance = $"{outputDirectory}/Amalgamation - {_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd HHmmss")}";
+            var datetimeString = _dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss");
+            var outputDirectoryForInstance = $"{outputDirectory}/Amalgamation-{datetimeString}";
             Directory.CreateDirectory(outputDirectoryForInstance);
 
             var invalidLearnRefNumbers = GetInvalidLearnRefNumbers(amalgamationResult.ValidationErrors);
@@ -50,7 +51,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             if (validMessage != null)
             {
                 // TODO derive file name from sourceFiles
-                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}-01.xml";
+                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{datetimeString}-01.xml";
                 using (var stream = await _fileService.OpenWriteStreamAsync(amalgamatedFileName, outputDirectoryForInstance, cancellationToken))
                 {
                     _xmlSerializationService.Serialize(validMessage, stream);
