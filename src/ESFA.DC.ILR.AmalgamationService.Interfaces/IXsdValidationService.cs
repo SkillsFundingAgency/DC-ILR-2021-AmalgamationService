@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace ESFA.DC.ILR.AmalgamationService.Interfaces
+﻿namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IXsdValidationService
     {

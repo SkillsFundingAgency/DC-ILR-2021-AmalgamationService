@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Schema;
+﻿using System.Xml.Schema;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite.Schema.Interface
 {

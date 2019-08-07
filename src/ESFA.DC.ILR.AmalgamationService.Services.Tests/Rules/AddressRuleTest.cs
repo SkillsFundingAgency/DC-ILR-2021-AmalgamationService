@@ -1,5 +1,4 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Services.Rules;
-using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;

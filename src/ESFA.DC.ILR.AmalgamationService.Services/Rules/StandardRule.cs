@@ -1,9 +1,6 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.Model.Loose;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
@@ -11,7 +8,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         public IRuleResult<T> Definition(IEnumerable<T> values)
         {
-            if (values == null || values.Count() < 1 || values.All(x => x == null))
+            if (values == null || !values.Any() || values.All(x => x == null))
             {
                 return new RuleResult<T>();
             }

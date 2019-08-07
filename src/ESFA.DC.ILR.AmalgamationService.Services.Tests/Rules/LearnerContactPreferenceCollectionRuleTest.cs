@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
-using FluentAssertions;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules

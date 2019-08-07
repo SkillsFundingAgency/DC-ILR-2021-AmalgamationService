@@ -6,15 +6,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
     public class UlnRule : IRule<long?>
     {
+        private const long ReservedULN = 9999999999;
+
         public IRuleResult<long?> Definition(IEnumerable<long?> values)
         {
-            long specialValue9s = 9999999999;
-            if (values.All(x => x == specialValue9s))
+            if (values.All(x => x == ReservedULN))
             {
-                return new RuleResult<long?>() { Success = true, AmalgamatedValue = specialValue9s };
+                return new RuleResult<long?>() { Success = true, AmalgamatedValue = ReservedULN };
             }
 
-            var non9Values = values.Where(x => x != specialValue9s);
+            var non9Values = values.Where(x => x != ReservedULN);
 
             var distinctValues = non9Values.Distinct().ToList();
 

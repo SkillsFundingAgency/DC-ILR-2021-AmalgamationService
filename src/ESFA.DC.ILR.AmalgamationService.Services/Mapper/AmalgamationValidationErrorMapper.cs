@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CsvHelper.Configuration;
+﻿using CsvHelper.Configuration;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Mapper

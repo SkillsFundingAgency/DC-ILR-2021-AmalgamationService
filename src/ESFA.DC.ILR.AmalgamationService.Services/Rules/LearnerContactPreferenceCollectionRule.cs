@@ -1,6 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
-using ESFA.DC.ILR.AmalgamationService.Services.Comparer;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             foreach (var type in contPrefTypes)
             {
-                var groupedContactPreferencesForType = contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).GroupBy(x => new { x.ContPrefType, x.ContPrefCodeNullable }).Select(c => c.First());
+                var groupedContactPreferencesForType = contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).GroupBy(x => new { x.ContPrefType, x.ContPrefCodeNullable }).Select(c => c.First()).ToArray();
 
                 var amlgamatedContactPreferencesForType = new List<MessageLearnerContactPreference>();
 
@@ -54,7 +53,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                     amlgamatedContactPreferencesForType.Add(groupedContactPreferencesForType.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
                 }
 
-                if (!(type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase) && amlgamatedContactPreferencesForType.Count() > 0))
+                if (!(type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase) && amlgamatedContactPreferencesForType.Any()))
                 {
                     amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Where(x => x.ContPrefCodeNullable != 3 && x.ContPrefCodeNullable != 4 && x.ContPrefCodeNullable != 5).Take(type.Value - amlgamatedContactPreferencesForType.Count()));
                 }

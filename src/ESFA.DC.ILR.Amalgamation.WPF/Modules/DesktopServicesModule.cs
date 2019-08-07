@@ -1,7 +1,5 @@
-﻿using System.Threading;
-using Autofac;
+﻿using Autofac;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
-using ESFA.DC.ILR.Amalgamation.WPF.Message;
 using ESFA.DC.ILR.Amalgamation.WPF.Service;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
 
