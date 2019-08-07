@@ -61,11 +61,9 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 
             // LearnerAmalgamator dependencies
             containerBuilder.RegisterType<amalgamators.LLDDandHealthProblemAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLLDDandHealthProblem>>();
-            containerBuilder.RegisterType<amalgamators.LearnerFAMAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerFAM>>();
             containerBuilder.RegisterType<amalgamators.ProviderSpecLearnerMonitoringAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerProviderSpecLearnerMonitoring>>();
             containerBuilder.RegisterType<amalgamators.LearnerEmploymentStatusAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerEmploymentStatus>>();
             containerBuilder.RegisterType<amalgamators.LearnerHEAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerHE>>();
-            containerBuilder.RegisterType<amalgamators.LearningDeliveryAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearningDelivery>>();
 
             // LearnerHEAmalgamator dependencies
             containerBuilder.RegisterType<amalgamators.LearnerHEFinancialSupportAmalgamator>().As<IAmalgamator<ilrModelRw.MessageLearnerLearnerHELearnerHEFinancialSupport>>();

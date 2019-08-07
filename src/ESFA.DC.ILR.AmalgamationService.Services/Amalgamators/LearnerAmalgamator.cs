@@ -11,9 +11,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     {
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
-        private readonly IAmalgamator<MessageLearnerLearningDelivery> _learningDeliveryAmalgamator;
         private readonly IAmalgamator<MessageLearnerLLDDandHealthProblem> _lLDDandHealthProblemAmalgamator;
-        private readonly IAmalgamator<MessageLearnerLearnerFAM> _learnerFAMAmalgamator;
         private readonly IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> _providerSpecLearnerMonitoringAmalgamator;
         private IRule<string> _standardRuleString;
         private IRule<long?> _standardRuleLong;
@@ -29,21 +27,17 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerLLDDandHealthProblem> lLDDandHealthProblemAmalgamator,
-            IAmalgamator<MessageLearnerLearnerFAM> learnerFAMAmalgamator,
             IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> providerSpecLearnerMonitoringAmalgamator,
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
             IAmalgamator<MessageLearnerLearnerHE> learnerHEAmalgamator,
-            IAmalgamator<MessageLearnerLearningDelivery> learningDeliveryAmalgamator,
             IRuleProvider ruleProvider,
             IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.Learner, (x) => x.LearnRefNumber, amalgamationErrorHandler)
         {
             _lLDDandHealthProblemAmalgamator = lLDDandHealthProblemAmalgamator;
-            _learnerFAMAmalgamator = learnerFAMAmalgamator;
             _providerSpecLearnerMonitoringAmalgamator = providerSpecLearnerMonitoringAmalgamator;
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
             _learnerHEAmalgamator = learnerHEAmalgamator;
-            _learningDeliveryAmalgamator = learningDeliveryAmalgamator;
 
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long?>();

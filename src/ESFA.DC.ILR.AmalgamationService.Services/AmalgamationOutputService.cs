@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.FileService.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
@@ -17,16 +18,19 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
     {
         private readonly IXmlSerializationService _xmlSerializationService;
         private readonly ICsvService _csvService;
+        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IFileService _fileService;
 
         public AmalgamationOutputService(
             IXmlSerializationService xmlSerializationService,
             IFileService fileService,
-            ICsvService csvService)
+            ICsvService csvService,
+            IDateTimeProvider dateTimeProvider)
         {
             _xmlSerializationService = xmlSerializationService;
             _fileService = fileService;
             _csvService = csvService;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public async Task ProcessAsync(IAmalgamationResult amalgamationResult, string outputDirectory, CancellationToken cancellationToken)
@@ -36,6 +40,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 Directory.CreateDirectory(outputDirectory);
             }
 
+            var datetimeString = _dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss");
+            var outputDirectoryForInstance = $"{outputDirectory}/Amalgamation-{datetimeString}";
+            Directory.CreateDirectory(outputDirectoryForInstance);
+
             var invalidLearnRefNumbers = GetInvalidLearnRefNumbers(amalgamationResult.ValidationErrors);
 
             var validMessage = RemoveInvalidLearnersFromMessage(amalgamationResult.Message, invalidLearnRefNumbers);
@@ -43,7 +51,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             if (validMessage != null)
             {
                 // TODO derive file name from sourceFiles
-                using (var stream = await _fileService.OpenWriteStreamAsync("AmalgamatedFile.xml", outputDirectory, cancellationToken))
+                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{datetimeString}-01.xml";
+                using (var stream = await _fileService.OpenWriteStreamAsync(amalgamatedFileName, outputDirectoryForInstance, cancellationToken))
                 {
                     _xmlSerializationService.Serialize(validMessage, stream);
                 }
@@ -51,7 +60,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             if (amalgamationResult.ValidationErrors != null)
             {
-                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, "AmalgamationValidationError.csv", outputDirectory, cancellationToken);
+                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, $"AmalgamationSummaryReport.csv", outputDirectoryForInstance, cancellationToken);
             }
         }
 
