@@ -20,13 +20,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
         {
             RuleResult<MessageLearnerLLDDandHealthProblem[]> ruleResult = new RuleResult<MessageLearnerLLDDandHealthProblem[]>();
 
-            AmalgamateContactPreference(x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
-            AmalgamateContactPreference(x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
+            AmalgamateLlddAndHealthProblem(x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
+            AmalgamateLlddAndHealthProblem(x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
 
             return new RuleResult<MessageLearnerLLDDandHealthProblem[]> { AmalgamatedValue = amalgamatedlLDDandHealthProblems.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
         }
 
-        private void AmalgamateContactPreference(Expression<Func<MessageLearnerLLDDandHealthProblem, long>> selector, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
+        private void AmalgamateLlddAndHealthProblem(Expression<Func<MessageLearnerLLDDandHealthProblem, long>> selector, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
         {
             var selectorFunc = selector.Compile();
 
@@ -42,7 +42,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                     LearnRefNumber = c.LearnRefNumber,
                     ErrorType = ErrorType.FieldValueConflict,
                     Entity = _entityName,
-                    Key = string.Format("{0} : {1}", keyPropertyName, selectorFunc(c)),
+                    Key = $"{keyPropertyName} : {selectorFunc(c)}",
                     Value = prop.GetValue(c).ToString()
                 }));
 
