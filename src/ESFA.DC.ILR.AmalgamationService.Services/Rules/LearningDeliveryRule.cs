@@ -9,14 +9,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         public IRuleResult<MessageLearnerLearningDelivery[]> Definition(IEnumerable<MessageLearnerLearningDelivery[]> learningDeliveries)
         {
-            var flattenedLearningDeliveries = learningDeliveries.SelectMany(x => x);
+            var flattenedLearningDeliveries = learningDeliveries.SelectMany(x => x).ToArray();
+
             int aimSeqNumber = 0;
+
             foreach (var learningDelivery in flattenedLearningDeliveries)
             {
                 learningDelivery.AimSeqNumber = ++aimSeqNumber;
             }
 
-            return new RuleResult<MessageLearnerLearningDelivery[]> { AmalgamatedValue = flattenedLearningDeliveries.ToArray(), AmalgamationValidationErrors = null };
+            return new RuleResult<MessageLearnerLearningDelivery[]> { AmalgamatedValue = flattenedLearningDeliveries, AmalgamationValidationErrors = null };
         }
     }
 }

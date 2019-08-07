@@ -7,7 +7,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         public bool Success { get; set; }
 
-        public T AmalgamatedValue { get; set; } = default(T);
+        public T AmalgamatedValue { get; set; }
 
         public IEnumerable<IAmalgamationValidationError> AmalgamationValidationErrors { get; set; }
     }

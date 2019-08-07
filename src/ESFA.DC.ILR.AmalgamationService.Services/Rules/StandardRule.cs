@@ -8,7 +8,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         public IRuleResult<T> Definition(IEnumerable<T> values)
         {
-            if (values == null || values.Count() < 1 || values.All(x => x == null))
+            if (values == null || !values.Any() || values.All(x => x == null))
             {
                 return new RuleResult<T>();
             }
