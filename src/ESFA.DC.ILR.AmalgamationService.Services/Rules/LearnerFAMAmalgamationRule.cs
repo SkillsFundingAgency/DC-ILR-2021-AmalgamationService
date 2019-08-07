@@ -31,8 +31,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
         public IRuleResult<MessageLearnerLearnerFAM[]> Definition(IEnumerable<MessageLearnerLearnerFAM[]> fams)
         {
-            RuleResult<MessageLearnerLearnerFAM[]> ruleResult = new RuleResult<MessageLearnerLearnerFAM[]>();
-
             var groupedFams = fams.SelectMany(v => v).GroupBy(g => g.LearnFAMType);
             foreach (var fam in groupedFams)
             {

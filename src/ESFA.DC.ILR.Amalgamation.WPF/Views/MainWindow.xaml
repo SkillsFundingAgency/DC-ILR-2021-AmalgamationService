@@ -28,15 +28,14 @@
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="120"/>
-            <RowDefinition Height="57"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Menu HorizontalAlignment="Stretch">
             <MenuItem Header="Settings" Command="{Binding SettingsNavigationCommand}"/>
-            <MenuItem Header="About" Command="{Binding AboutNavigationCommand}"/>
         </Menu>
 
         <Grid Row ="1" >
@@ -46,10 +45,7 @@
             </Grid.ColumnDefinitions>
             <Image Source="../Resources/Images/ESFA_logo.jpg" HorizontalAlignment="Left" Margin="15 5"/>
         </Grid>
-
-        <TextBlock Grid.Row="2" Text="Upload more than one XML file." Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Left"
-                   Visibility="{Binding ProcessedSuccessfullyVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=0}"/>
-        
+     
         <Border Grid.Row="2" BorderThickness="2" BorderBrush="#FF28A197" Margin="15 0" Height="45"
                 Visibility="{Binding ProcessedSuccessfullyVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel>
@@ -60,16 +56,15 @@
             </StackPanel>
         </Border>
 
-        <Grid Grid.Row="3" Margin="10 0 12 2">
+        <Grid Grid.Row="3" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="18"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -78,15 +73,11 @@
 
             <StackPanel Grid.Column="0" Grid.Row="1">
                 <Button Grid.Column="0" Grid.Row="1" Content="Choose files" Command="{Binding ChooseFileCommand}"/>
-                <TextBlock Text="Processing Files:" VerticalAlignment="Top" HorizontalAlignment="Center" Visibility="{Binding ProcessingVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Margin="5 0 2 2">
+            <Grid Grid.Column="1" Grid.Row="1" Margin="5 0">
 
-                <TextBlock Text="No files chosen" Margin="2 0" Visibility="{Binding CanSubmit, Converter={StaticResource paramBool2Visibility}, ConverterParameter=0}"/>
-
-                <ListView Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" Height="100" Margin="2 0"
-                          Visibility="{Binding CanSubmit, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}">
+                <ListView BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -100,19 +91,15 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </StackPanel>
+            </Grid>
 
-            <Button Grid.Column="0" Grid.Row="2" Content="Start merge" Command="{Binding AmalgamateFilesCommand}" Margin="0 5 0 0"/>
+            <Button Grid.Column="0" Grid.Row="2" Content="Start Merge" Command="{Binding AmalgamateFilesCommand}" Margin="0 5 0 0"/>
 
-            <ProgressBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Height="17" Value="{Binding CurrentTask}" Maximum="{Binding TaskCount}" Margin="4 0 4 0" 
-                         Visibility="{Binding ProcessingVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}"/>
+            <ProgressBar Grid.Column="1" Grid.Row="2" Height="20" IsIndeterminate="{Binding ProcessingVisibility}" Margin="5 0" />
 
-            <!--<Button Grid.Row="4" Content="Cancel" VerticalAlignment="Center" Height="32" Command="{Binding CancelCommand}" 
-                    Visibility="{Binding ProcessingVisibility, Converter={StaticResource paramBool2Visibility}, ConverterParameter=1}"/>-->
+            <Button Grid.Row="3" Content="Cancel" Command="{Binding CancelCommand}"/>
 
-            <Button Grid.Row="4" Content="Cancel" VerticalAlignment="Center" Height="32" Command="{Binding CancelCommand}"/>
-
-            <TextBlock Grid.Column="1" Grid.Row="4" Text="Validation Error found within XML document. Please see error report." Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" Visibility="{Binding ShowErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="Validation Error found within XML document. Please see error report." Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" Visibility="{Binding ShowErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </Window>
