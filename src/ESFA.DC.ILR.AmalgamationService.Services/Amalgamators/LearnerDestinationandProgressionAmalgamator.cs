@@ -3,9 +3,7 @@ using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {

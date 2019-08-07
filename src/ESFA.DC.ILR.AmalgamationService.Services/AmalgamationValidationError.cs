@@ -1,14 +1,12 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
     public class AmalgamationValidationError : IAmalgamationValidationError
     {
-        public Severity? Severity { get; set; }
+        public Severity Severity { get; set; } = Severity.Error;
 
         public ErrorType? ErrorType { get; set; }
 

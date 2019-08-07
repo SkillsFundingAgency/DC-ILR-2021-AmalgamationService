@@ -26,12 +26,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
            ["PPE"] = 2,
         };
 
-        private List<AmalgamationValidationError> amalgamationValidationErrors = new List<AmalgamationValidationError>();
-        private List<MessageLearnerLearnerFAM> amalgamatedFams = new List<MessageLearnerLearnerFAM>();
-
         public IRuleResult<MessageLearnerLearnerFAM[]> Definition(IEnumerable<MessageLearnerLearnerFAM[]> fams)
         {
-            RuleResult<MessageLearnerLearnerFAM[]> ruleResult = new RuleResult<MessageLearnerLearnerFAM[]>();
+            var amalgamationValidationErrors = new List<AmalgamationValidationError>();
+            var amalgamatedFams = new List<MessageLearnerLearnerFAM>();
 
             var groupedFams = fams.SelectMany(v => v).GroupBy(g => g.LearnFAMType);
 
@@ -39,7 +37,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             {
                 if (famTypesMaxOccurenceDictionary.TryGetValue(famGroup.Key, out var maxOccurences))
                 {
-                    AmalgamateFams(famGroup.Key, famGroup, maxOccurences);
+                    AmalgamateFAMs(amalgamationValidationErrors, amalgamatedFams, famGroup, maxOccurences);
                 }
             }
 
@@ -50,13 +48,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             };
         }
 
-        private void AmalgamateFams(string famType, IEnumerable<MessageLearnerLearnerFAM> originalFams, int maxOccurrence)
+        private void AmalgamateFAMs(List<AmalgamationValidationError> validationErrors, List<MessageLearnerLearnerFAM> learnerFams, IEnumerable<MessageLearnerLearnerFAM> originalFams, int maxOccurrence)
         {
             var distinctFamCodes = originalFams.GroupBy(g => g.LearnFAMCodeNullable).Select(s => s.FirstOrDefault());
 
             if (distinctFamCodes?.Count() > maxOccurrence)
             {
-                amalgamationValidationErrors.AddRange(originalFams.Select(c => new AmalgamationValidationError()
+                validationErrors.AddRange(originalFams.Select(c => new AmalgamationValidationError()
                 {
                     File = c.SourceFileName,
                     LearnRefNumber = c.LearnRefNumber,
@@ -69,7 +67,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 return;
             }
 
-            amalgamatedFams.AddRange(distinctFamCodes);
+            learnerFams.AddRange(distinctFamCodes);
         }
     }
 }

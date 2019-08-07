@@ -25,10 +25,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
             string filename = Path.GetFileName(filepath);
             string container = Path.GetDirectoryName(filepath);
+
             using (var stream = await _fileService.OpenReadStreamAsync(filename, container, cancellationToken))
             {
                 var message = _xmlSerializationService.Deserialize<Message>(stream);
-                return new AmalgamationRoot() { Filename = filename, Message = message };
+
+                return new AmalgamationRoot()
+                {
+                    Filename = filename,
+                    Message = message
+                };
             }
         }
     }

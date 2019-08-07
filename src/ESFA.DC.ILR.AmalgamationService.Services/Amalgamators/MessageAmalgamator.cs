@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
-using ESFA.DC.ILR.AmalgamationService.Services.Rules;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators

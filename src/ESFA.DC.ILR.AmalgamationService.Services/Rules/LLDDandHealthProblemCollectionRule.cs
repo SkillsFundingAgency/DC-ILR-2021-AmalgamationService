@@ -13,26 +13,28 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
     {
         private static string _entityName = Enum.GetName(typeof(Entity), Entity.LLDDandHealthProblem);
 
-        private List<AmalgamationValidationError> amalgamationValidationErrors = new List<AmalgamationValidationError>();
-        private List<MessageLearnerLLDDandHealthProblem> amalgamatedlLDDandHealthProblems = new List<MessageLearnerLLDDandHealthProblem>();
-
         public IRuleResult<MessageLearnerLLDDandHealthProblem[]> Definition(IEnumerable<MessageLearnerLLDDandHealthProblem[]> lLDDandHealthProblems)
         {
-            RuleResult<MessageLearnerLLDDandHealthProblem[]> ruleResult = new RuleResult<MessageLearnerLLDDandHealthProblem[]>();
+            var amalgamationValidationErrors = new List<AmalgamationValidationError>();
+            var amalgamatedlLDDandHealthProblems = new List<MessageLearnerLLDDandHealthProblem>();
 
-            AmalgamateLlddAndHealthProblem(x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
-            AmalgamateLlddAndHealthProblem(x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
+            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
+            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
 
-            return new RuleResult<MessageLearnerLLDDandHealthProblem[]> { AmalgamatedValue = amalgamatedlLDDandHealthProblems.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
+            return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
+            {
+                AmalgamatedValue = amalgamatedlLDDandHealthProblems.ToArray(),
+                AmalgamationValidationErrors = amalgamationValidationErrors
+            };
         }
 
-        private void AmalgamateLlddAndHealthProblem(Expression<Func<MessageLearnerLLDDandHealthProblem, long>> selector, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
+        private void AmalgamateLLDDAndHealthProblem(List<AmalgamationValidationError> amalgamationValidationErrors, List<MessageLearnerLLDDandHealthProblem> lldds, Expression<Func<MessageLearnerLLDDandHealthProblem, long>> selector, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
         {
             var selectorFunc = selector.Compile();
 
-            var distinctlLDDandHealthProblems = originallLDDandHealthProblems.SelectMany(v => v).GroupBy(selectorFunc).Select(s => s.First());
+            var distinctlLDDandHealthProblems = originallLDDandHealthProblems.SelectMany(v => v).GroupBy(selectorFunc).Select(s => s.First()).ToArray();
 
-            if (distinctlLDDandHealthProblems.Count() > maxOccurrence)
+            if (distinctlLDDandHealthProblems.Length > maxOccurrence)
             {
                 var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
 
@@ -49,7 +51,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 return;
             }
 
-            amalgamatedlLDDandHealthProblems.AddRange(distinctlLDDandHealthProblems);
+            lldds.AddRange(distinctlLDDandHealthProblems);
         }
     }
 }

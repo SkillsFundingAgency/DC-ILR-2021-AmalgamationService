@@ -1,8 +1,4 @@
-﻿using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
-using System;
-using System.Reflection;
-
-namespace ESFA.DC.ILR.AmalgamationService.Interfaces.Attribute
+﻿namespace ESFA.DC.ILR.AmalgamationService.Interfaces.Attribute
 {
     public class KeyProperty : System.Attribute
     {

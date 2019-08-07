@@ -4,8 +4,6 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema.Interface;
 using FluentAssertions;
 using Moq;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 using Xunit;

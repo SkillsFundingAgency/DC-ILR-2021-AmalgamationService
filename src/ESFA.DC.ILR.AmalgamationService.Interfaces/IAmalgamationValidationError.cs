@@ -1,25 +1,24 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
-using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IAmalgamationValidationError
     {
-        Severity? Severity { get; }
+        Severity Severity { get; }
 
-        ErrorType? ErrorType { get; set; }
+        ErrorType? ErrorType { get; }
 
-        string LearnRefNumber { get; set; }
+        string LearnRefNumber { get; }
 
-        string Entity { get; set; }
+        string Entity { get; }
 
-        string Key { get; set; }
+        string Key { get; }
 
-        string ConflictingAttribute { get; set; }
+        string ConflictingAttribute { get; }
 
-        string File { get; set; }
+        string File { get; }
 
-        string Value { get; set; }
+        string Value { get; }
 
         string ReportDescription { get; }
     }

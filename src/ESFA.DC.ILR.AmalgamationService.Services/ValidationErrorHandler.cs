@@ -1,5 +1,4 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Xml;

@@ -2,11 +2,9 @@
 using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
-using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract
 {

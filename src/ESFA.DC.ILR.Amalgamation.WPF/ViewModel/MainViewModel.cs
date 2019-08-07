@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
@@ -10,7 +9,6 @@ using ESFA.DC.ILR.Amalgamation.WPF.Enum;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
 using ESFA.DC.ILR.Amalgamation.WPF.Message;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 
@@ -20,7 +18,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
     {
         private const string OutputDirectoryKey = "OutputDirectory";
 
-        private readonly IAmalgamationManagementService _iAmalgamationManagementService;
+        private readonly IAmalgamationManagementService _amalgamationManagementService;
 
         private readonly IMessengerService _messengerService;
         private readonly IDialogInteractionService _dialogInteractionService;
@@ -42,7 +40,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             IDialogInteractionService dialogInteractionService,
             IWindowsProcessService windowsProcessService)
         {
-            _iAmalgamationManagementService = iAmalgamationManagementService;
+            _amalgamationManagementService = iAmalgamationManagementService;
             _messengerService = messengerService;
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
@@ -171,33 +169,34 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private async Task AmalgamateFiles()
         {
-            CurrentStage = StageKeys.ChooseFile;
-            if (!_iAmalgamationManagementService.IsValidSchema(_files))
-            {
-                ShowErrorMessage = true;
-                return;
-            }
-
             CurrentStage = StageKeys.Processing;
             CanSubmit = false;
             ShowErrorMessage = false;
+
             try
             {
                 _cancellationTokenSource = new CancellationTokenSource();
 
                 CancelCommand.RaiseCanExecuteChanged();
 
-                await _iAmalgamationManagementService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
+                var result = await _amalgamationManagementService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
+
+                if (!result)
+                {
+                    ShowErrorMessage = true;
+                    return;
+                }
+
                 CurrentStage = StageKeys.ProcessedSuccessfully;
             }
             catch (Exception ex)
             {
                 // Error handling
                 var str = ex.InnerException;
-                CurrentStage = StageKeys.ChooseFile;
             }
             finally
             {
+                CurrentStage = StageKeys.ChooseFile;
                 Files.Clear();
                 _cancellationTokenSource.Dispose();
             }

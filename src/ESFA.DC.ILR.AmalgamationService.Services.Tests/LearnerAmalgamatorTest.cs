@@ -1,10 +1,7 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
-using ESFA.DC.ILR.AmalgamationService.Services.Tests.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
-using FluentAssertions;
-using Moq;
 using System;
 using System.Collections.Generic;
 using Xunit;
