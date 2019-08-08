@@ -25,6 +25,19 @@ steps:
     updateAssemblyInfo: true
     preferBundledVersion: false
 
+- task: PowerShell@1
+  displayName: 'Dissplay Variables'
+  enabled: true
+  inputs:
+    scriptType: inlineScript
+    inlineScript: |
+     $var = (gci env:*).GetEnumerator() | Sort-Object Name
+     $out = ""
+     Foreach ($v in $var) 
+     {
+     write-output "Name: $($v.Name)  | Value : $($v.Value)"
+     }
+
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet >=4.7.0'
   inputs:
@@ -46,27 +59,53 @@ steps:
     clean: true
 
 - task: CopyFiles@2
-  displayName: 'Copy NuGet Packages : Artifact NuGet Packages Directory'
+  displayName: 'Copy Nuget Interface Packages Files - Artifact NugetInterface Directory'
   inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
+    SourceFolder: '$(build.sourcesdirectory)\src'
     Contents: |
-     **\*.nupkg
-     !**\*Interface*.nupkg
-     !**\packages\**\*.nupkg
-    TargetFolder: '$(build.artifactstagingdirectory)\NuGet'
+     **\*$(BuildConfiguration)*\*Interface.nupkg
+     !**\packages\**
+     !**\bin\x64\**
+    TargetFolder: '$(build.artifactstagingdirectory)\Nuget\Interface'
     CleanTargetFolder: true
     flattenFolders: true
-    
+
 - task: CopyFiles@2
-  displayName: 'Copy NuGet Packages : Artifact NuGet Interface Packages Directory'
+  displayName: 'Copy NugetPackages Files - Artifact NugetPackages Directory'
   inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
+    SourceFolder: '$(build.sourcesdirectory)\src'
     Contents: |
-     **\*Interface*.nupkg
-     !**\packages\**\*.nupkg
-    TargetFolder: '$(build.artifactstagingdirectory)\NuGet Interface'
+     **\*$(BuildConfiguration)*\*.nupkg
+     !**\packages\**
+     !**\bin\x64\**
+    TargetFolder: '$(build.artifactstagingdirectory)\Nuget\Packages'
     CleanTargetFolder: true
     flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Application File to Artifact Folder'
+  inputs:
+    SourceFolder: 'src/ESFA.DC.ILR.Amalgamation.WPF/bin/$(BuildConfiguration)'  
+    Contents: '**\!(*.pdb)'
+    TargetFolder: '$(build.ArtifactStagingDirectory)\DesktopApplication'
+
+- task: CopyFiles@2
+  displayName: 'Copy Published Storage Account Files - Artifact StorageAccount Directory'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)\StorageAccount'
+    Contents: |
+      **\*
+    TargetFolder: '$(build.artifactstagingdirectory)\StorageAccount'
+    CleanTargetFolder: true
+    flattenFolders: false
+
+- task: TotalALM.totalalm-tokenization.tokenization-build-task.Tokenization@2
+  displayName: 'Tokenization: Transform Application config file'
+  enabled: false
+  inputs:
+    SourcePath: '$(build.ArtifactStagingDirectory)\DesktopApplication'
+    TargetFileNames: '*.exe.config'
+    RequireVariable: false
 
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
@@ -84,18 +123,25 @@ steps:
     PublishSymbols: false
   enabled: false
   continueOnError: true
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+  
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: NugetPackages'
   enabled: false
-  condition: succeededOrFailed()
+  inputs:
+    ArtifactName: NugetPackages
+    PathtoPublish: '$(build.artifactstagingdirectory)\Nuget'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+  displayName: 'Publish Artifact: DesktopApplication'
+  enabled: true
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+    ArtifactName: DesktopApplication
+    PathtoPublish: '$(build.artifactstagingdirectory)\DesktopApplication'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: StoraegAccount Display Files'
+  enabled: true
+  inputs:
+    ArtifactName: StorageAccount
+    PathtoPublish: '$(build.artifactstagingdirectory)\StorageAccount'
+
