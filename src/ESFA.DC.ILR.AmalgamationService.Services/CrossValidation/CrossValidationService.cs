@@ -9,42 +9,67 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
 {
     public class CrossValidationService : ICrossValidationService
     {
+        private readonly IValidationErrorHandler _validationErrorHandler;
+
+        public CrossValidationService(IValidationErrorHandler validationErrorHandler)
+        {
+            _validationErrorHandler = validationErrorHandler;
+        }
+
         public ILooseMessage CrossValidateLearners(ILooseMessage message)
         {
-            var learnerDuplicates = GetDuplicateLearnRefNumbers(message.Learners);
+            var duplicateLearners = GetLearnerDuplicateLearnRefNumbers(message.Learners);
 
-            if (learnerDuplicates.Count() > 0)
+            if (duplicateLearners.Count() > 0)
             {
                 var msgLearners = message.Learners as MessageLearner[];
-                var distinctLearners = msgLearners.GroupBy(i => i.LearnRefNumber, StringComparer.OrdinalIgnoreCase).Select(g => g.First()).ToArray();
-                message.Learners = distinctLearners;
+                var validLearners = msgLearners.Where(dp => !duplicateLearners.Contains(dp.LearnRefNumber, StringComparer.OrdinalIgnoreCase)).ToArray();
+                message.Learners = validLearners;
             }
 
-            var destinationProgressionDuplicates = GetDuplicateLearnRefNumbers(null, message.LearnerDestinationAndProgressions);
-            if (destinationProgressionDuplicates.Count() > 0)
+            var duplicateProgressionList = GetDPduplicateLearnRefNumbers(message.LearnerDestinationAndProgressions);
+            if (duplicateProgressionList.Count() > 0)
             {
-                var destinationProgression = message.LearnerDestinationAndProgressions as MessageLearnerDestinationandProgression[];
-                var distinctProgressionList = destinationProgression.GroupBy(i => i.LearnRefNumber, StringComparer.OrdinalIgnoreCase).Select(g => g.First()).ToArray();
-                message.LearnerDestinationAndProgressions = distinctProgressionList;
+                var msgProgressionList = message.LearnerDestinationAndProgressions as MessageLearnerDestinationandProgression[];
+                var validProgressionList = msgProgressionList.Where(dp => !duplicateProgressionList.Contains(dp.LearnRefNumber, StringComparer.OrdinalIgnoreCase)).ToArray();
+
+                message.LearnerDestinationAndProgressions = validProgressionList;
             }
 
             return message;
         }
 
-        public IEnumerable<string> GetDuplicateLearnRefNumbers(IEnumerable<ILooseLearner> learners = null, IEnumerable<ILooseLearnerDestinationAndProgression> progressions = null)
+        public IEnumerable<string> GetLearnerDuplicateLearnRefNumbers(IEnumerable<ILooseLearner> learners)
         {
-            if (learners != null)
+            var duplicates = learners.GroupBy(x => x.LearnRefNumber, StringComparer.OrdinalIgnoreCase)
+                           .Where(g => g.Count() > 1)
+                           .Select(g => g.Key);
+
+            foreach (var refNumber in duplicates)
             {
-                return learners.GroupBy(x => x.LearnRefNumber, StringComparer.OrdinalIgnoreCase)
+                _validationErrorHandler.CrossRecordValidationErrorHandler($"Duplicate LearnRefNumber:{refNumber} found for Learners");
+            }
+
+            return duplicates;
+        }
+
+        /// <summary>
+        ///     Destination & Progression duplicate list
+        /// </summary>
+        /// <param name="progressionList">list to check for duplicates</param>
+        /// <returns>duplicate items</returns>
+        public IEnumerable<string> GetDPduplicateLearnRefNumbers(IEnumerable<ILooseLearnerDestinationAndProgression> progressionList)
+        {
+            var duplicates = progressionList.GroupBy(x => x.LearnRefNumber, StringComparer.OrdinalIgnoreCase)
                                .Where(g => g.Count() > 1)
                                .Select(g => g.Key);
-            }
-            else
+
+            foreach (var refNumber in duplicates)
             {
-                return progressions.GroupBy(x => x.LearnRefNumber, StringComparer.OrdinalIgnoreCase)
-                                   .Where(g => g.Count() > 1)
-                                   .Select(g => g.Key);
+                _validationErrorHandler.CrossRecordValidationErrorHandler($"Duplicate LearnRefNumber:{refNumber} found for DestinationAndProgression");
             }
-        }
+
+            return duplicates;
+       }
     }
 }

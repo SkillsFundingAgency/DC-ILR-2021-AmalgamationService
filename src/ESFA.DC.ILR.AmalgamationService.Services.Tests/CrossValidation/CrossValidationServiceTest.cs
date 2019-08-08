@@ -1,7 +1,10 @@
-﻿using ESFA.DC.ILR.AmalgamationService.Services.CrossValidation;
+﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Services.CrossValidation;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using FluentAssertions;
+using Moq;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
@@ -24,8 +27,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 Learners = learners
             };
 
-            var result = CrossValidationService().GetDuplicateLearnRefNumbers(learners);
-            result.Should().HaveCount(2);
+            var errorList = new List<IValidationError>();
+
+            var mockValidationErrorHandler = new Mock<IValidationErrorHandler>();
+            mockValidationErrorHandler.SetupGet(x => x.ValidationErrors).Returns(errorList);
+            mockValidationErrorHandler.Setup(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()))
+                 .Callback(() =>
+                 {
+                     errorList.Add(new ValidationError(It.IsAny<string>(), System.Xml.Schema.XmlSeverityType.Error, 0, 0));
+                 });
+
+            var duplicateResult = CrossValidationService(mockValidationErrorHandler.Object).GetLearnerDuplicateLearnRefNumbers(learners);
+            duplicateResult.Should().HaveCount(2);
+
+            mockValidationErrorHandler.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(2);
+            mockValidationErrorHandler.Verify(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -43,7 +59,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 Learners = learners
             };
 
-            var result = CrossValidationService().GetDuplicateLearnRefNumbers(learners);
+            var result = CrossValidationService().GetLearnerDuplicateLearnRefNumbers(learners);
 
             result.Should().HaveCount(0);
         }
@@ -59,13 +75,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 new MessageLearnerDestinationandProgression() { LearnRefNumber = "ABC" }
             };
 
-            ILooseMessage message = new Message()
-            {
-                LearnerDestinationAndProgressions = progressionList
-            };
+            var errorList = new List<IValidationError>();
 
-            var result = CrossValidationService().GetDuplicateLearnRefNumbers(progressions: progressionList);
-            result.Should().HaveCount(2);
+            var mockValidationErrorHandler = new Mock<IValidationErrorHandler>();
+            mockValidationErrorHandler.SetupGet(x => x.ValidationErrors).Returns(errorList);
+            mockValidationErrorHandler.Setup(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()))
+                 .Callback(() =>
+                 {
+                     errorList.Add(new ValidationError(It.IsAny<string>(), System.Xml.Schema.XmlSeverityType.Error, 0, 0));
+                 });
+
+            var duplicateResult = CrossValidationService(mockValidationErrorHandler.Object).GetDPduplicateLearnRefNumbers(progressionList);
+            duplicateResult.Should().HaveCount(2);
+
+            mockValidationErrorHandler.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(2);
+            mockValidationErrorHandler.Verify(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
         }
 
         [Fact]
@@ -84,7 +108,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 LearnerDestinationAndProgressions = progressionList
             };
 
-            var result = CrossValidationService().GetDuplicateLearnRefNumbers(progressions: progressionList);
+            var result = CrossValidationService().GetDPduplicateLearnRefNumbers(progressionList: progressionList);
 
             result.Should().HaveCount(0);
         }
@@ -105,6 +129,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
             {
                 new MessageLearnerDestinationandProgression() { LearnRefNumber = "123" },
                 new MessageLearnerDestinationandProgression() { LearnRefNumber = "ABC" },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "xy0011365" },
                 new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc" }
             };
 
@@ -114,18 +139,31 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 LearnerDestinationAndProgressions = progressionList
             };
 
-            var resultMessage = CrossValidationService().CrossValidateLearners(message);
+            var errorList = new List<IValidationError>();
 
-            resultMessage.Learners.Should().HaveCount(3);
+            var mockValidationErrorHandler = new Mock<IValidationErrorHandler>();
+            mockValidationErrorHandler.SetupGet(x => x.ValidationErrors).Returns(errorList);
+            mockValidationErrorHandler.Setup(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()))
+                 .Callback(() =>
+                 {
+                     errorList.Add(new ValidationError(It.IsAny<string>(), System.Xml.Schema.XmlSeverityType.Error, 0, 0));
+                 });
+
+            var resultMessage = CrossValidationService(mockValidationErrorHandler.Object).CrossValidateLearners(message);
+
+            resultMessage.Learners.Should().HaveCount(1);
             resultMessage.Learners.Should().NotBeSameAs(learners);
 
             resultMessage.LearnerDestinationAndProgressions.Should().HaveCount(2);
             resultMessage.LearnerDestinationAndProgressions.Should().NotBeSameAs(progressionList);
+
+            mockValidationErrorHandler.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(3);
+            mockValidationErrorHandler.Verify(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(3));
         }
 
-        public CrossValidationService CrossValidationService()
+        public CrossValidationService CrossValidationService(IValidationErrorHandler validationErrorHandler = null)
         {
-            return new CrossValidationService();
+            return new CrossValidationService(validationErrorHandler);
         }
     }
 }
