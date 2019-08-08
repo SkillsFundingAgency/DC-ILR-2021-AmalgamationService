@@ -36,6 +36,7 @@
 
         <Menu HorizontalAlignment="Stretch">
             <MenuItem Header="Settings" Command="{Binding SettingsNavigationCommand}"/>
+            <MenuItem Header="About" Command="{Binding AboutNavigationCommand}"/>
         </Menu>
 
         <Grid Row ="1" >
