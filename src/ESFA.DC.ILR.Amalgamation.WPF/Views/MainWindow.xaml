@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESFA.DC.ILR.Amalgamation.WPF"
         mc:Ignorable="d"
-        Title="ILR (Individualised Learner Record) File Amalgamation" Height="450" Width="800" WindowStartupLocation="CenterScreen"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" ResizeMode="CanMinimize" Icon="../Resources/Images/DSAppIcon.ico">
+        Title="ILR FileMerge" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Main, Source={StaticResource Locator}}" ResizeMode="CanMinimize" Icon="../Resources/Images/amalgamation-logo.png">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Height" Value="25"/>
@@ -46,7 +46,7 @@
             </Grid.ColumnDefinitions>
             <Image Source="../Resources/Images/ESFA_logo.jpg" HorizontalAlignment="Left" Margin="15 5"/>
         </Grid>
-     
+
         <Border Grid.Row="2" BorderThickness="2" BorderBrush="#FF28A197" Margin="15 0" Height="45"
                 Visibility="{Binding ProcessedSuccessfullyVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel>
@@ -78,7 +78,7 @@
 
             <Grid Grid.Column="1" Grid.Row="1" Margin="5 0">
 
-                <ListView BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <ListView x:Name="lstFiles" BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -86,8 +86,18 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="X"
+                                            VerticalAlignment="Top"
+                                            VerticalContentAlignment="Top"
+                                            Width="50"
+                                        Foreground="Red" 
+                                        Command="{Binding ElementName=lstFiles, Path=DataContext.RemoveFileCommand}" 
+                                        CommandParameter="{Binding }" 
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0" ToolTip="Remove file"/>
+                                <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
