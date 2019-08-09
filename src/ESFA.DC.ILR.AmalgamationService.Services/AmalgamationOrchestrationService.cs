@@ -1,7 +1,9 @@
-﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+﻿using ESFA.DC.DateTimeProvider.Interface;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +15,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         private readonly IAmalgamationService _amalgamationService;
         private readonly IAmalgamationOutputService _amalgamationOutputService;
         private readonly IXsdValidationService _xsdValidationService;
+        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IValidationErrorHandler _validationErrorHandler;
         private readonly ICrossValidationService _crossValidationService;
 
         public AmalgamationOrchestrationService(
@@ -20,12 +24,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             IAmalgamationService amalgamationService,
             IAmalgamationOutputService amalgamationOutputService,
             IXsdValidationService xsdValidationService,
+            IDateTimeProvider dateTimeProvider,
+            IValidationErrorHandler validationErrorHandler,
             ICrossValidationService crossValidationService)
         {
             _messageProvider = messageProvider;
             _amalgamationService = amalgamationService;
             _amalgamationOutputService = amalgamationOutputService;
             _xsdValidationService = xsdValidationService;
+            _dateTimeProvider = dateTimeProvider;
+            _validationErrorHandler = validationErrorHandler;
             _crossValidationService = crossValidationService;
         }
 
@@ -36,6 +44,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             try
             {
+                if (!string.IsNullOrEmpty(outputDirectory) && !Directory.Exists(outputDirectory))
+                {
+                    Directory.CreateDirectory(outputDirectory);
+                }
+
+                var outputDirectoryForInstance = $"{outputDirectory}/Amalgamation-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}";
+                Directory.CreateDirectory(outputDirectoryForInstance);
+
                 bool validSchema = true;
 
                 foreach (var file in filePaths)
@@ -50,6 +66,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
                 if (!validSchema)
                 {
+                    await _amalgamationOutputService.ProcessAsync(_validationErrorHandler.ValidationErrors, outputDirectoryForInstance, cancellationToken);
                     return false;
                 }
 
@@ -62,7 +79,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
                 var amalgamationResult = await _amalgamationService.AmalgamateAsync(amalgamationRoots, cancellationToken);
 
-                await _amalgamationOutputService.ProcessAsync(amalgamationResult, outputDirectory, cancellationToken);
+                await _amalgamationOutputService.ProcessAsync(amalgamationResult, outputDirectoryForInstance, cancellationToken);
 
                 return true;
             }

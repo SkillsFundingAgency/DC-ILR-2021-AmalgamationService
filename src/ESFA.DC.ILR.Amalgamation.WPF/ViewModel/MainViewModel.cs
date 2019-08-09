@@ -21,6 +21,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private readonly IAmalgamationManagementService _amalgamationManagementService;
 
         private readonly IMessengerService _messengerService;
+        private readonly IWindowService _windowService;
         private readonly IDialogInteractionService _dialogInteractionService;
         private readonly IWindowsProcessService _windowsProcessService;
 
@@ -37,11 +38,13 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         public MainViewModel(
             IAmalgamationManagementService iAmalgamationManagementService,
             IMessengerService messengerService,
+            IWindowService windowService,
             IDialogInteractionService dialogInteractionService,
             IWindowsProcessService windowsProcessService)
         {
             _amalgamationManagementService = iAmalgamationManagementService;
             _messengerService = messengerService;
+            _windowService = windowService;
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
             _windowsProcessService = windowsProcessService;
@@ -51,6 +54,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
             AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanSubmit);
             OutputDirectoryCommand = new RelayCommand(() => ProcessStart(_outputDirectory));
+            SettingsNavigationCommand = new RelayCommand(SettingsNavigate);
+            AboutNavigationCommand = new RelayCommand(AboutNavigate);
 
             CancelCommand = new RelayCommand(Cancel, () => !_cancellationTokenSource?.IsCancellationRequested ?? false);
         }
@@ -146,6 +151,10 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public RelayCommand OutputDirectoryCommand { get; set; }
 
+        public RelayCommand SettingsNavigationCommand { get; set; }
+
+        public RelayCommand AboutNavigationCommand { get; set; }
+
         public RelayCommand CancelCommand { get; set; }
 
         public void HandleTaskProgressMessage(TaskProgressMessage taskProgressMessage)
@@ -217,6 +226,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private void ProcessStart(string url)
         {
             _windowsProcessService.ProcessStart(url);
+        }
+
+        private void SettingsNavigate()
+        {
+            _windowService.ShowSettingsWindow();
+        }
+
+        private void AboutNavigate()
+        {
+            _windowService.ShowAboutWindow();
         }
     }
 }
