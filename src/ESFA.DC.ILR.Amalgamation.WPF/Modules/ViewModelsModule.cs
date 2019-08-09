@@ -8,6 +8,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
         protected override void Load(ContainerBuilder containerBuilder)
         {
             containerBuilder.RegisterType<MainViewModel>().SingleInstance();
+            containerBuilder.RegisterType<SettingsViewModel>().SingleInstance();
+            containerBuilder.RegisterType<AboutViewModel>().SingleInstance();
         }
     }
 }

@@ -33,26 +33,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _dateTimeProvider = dateTimeProvider;
         }
 
+        public async Task ProcessAsync(IEnumerable<IValidationError> validationErrors, string outputDirectory, CancellationToken cancellationToken)
+        {
+            await _csvService.WriteAsync<IValidationError, ValidationErrorMapper>(validationErrors, $"Rule Violation Report.csv", outputDirectory, cancellationToken);
+        }
+
         public async Task ProcessAsync(IAmalgamationResult amalgamationResult, string outputDirectory, CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrEmpty(outputDirectory) && !Directory.Exists(outputDirectory))
-            {
-                Directory.CreateDirectory(outputDirectory);
-            }
-
-            var datetimeString = _dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss");
-            var outputDirectoryForInstance = $"{outputDirectory}/Amalgamation-{datetimeString}";
-            Directory.CreateDirectory(outputDirectoryForInstance);
-
             var invalidLearnRefNumbers = GetInvalidLearnRefNumbers(amalgamationResult.ValidationErrors);
 
             var validMessage = RemoveInvalidLearnersFromMessage(amalgamationResult.Message, invalidLearnRefNumbers);
 
             if (validMessage != null)
             {
-                // TODO derive file name from sourceFiles
-                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{datetimeString}-01.xml";
-                using (var stream = await _fileService.OpenWriteStreamAsync(amalgamatedFileName, outputDirectoryForInstance, cancellationToken))
+                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}-01.xml";
+                using (var stream = await _fileService.OpenWriteStreamAsync(amalgamatedFileName, outputDirectory, cancellationToken))
                 {
                     _xmlSerializationService.Serialize(validMessage, stream);
                 }
@@ -60,7 +55,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             if (amalgamationResult.ValidationErrors != null)
             {
-                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, $"AmalgamationSummaryReport.csv", outputDirectoryForInstance, cancellationToken);
+                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, $"AmalgamationSummaryReport.csv", outputDirectory, cancellationToken);
             }
         }
 

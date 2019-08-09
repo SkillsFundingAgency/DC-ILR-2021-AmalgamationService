@@ -24,6 +24,10 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
     {
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
+        public SettingsViewModel Settings => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+
+        public AboutViewModel About => ServiceLocator.Current.GetInstance<AboutViewModel>();
+
         public static void Cleanup()
         {
         }

@@ -88,10 +88,13 @@
     <Compile Include="Command\Interface\IAsyncCommand.cs" />
     <Compile Include="Command\Interface\IErrorHandler.cs" />
     <Compile Include="Command\Extensions\TaskExtensions.cs" />
+    <Compile Include="Config\DesktopServiceConfiguration.cs" />
     <Compile Include="Converters\ParameterisedBoolToVisibilityConverter.cs" />
     <Compile Include="Enum\StageKeys.cs" />
     <Compile Include="Interface\IAmalgamationManagementService.cs" />
     <Compile Include="Interface\IMessengerService.cs" />
+    <Compile Include="Interface\ISettingsService.cs" />
+    <Compile Include="Service\Interface\IVersionInformation.cs" />
     <Compile Include="Message\TaskProgressMessage.cs" />
     <Compile Include="Modules\AmalgamationServiceModule.cs" />
     <Compile Include="Modules\DesktopServicesModule.cs" />
@@ -101,11 +104,27 @@
     <Compile Include="Service\DialogInteractionService.cs" />
     <Compile Include="Service\Interface\ICloseable.cs" />
     <Compile Include="Service\Interface\IDialogInteractionService.cs" />
+    <Compile Include="Service\Interface\IWindowService.cs" />
     <Compile Include="Service\Interface\IWindowsProcessService.cs" />
     <Compile Include="Service\MessengerService.cs" />
+    <Compile Include="Service\SettingsService.cs" />
+    <Compile Include="Service\VersionInformation.cs" />
+    <Compile Include="Service\WindowService.cs" />
     <Compile Include="Service\WindowsProcessService.cs" />
+    <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -118,6 +137,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
