@@ -94,7 +94,7 @@
     <Compile Include="Interface\IAmalgamationManagementService.cs" />
     <Compile Include="Interface\IMessengerService.cs" />
     <Compile Include="Interface\ISettingsService.cs" />
-    <Compile Include="Service\Interface\IVersionInformationService.cs" />
+    <Compile Include="Service\Interface\IVersionInformation.cs" />
     <Compile Include="Message\TaskProgressMessage.cs" />
     <Compile Include="Modules\AmalgamationServiceModule.cs" />
     <Compile Include="Modules\DesktopServicesModule.cs" />
@@ -108,7 +108,7 @@
     <Compile Include="Service\Interface\IWindowsProcessService.cs" />
     <Compile Include="Service\MessengerService.cs" />
     <Compile Include="Service\SettingsService.cs" />
-    <Compile Include="Service\VersionInformationService.cs" />
+    <Compile Include="Service\VersionInformation.cs" />
     <Compile Include="Service\WindowService.cs" />
     <Compile Include="Service\WindowsProcessService.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />

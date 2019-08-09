@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.Service.Interface
 {
-    public interface IVersionInformationService
+    public interface IVersionInformation
     {
         string Date { get; }
 

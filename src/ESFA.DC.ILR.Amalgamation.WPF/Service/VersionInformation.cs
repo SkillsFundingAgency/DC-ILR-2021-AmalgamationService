@@ -4,7 +4,7 @@ using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.Service
 {
-    public class VersionInformationService : IVersionInformationService
+    public class VersionInformation : IVersionInformation
     {
         public string Date => DesktopServiceConfiguration.Configuration.ReleaseDate;
 

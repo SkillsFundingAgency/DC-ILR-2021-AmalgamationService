@@ -9,9 +9,9 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 {
     public class AboutViewModel : ViewModelBase
     {
-        private IVersionInformationService _versionInformationService;
+        private IVersionInformation _versionInformationService;
 
-        public AboutViewModel(IVersionInformationService versionInformationService)
+        public AboutViewModel(IVersionInformation versionInformationService)
         {
             _versionInformationService = versionInformationService;
 
