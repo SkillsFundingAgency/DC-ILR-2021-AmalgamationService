@@ -17,6 +17,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         private readonly IXsdValidationService _xsdValidationService;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IValidationErrorHandler _validationErrorHandler;
+        private readonly ICrossValidationService _crossValidationService;
 
         public AmalgamationOrchestrationService(
             IMessageProvider<AmalgamationRoot> messageProvider,
@@ -24,7 +25,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             IAmalgamationOutputService amalgamationOutputService,
             IXsdValidationService xsdValidationService,
             IDateTimeProvider dateTimeProvider,
-            IValidationErrorHandler validationErrorHandler)
+            IValidationErrorHandler validationErrorHandler,
+            ICrossValidationService crossValidationService)
         {
             _messageProvider = messageProvider;
             _amalgamationService = amalgamationService;
@@ -32,6 +34,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _xsdValidationService = xsdValidationService;
             _dateTimeProvider = dateTimeProvider;
             _validationErrorHandler = validationErrorHandler;
+            _crossValidationService = crossValidationService;
         }
 
         public async Task<bool> ProcessAsync(IEnumerable<string> filePaths, string outputDirectory, CancellationToken cancellationToken)
@@ -70,6 +73,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 foreach (var file in filePaths)
                 {
                     var amalgamationRoot = await _messageProvider.ProvideAsync(file, cancellationToken);
+                    amalgamationRoot.Message = _crossValidationService.CrossValidateLearners(amalgamationRoot.Message);
                     amalgamationRoots.Add(amalgamationRoot);
                 }
 

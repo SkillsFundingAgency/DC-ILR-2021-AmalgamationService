@@ -4,6 +4,7 @@ using ESFA.DC.FileService;
 using ESFA.DC.FileService.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.AmalgamationService.Services;
+using ESFA.DC.ILR.AmalgamationService.Services.CrossValidation;
 using ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory;
 using ESFA.DC.ILR.AmalgamationService.Services.Validation;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema;
@@ -31,6 +32,9 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
             containerBuilder.RegisterType<SchemaProvider>().As<ISchemaProvider>();
             containerBuilder.RegisterType<ValidationErrorHandler>().As<IValidationErrorHandler>();
             containerBuilder.RegisterType<XsdValidationService>().As<IXsdValidationService>();
+
+            // Cross Record Validation
+            containerBuilder.RegisterType<CrossValidationService>().As<ICrossValidationService>();
 
             containerBuilder.RegisterType<DateTimeProvider.DateTimeProvider>().As<IDateTimeProvider>();
 

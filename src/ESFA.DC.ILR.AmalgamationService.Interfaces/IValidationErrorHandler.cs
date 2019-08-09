@@ -13,5 +13,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         void XmlValidationErrorHandler(XmlException xmlException, XmlSeverityType? severity, string fileName = null);
 
         void XsdValidationErrorHandler(object sender, ValidationEventArgs e, string fileName = null);
+
+        void CrossRecordValidationErrorHandler(string message, string fileName = null);
     }
 }

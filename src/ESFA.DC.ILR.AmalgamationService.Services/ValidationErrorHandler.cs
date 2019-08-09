@@ -12,6 +12,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
         public IEnumerable<IValidationError> ValidationErrors => _validationErrors;
 
+        public void CrossRecordValidationErrorHandler(string message, string fileName = null)
+        {
+            _validationErrors.Add(new ValidationError(message, XmlSeverityType.Error, 0, 0, fileName));
+        }
+
         public void XmlValidationErrorHandler(XmlSchemaValidationException xmlException, XmlSeverityType? xmlSeverity, string fileName = null)
         {
             _validationErrors.Add(new ValidationError(xmlException.Message, xmlSeverity, xmlException.LineNumber, xmlException.LinePosition, fileName));
