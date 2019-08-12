@@ -27,7 +27,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private CancellationTokenSource _cancellationTokenSource;
         private ObservableCollection<string> _files = new ObservableCollection<string>();
-        private bool _canSubmit;
+        private bool _canMerge;
         private string _taskName;
         private int _currentTask;
         private int _taskCount = 1;
@@ -52,10 +52,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             _outputDirectory = ConfigurationManager.AppSettings[OutputDirectoryKey];
 
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
-            AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanSubmit);
+            AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanMerge);
             OutputDirectoryCommand = new RelayCommand(() => ProcessStart(_outputDirectory));
             SettingsNavigationCommand = new RelayCommand(SettingsNavigate);
             AboutNavigationCommand = new RelayCommand(AboutNavigate);
+            RemoveFileCommand = new RelayCommand<object>(RemoveFile);
 
             CancelCommand = new RelayCommand(Cancel, () => !_cancellationTokenSource?.IsCancellationRequested ?? false);
         }
@@ -73,13 +74,13 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
         }
 
-        public bool CanSubmit
+        public bool CanMerge
         {
-            get => _canSubmit;
+            get => _canMerge;
             set
             {
-                Set(ref _canSubmit, value);
-                if (_canSubmit)
+                Set(ref _canMerge, value);
+                if (_canMerge)
                 {
                     ShowErrorMessage = false;
                 }
@@ -145,7 +146,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public RelayCommand ChooseFileCommand { get; set; }
 
-        public RelayCommand RemoveFileCommand { get; set; }
+        public RelayCommand<object> RemoveFileCommand { get; set; }
 
         public AsyncCommand AmalgamateFilesCommand { get; set; }
 
@@ -166,20 +167,19 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void ShowChooseFileDialog()
         {
-            Files = new ObservableCollection<string>();
             var selectedFiles = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
 
             if (selectedFiles?.Length > 0)
             {
                 selectedFiles.ToList().ForEach(x => Files.Add(x));
-                CanSubmit = Files.Count > 1;
+                CanMerge = Files.Count > 1;
             }
         }
 
         private async Task AmalgamateFiles()
         {
             CurrentStage = StageKeys.Processing;
-            CanSubmit = false;
+            CanMerge = false;
             ShowErrorMessage = false;
 
             try
@@ -236,6 +236,12 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private void AboutNavigate()
         {
             _windowService.ShowAboutWindow();
+        }
+
+        private void RemoveFile(object file)
+        {
+            Files.Remove(file.ToString());
+            CanMerge = Files.Count > 1;
         }
     }
 }

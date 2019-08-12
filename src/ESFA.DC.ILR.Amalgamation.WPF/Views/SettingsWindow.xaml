@@ -6,9 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESFA.DC.ILR.Amalgamation.WPF.Views"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="150" Width="650" WindowStartupLocation="CenterOwner"
+        Title="Settings" Height="150" Width="650" WindowStartupLocation="CenterOwner"
         DataContext="{Binding Settings, Source={StaticResource Locator}}"
-        Icon="../Resources/Images/DSAppIcon.ico"
+        Icon="../Resources/Images/amalgamation-logo.png"
         ResizeMode="NoResize">
     <Grid Margin="10" >
         <Grid.RowDefinitions>

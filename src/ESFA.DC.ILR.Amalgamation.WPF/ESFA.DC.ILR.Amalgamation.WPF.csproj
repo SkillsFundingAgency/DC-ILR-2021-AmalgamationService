@@ -235,9 +235,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\DSAppIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\ESFA_logo.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +262,9 @@
       <Project>{2f7697fa-bf58-455e-a87c-1bf9ac137cc8}</Project>
       <Name>ESFA.DC.ILR.Model.Loose.ReadWrite</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\amalgamation-logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

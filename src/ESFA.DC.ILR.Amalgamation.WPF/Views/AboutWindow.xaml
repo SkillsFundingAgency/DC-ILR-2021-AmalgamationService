@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="About" Height="200" Width="400" WindowStartupLocation="CenterOwner"
         DataContext="{Binding About, Source={StaticResource Locator}}" ResizeMode="NoResize"
-        Icon="../Resources/Images/DSAppIcon.ico">
+        Icon="../Resources/Images/amalgamation-logo.png">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition/>
