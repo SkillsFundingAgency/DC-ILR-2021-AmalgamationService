@@ -52,7 +52,7 @@
             <StackPanel>
                 <TextBlock Text="Amalgamation Completed" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" />
                 <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    Go to amalgamation output folder: <Hyperlink Command="{Binding OutputDirectoryCommand}"><TextBlock Text="{Binding OutputDirectory}"/></Hyperlink>
+                    Go to filemerge output folder: <Hyperlink Command="{Binding OutputDirectoryCommand}"><TextBlock Text="{Binding OutputDirectory}"/></Hyperlink>
                 </TextBlock>
             </StackPanel>
         </Border>
