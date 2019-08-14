@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ESFA.DC.ILR.Amalgamation.WPF"
         mc:Ignorable="d"
         Title="ILR FileMerge" Height="450" Width="800" WindowStartupLocation="CenterScreen"
-        DataContext="{Binding Main, Source={StaticResource Locator}}" ResizeMode="CanMinimize" Icon="../Resources/Images/amalgamation-logo.png">
+        DataContext="{Binding Main, Source={StaticResource Locator}}" ResizeMode="CanMinimize" Icon="../Resources/Images/FM-logo.ico">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Height" Value="25"/>

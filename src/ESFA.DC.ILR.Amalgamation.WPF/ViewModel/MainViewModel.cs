@@ -9,6 +9,7 @@ using ESFA.DC.ILR.Amalgamation.WPF.Enum;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
 using ESFA.DC.ILR.Amalgamation.WPF.Message;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
+using ESFA.DC.Logging.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 
@@ -24,6 +25,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private readonly IWindowService _windowService;
         private readonly IDialogInteractionService _dialogInteractionService;
         private readonly IWindowsProcessService _windowsProcessService;
+        private readonly ILogger _logger;
 
         private CancellationTokenSource _cancellationTokenSource;
         private ObservableCollection<string> _files = new ObservableCollection<string>();
@@ -39,7 +41,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             IMessengerService messengerService,
             IWindowService windowService,
             IDialogInteractionService dialogInteractionService,
-            IWindowsProcessService windowsProcessService)
+            IWindowsProcessService windowsProcessService,
+            ILogger logger)
         {
             _amalgamationManagementService = iAmalgamationManagementService;
             _messengerService = messengerService;
@@ -47,6 +50,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
             _windowsProcessService = windowsProcessService;
+            _logger = logger;
 
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
             AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanMerge);
@@ -195,10 +199,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CurrentStage = StageKeys.ProcessedSuccessfully;
             }
-            catch (Exception ex)
+            catch (OperationCanceledException operationCanceledException)
             {
-                // Error handling
-                var str = ex.InnerException;
+                _logger.LogError("Operation Cancelled", operationCanceledException);
+
+                CurrentStage = StageKeys.ChooseFile;
             }
             finally
             {

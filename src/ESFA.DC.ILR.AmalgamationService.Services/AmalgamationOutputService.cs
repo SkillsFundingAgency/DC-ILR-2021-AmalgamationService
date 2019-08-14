@@ -55,7 +55,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             if (amalgamationResult.ValidationErrors != null)
             {
-                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, $"AmalgamationSummaryReport.csv", outputDirectory, cancellationToken);
+                await _csvService.WriteAsync<IAmalgamationValidationError, AmalgamationValidationErrorMapper>(amalgamationResult.ValidationErrors, $"FileMergeSummaryReport.csv", outputDirectory, cancellationToken);
             }
         }
 

@@ -11,7 +11,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
 
         public string[] GetFileNamesFromOpenFileDialog()
         {
-            var openFileDialog = new OpenFileDialog() { Multiselect = true, Filter = "ILR Files (*.xml)|*.xml" };
+            var openFileDialog = new OpenFileDialog() { Multiselect = true, Filter = "ILR Files (ILR-????????-1920-????????-??????-??.xml)|ILR-????????-1920-????????-??????-??.xml" };
 
             if (openFileDialog.ShowDialog() == true)
             {
