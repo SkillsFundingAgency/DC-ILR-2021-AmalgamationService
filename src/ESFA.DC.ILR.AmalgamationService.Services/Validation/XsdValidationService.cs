@@ -13,15 +13,13 @@
     {
         private readonly ISchemaProvider _schemaProvider;
         private readonly IValidationErrorHandler _validationErrorHandler;
-        private readonly ILogger _logger;
         private bool _isSchemaValid;
         private string _fileName;
 
-        public XsdValidationService(ISchemaProvider schemaProvider, IValidationErrorHandler validationErrorHandler, ILogger logger)
+        public XsdValidationService(ISchemaProvider schemaProvider, IValidationErrorHandler validationErrorHandler)
         {
             _schemaProvider = schemaProvider;
             _validationErrorHandler = validationErrorHandler;
-            _logger = logger;
         }
 
         public bool ValidateSchema(string xmlFileName)
