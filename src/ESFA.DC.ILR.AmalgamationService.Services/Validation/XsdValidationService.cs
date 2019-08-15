@@ -2,6 +2,7 @@
 {
     using ESFA.DC.ILR.AmalgamationService.Interfaces;
     using ESFA.DC.ILR.Model.Loose.ReadWrite.Schema.Interface;
+    using ESFA.DC.Logging.Interfaces;
     using System;
     using System.IO;
     using System.Linq;

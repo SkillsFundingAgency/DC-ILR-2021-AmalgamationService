@@ -1,6 +1,7 @@
 ﻿using ESFA.DC.DateTimeProvider.Interface;
 using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using ESFA.DC.Logging.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +19,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IValidationErrorHandler _validationErrorHandler;
         private readonly ICrossValidationService _crossValidationService;
+        private readonly ILogger _loggger;
 
         public AmalgamationOrchestrationService(
             IMessageProvider<AmalgamationRoot> messageProvider,
@@ -26,7 +28,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             IXsdValidationService xsdValidationService,
             IDateTimeProvider dateTimeProvider,
             IValidationErrorHandler validationErrorHandler,
-            ICrossValidationService crossValidationService)
+            ICrossValidationService crossValidationService,
+            ILogger logger)
         {
             _messageProvider = messageProvider;
             _amalgamationService = amalgamationService;
@@ -35,11 +38,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _dateTimeProvider = dateTimeProvider;
             _validationErrorHandler = validationErrorHandler;
             _crossValidationService = crossValidationService;
+            _loggger = logger;
         }
 
         public async Task<bool> ProcessAsync(IEnumerable<string> filePaths, string outputDirectory, CancellationToken cancellationToken)
         {
-            // TODO:file level pre validation here
             List<AmalgamationRoot> amalgamationRoots = new List<AmalgamationRoot>();
 
             try
@@ -49,7 +52,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                     Directory.CreateDirectory(outputDirectory);
                 }
 
-                var outputDirectoryForInstance = $"{outputDirectory}/Amalgamation-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}";
+                var outputDirectoryForInstance = $"{outputDirectory}/FileMerge-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}";
                 Directory.CreateDirectory(outputDirectoryForInstance);
 
                 bool validSchema = true;
@@ -85,8 +88,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             }
             catch (Exception ex)
             {
-                // TODO : do proper exception handling, logging etc.
-                var error = ex;
+                _loggger.LogError("Critical error occurred", ex);
 
                 return false;
             }

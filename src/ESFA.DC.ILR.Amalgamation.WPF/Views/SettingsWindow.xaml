@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Settings" Height="150" Width="650" WindowStartupLocation="CenterOwner"
         DataContext="{Binding Settings, Source={StaticResource Locator}}"
-        Icon="../Resources/Images/amalgamation-logo.png"
+        Icon="../Resources/Images/FM-logo.ico"
         ResizeMode="NoResize">
     <Grid Margin="10" >
         <Grid.RowDefinitions>

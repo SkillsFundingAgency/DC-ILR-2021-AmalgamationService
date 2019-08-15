@@ -9,6 +9,7 @@ using ESFA.DC.ILR.Amalgamation.WPF.Enum;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
 using ESFA.DC.ILR.Amalgamation.WPF.Message;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
+using ESFA.DC.Logging.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 
@@ -24,6 +25,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private readonly IWindowService _windowService;
         private readonly IDialogInteractionService _dialogInteractionService;
         private readonly IWindowsProcessService _windowsProcessService;
+        private readonly ILogger _logger;
 
         private CancellationTokenSource _cancellationTokenSource;
         private ObservableCollection<string> _files = new ObservableCollection<string>();
@@ -32,7 +34,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private int _currentTask;
         private int _taskCount = 1;
         private StageKeys _currentStage = StageKeys.ChooseFile;
-        private string _outputDirectory;
         private bool _showErrorMessage;
 
         public MainViewModel(
@@ -40,7 +41,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             IMessengerService messengerService,
             IWindowService windowService,
             IDialogInteractionService dialogInteractionService,
-            IWindowsProcessService windowsProcessService)
+            IWindowsProcessService windowsProcessService,
+            ILogger logger)
         {
             _amalgamationManagementService = iAmalgamationManagementService;
             _messengerService = messengerService;
@@ -48,17 +50,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
             _windowsProcessService = windowsProcessService;
-
-            _outputDirectory = ConfigurationManager.AppSettings[OutputDirectoryKey];
+            _logger = logger;
 
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
             AmalgamateFilesCommand = new AsyncCommand(AmalgamateFiles, () => CanMerge);
-            OutputDirectoryCommand = new RelayCommand(() => ProcessStart(_outputDirectory));
+            OutputDirectoryCommand = new RelayCommand(() => ProcessStart(OutputDirectory));
             SettingsNavigationCommand = new RelayCommand(SettingsNavigate);
             AboutNavigationCommand = new RelayCommand(AboutNavigate);
             RemoveFileCommand = new RelayCommand<object>(RemoveFile);
 
-            CancelCommand = new RelayCommand(Cancel, () => !_cancellationTokenSource?.IsCancellationRequested ?? false);
+            CancelCommand = new RelayCommand(Cancel, () => (CurrentStage == StageKeys.Processing) && (!_cancellationTokenSource?.IsCancellationRequested ?? false));
         }
 
         public StageKeys CurrentStage
@@ -112,8 +113,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public string OutputDirectory
         {
-            get => _outputDirectory;
-            set => Set(ref _outputDirectory, value);
+            get => ConfigurationManager.AppSettings[OutputDirectoryKey];
         }
 
         public string TaskName
@@ -167,6 +167,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void ShowChooseFileDialog()
         {
+            CurrentStage = StageKeys.ChooseFile;
             var selectedFiles = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
 
             if (selectedFiles?.Length > 0)
@@ -188,7 +189,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CancelCommand.RaiseCanExecuteChanged();
 
-                var result = await _amalgamationManagementService.ProcessAsync(_files, _outputDirectory, _cancellationTokenSource.Token);
+                var result = await _amalgamationManagementService.ProcessAsync(_files, OutputDirectory, _cancellationTokenSource.Token);
 
                 if (!result)
                 {
@@ -198,15 +199,16 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 CurrentStage = StageKeys.ProcessedSuccessfully;
             }
-            catch (Exception ex)
+            catch (OperationCanceledException operationCanceledException)
             {
-                // Error handling
-                var str = ex.InnerException;
+                _logger.LogError("Operation Cancelled", operationCanceledException);
+
+                CurrentStage = StageKeys.ChooseFile;
             }
             finally
             {
-                CurrentStage = StageKeys.ChooseFile;
                 Files.Clear();
+                CancelCommand.RaiseCanExecuteChanged();
                 _cancellationTokenSource.Dispose();
             }
         }
