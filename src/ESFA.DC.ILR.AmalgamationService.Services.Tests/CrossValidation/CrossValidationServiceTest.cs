@@ -14,12 +14,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
         [Fact]
         public void RemoveDuplicateNumbers_Pass()
         {
+            var filename = "xyz.xml";
             MessageLearner[] learners = new[]
             {
-                new MessageLearner() { LearnRefNumber = "00100308" },
-                new MessageLearner() { LearnRefNumber = "00100308" },
-                new MessageLearner() { LearnRefNumber = "abc" },
-                new MessageLearner() { LearnRefNumber = "ABC" }
+                new MessageLearner() { LearnRefNumber = "00100308", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "00100308", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "abc", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "ABC", Parent = GetParent(filename) }
             };
 
             ILooseMessage message = new Message()
@@ -67,12 +68,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
         [Fact]
         public void RemoveDuplicateNumbers_DestinationProgression_Pass()
         {
+            var filename = "xyz.xml";
             MessageLearnerDestinationandProgression[] progressionList = new[]
             {
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "00100308" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "00100308" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "ABC" }
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "00100308", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "00100308", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "ABC", Parent = GetParent(filename) }
             };
 
             var errorList = new List<IValidationError>();
@@ -95,12 +97,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
         [Fact]
         public void DestinationProgressionReferenceNumbers_NoDuplicateFound()
         {
+            var filename = "xyz.xml";
             MessageLearnerDestinationandProgression[] progressionList = new[]
              {
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "123" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "456" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abcd" }
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "123", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "456", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abcd", Parent = GetParent(filename) }
             };
 
             ILooseMessage message = new Message()
@@ -116,26 +119,32 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
         [Fact]
         public void NotSameObjectResulted_Pass()
         {
+            string filename = "xyz.xml";
             MessageLearner[] learners = new[]
             {
-                new MessageLearner() { LearnRefNumber = "00100308" },
-                new MessageLearner() { LearnRefNumber = "00100308" },
-                new MessageLearner() { LearnRefNumber = "abc" },
-                new MessageLearner() { LearnRefNumber = "456" },
-                new MessageLearner() { LearnRefNumber = "ABC" }
+                new MessageLearner() { LearnRefNumber = "00100308", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "00100308", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "abc", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "456", Parent = GetParent(filename) },
+                new MessageLearner() { LearnRefNumber = "ABC", Parent = GetParent(filename) }
             };
 
             MessageLearnerDestinationandProgression[] progressionList = new[]
             {
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "123" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "ABC" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "xy0011365" },
-                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc" }
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "123", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "ABC", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "xy0011365", Parent = GetParent(filename) },
+                new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc", Parent = GetParent(filename) }
             };
 
             ILooseMessage message = new Message()
             {
                 Learners = learners,
+                Parent = new AmalgamationRoot()
+                {
+                    Filename = "xyz.xml",
+                    Message = new Message()
+                },
                 LearnerDestinationAndProgressions = progressionList
             };
 
@@ -165,5 +174,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
         {
             return new CrossValidationService(validationErrorHandler);
         }
+
+        public Message GetParent(string filename) => new Message()
+            {
+                Parent = new AmalgamationRoot()
+                {
+                    Filename = filename,
+                    Message = new Message()
+                }
+        };
     }
 }

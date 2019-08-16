@@ -53,7 +53,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
 
             foreach (var refNumber in duplicates)
             {
-                _validationErrorHandler.CrossRecordValidationErrorHandler($"Duplicate LearnRefNumber:{refNumber} found for Learners");
+                _validationErrorHandler.CrossRecordValidationErrorHandler($"Duplicate LearnRefNumber:{refNumber} found for Learners", learners.FirstOrDefault().SourceFileName);
             }
 
             return duplicates;
@@ -72,7 +72,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
 
             foreach (var refNumber in duplicates)
             {
-                _validationErrorHandler.CrossRecordValidationErrorHandler($"Duplicate LearnRefNumber:{refNumber} found for DestinationAndProgression");
+                _validationErrorHandler.CrossRecordValidationErrorHandler($"Duplicate LearnRefNumber:{refNumber} found for DestinationAndProgression", progressionList.FirstOrDefault().SourceFileName);
             }
 
             return duplicates;

@@ -43,7 +43,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void Amalgamate_Pass1()
         {
-            DateTime dateTimeNow = DateTime.Now;
+            DateTime dateTimeNow = new DateTime(2019, 08, 16);
 
             var mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(dateTimeNow);
@@ -73,7 +73,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             DateTime date1 = new DateTime(2019, 07, 26);
             DateTime date2 = new DateTime(2018, 07, 26);
 
-            DateTime dateTimeNow = DateTime.Now;
+            DateTime dateTimeNow = new DateTime(2019, 08, 16);
 
             var mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(dateTimeNow);
