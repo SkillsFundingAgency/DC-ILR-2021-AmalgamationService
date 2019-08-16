@@ -121,7 +121,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                 return default(T);
             }
 
-            var inputCollection = inputEntities.Where(e => e != null).SelectMany(selectorFunc);
+            var inputCollection = inputEntities.Where(e => e != null && selectorFunc.Invoke(e) != null).SelectMany(selectorFunc);
 
             var inputGroups = inputCollection.GroupBy(groupByFunc);
             var amalgamatedGroups = inputGroups.Select(amalgamator.Amalgamate);

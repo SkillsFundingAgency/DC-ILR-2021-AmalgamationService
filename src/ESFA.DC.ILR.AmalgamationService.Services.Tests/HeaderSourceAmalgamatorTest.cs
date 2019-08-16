@@ -41,30 +41,59 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         }
 
         [Fact]
-        public void Amalgamate_Pass()
+        public void Amalgamate_Pass1()
         {
-            DateTime date = new DateTime(2019, 07, 26);
+            DateTime dateTimeNow = DateTime.Now;
+
             var mockDateTimeProvider = new Mock<IDateTimeProvider>();
-            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(date);
+            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(dateTimeNow);
+
+            List<MessageHeaderSource> headerSourcesList = new List<MessageHeaderSource>()
+            {
+                new MessageHeaderSource()
+                {
+                    UKPRN = 10000001,
+                    Parent = GetParent()
+                },
+                 new MessageHeaderSource()
+                {
+                    UKPRN = 10000001,
+                    Parent = GetParent()
+                }
+            };
+
+            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
+
+            amalgamate.DateTime.Should().Be(dateTimeNow);
+        }
+
+        [Fact]
+        public void Amalgamate_Pass2()
+        {
+            DateTime date1 = new DateTime(2019, 07, 26);
+            DateTime date2 = new DateTime(2018, 07, 26);
+
+            DateTime dateTimeNow = DateTime.Now;
+
+            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(dateTimeNow);
 
             var objToCompare = new MessageHeaderSource()
             {
-                DateTime = date,
-                ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
+                DateTime = date1,
                 UKPRN = 10000001,
-                SoftwareSupplier = "Skills Funding Agency",
-                SoftwarePackage = "ILR Learner Entry",
-                Release = "1920.1.0.14278",
-                SerialNo = "01",
-                ReferenceData = "ReferenceData",
-                ComponentSetVersion = "ComponentSetVersion"
+                ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIALSENSITIVEPersonal,
+                SoftwareSupplier = "ESFA",
+                SoftwarePackage = "FileMerge",
+                Release = "01",
+                SerialNo = "01"
             };
 
             List<MessageHeaderSource> headerSourcesList = new List<MessageHeaderSource>()
             {
                 new MessageHeaderSource()
                 {
-                    DateTime = date,
+                    DateTime = date1,
                     ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
                     UKPRN = 10000001,
                     SoftwareSupplier = "Skills Funding Agency",
@@ -77,7 +106,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 },
                  new MessageHeaderSource()
                 {
-                    DateTime = date,
+                    DateTime = date2,
                     ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
                     UKPRN = 10000001,
                     SoftwareSupplier = "Skills Funding Agency",
@@ -90,7 +119,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 }
             };
 
-            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _ruleProvider, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
+            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
 
             amalgamate.DateTime.Should().Be(objToCompare.DateTime);
             amalgamate.ProtectiveMarkingString.Should().Be(objToCompare.ProtectiveMarkingString);
@@ -101,64 +130,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             amalgamate.SerialNo.Should().Be(objToCompare.SerialNo);
             amalgamate.ReferenceData.Should().Be(objToCompare.ReferenceData);
             amalgamate.ComponentSetVersion.Should().Be(objToCompare.ComponentSetVersion);
-
-            mockDateTimeProvider.Verify(d => d.GetNowUtc(), Times.AtLeastOnce);
-        }
-
-        [Fact]
-        public void Amalgamate_Errors()
-        {
-            var date = DateTime.UtcNow;
-            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
-            mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(date);
-
-            var objToCompare = new MessageHeaderSource()
-            {
-                DateTime = date,
-                ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
-                UKPRN = 10000001,
-                SoftwareSupplier = "Skills Funding Agency",
-                SoftwarePackage = "ILR Learner Entry",
-                Release = "1920.1.0.14278",
-                SerialNo = "01",
-                ReferenceData = "ReferenceData",
-                ComponentSetVersion = "ComponentSetVersion"
-            };
-
-            List<MessageHeaderSource> headerSourcesList = new List<MessageHeaderSource>()
-            {
-                new MessageHeaderSource()
-                {
-                    DateTime = date,
-                    ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
-                    UKPRN = 10000001,
-                    SoftwareSupplier = "Skills Funding Agency",
-                    SoftwarePackage = "ILR Learner Entry",
-                    Release = "1920.1.0.14278",
-                    SerialNo = "01",
-                    ReferenceData = "ReferenceData",
-                    ComponentSetVersion = "ComponentSetVersion",
-                    Parent = GetParent()
-                },
-                 new MessageHeaderSource()
-                {
-                    DateTime = date,
-                    ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
-                    UKPRN = 10000001,
-                    SoftwareSupplier = "Skills Funding Agency",
-                    SoftwarePackage = "ILR Learner Entry",
-                    Release = "1920.1.0.14278",
-                    SerialNo = "2",
-                    ReferenceData = "ReferenceData",
-                    ComponentSetVersion = "ComponentSetVersion",
-                    Parent = GetParent()
-                }
-            };
-
-            var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _ruleProvider, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
-            var validationError = _amalgamationErrorHandler.Errors;
-
-            validationError.Should().HaveCount(2);
         }
 
         public MessageHeader GetParent() => new MessageHeader()
@@ -173,15 +144,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             }
         };
 
-        public HeaderSourceAmalgamator NewAmalgamator(
-                                       IDateTimeProvider dateTimeProvider = null,
-                                       IRuleProvider ruleProvider = null,
-                                       IAmalgamationErrorHandler amalgamationErrorHandler = null)
+        public HeaderSourceAmalgamator NewAmalgamator(IDateTimeProvider dateTimeProvider = null, IAmalgamationErrorHandler amalgamationErrorHandler = null)
         {
             return new HeaderSourceAmalgamator(
-                                         dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
-                                         ruleProvider ?? Mock.Of<IRuleProvider>(),
-                                         amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
+                dateTimeProvider ?? Mock.Of<IDateTimeProvider>(),
+                amalgamationErrorHandler ?? Mock.Of<IAmalgamationErrorHandler>());
         }
     }
 }

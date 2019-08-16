@@ -194,6 +194,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
                 if (!result)
                 {
                     ShowErrorMessage = true;
+                    CurrentStage = StageKeys.ChooseFile;
                     return;
                 }
 
