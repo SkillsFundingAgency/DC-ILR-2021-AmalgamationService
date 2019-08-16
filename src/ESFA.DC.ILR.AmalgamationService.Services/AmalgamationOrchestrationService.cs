@@ -1,12 +1,14 @@
-﻿using ESFA.DC.DateTimeProvider.Interface;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.Model.Loose.ReadWrite;
-using ESFA.DC.Logging.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ESFA.DC.DateTimeProvider.Interface;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using ESFA.DC.Logging.Interfaces;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
@@ -19,6 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IValidationErrorHandler _validationErrorHandler;
         private readonly ICrossValidationService _crossValidationService;
+        private readonly IParentRelationshipMapper _parentRelationshipMapper;
         private readonly ILogger _loggger;
 
         public AmalgamationOrchestrationService(
@@ -29,6 +32,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             IDateTimeProvider dateTimeProvider,
             IValidationErrorHandler validationErrorHandler,
             ICrossValidationService crossValidationService,
+            IParentRelationshipMapper parentRelationshipMapper,
             ILogger logger)
         {
             _messageProvider = messageProvider;
@@ -38,6 +42,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _dateTimeProvider = dateTimeProvider;
             _validationErrorHandler = validationErrorHandler;
             _crossValidationService = crossValidationService;
+            _parentRelationshipMapper = parentRelationshipMapper;
             _loggger = logger;
         }
 
@@ -76,8 +81,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 foreach (var file in filePaths)
                 {
                     var amalgamationRoot = await _messageProvider.ProvideAsync(file, cancellationToken);
+                   _parentRelationshipMapper.MapChildren(amalgamationRoot as IAmalgamationRoot);
                     amalgamationRoot.Message = _crossValidationService.CrossValidateLearners(amalgamationRoot.Message);
                     amalgamationRoots.Add(amalgamationRoot);
+                }
+
+                if (_validationErrorHandler.ValidationErrors.Any())
+                {
+                    await _amalgamationOutputService.ProcessAsync(_validationErrorHandler.ValidationErrors, outputDirectoryForInstance, cancellationToken);
+                    return false;
                 }
 
                 var amalgamationResult = await _amalgamationService.AmalgamateAsync(amalgamationRoots, cancellationToken);
