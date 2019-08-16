@@ -50,7 +50,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     LearnRefNumber = x.LearnRefNumber ?? string.Empty,
                     Entity = Enum.GetName(typeof(Entity), _entityType),
                     Key = $"{GetKeyPropertyName()} : {_keyValueSelectorFunc(x)}",
-                    Value = prop.GetValue(x).ToString(),
+                    Value = prop.GetValue(x) == null ? string.Empty : prop.GetValue(x).ToString(),
                     ConflictingAttribute = prop.Name,
                     Severity = severity,
                     ErrorType = ErrorType.FieldValueConflict

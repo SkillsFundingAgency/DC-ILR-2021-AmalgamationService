@@ -13,11 +13,14 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         private const string OutputDirectoryDescription = "Choose Output Directory";
         private readonly ISettingsService _settingsService;
         private readonly IDialogInteractionService _dialogInteractionService;
+        private string _outputDirectory;
 
         public SettingsViewModel(ISettingsService settingsService, IDialogInteractionService dialogInteractionService)
         {
             _dialogInteractionService = dialogInteractionService;
             _settingsService = settingsService;
+
+            _outputDirectory = settingsService.OutputDirectory;
 
             ChooseOutputDirectoryCommand = new RelayCommand(ChooseOutputDirectory);
             SaveSettingsCommand = new AsyncCommand<ICloseable>(SaveSettings, CanSave);
@@ -32,10 +35,10 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public string OutputDirectory
         {
-            get => _settingsService.OutputDirectory;
+            get => _outputDirectory;
             set
             {
-                _settingsService.OutputDirectory = value;
+                _outputDirectory = value;
                 RaisePropertyChanged();
                 SaveSettingsCommand.RaiseCanExecuteChanged();
             }
@@ -58,6 +61,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private async Task SaveSettings(ICloseable window)
         {
+            _settingsService.OutputDirectory = OutputDirectory;
+
             await _settingsService.SaveAsync(CancellationToken.None);
 
             window?.Close();
@@ -65,6 +70,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void CloseWindow(ICloseable window)
         {
+            OutputDirectory = _settingsService.OutputDirectory;
             window?.Close();
         }
     }

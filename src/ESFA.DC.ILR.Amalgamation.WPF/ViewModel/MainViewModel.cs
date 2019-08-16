@@ -17,14 +17,13 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private const string OutputDirectoryKey = "OutputDirectory";
-
         private readonly IAmalgamationManagementService _amalgamationManagementService;
 
         private readonly IMessengerService _messengerService;
         private readonly IWindowService _windowService;
         private readonly IDialogInteractionService _dialogInteractionService;
         private readonly IWindowsProcessService _windowsProcessService;
+        private readonly ISettingsService _settingsService;
         private readonly ILogger _logger;
 
         private CancellationTokenSource _cancellationTokenSource;
@@ -42,6 +41,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             IWindowService windowService,
             IDialogInteractionService dialogInteractionService,
             IWindowsProcessService windowsProcessService,
+            ISettingsService settingsService,
             ILogger logger)
         {
             _amalgamationManagementService = iAmalgamationManagementService;
@@ -50,6 +50,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
             _windowsProcessService = windowsProcessService;
+            _settingsService = settingsService;
             _logger = logger;
 
             ChooseFileCommand = new RelayCommand(ShowChooseFileDialog);
@@ -113,7 +114,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         public string OutputDirectory
         {
-            get => ConfigurationManager.AppSettings[OutputDirectoryKey];
+            get => _settingsService.OutputDirectory;
         }
 
         public string TaskName

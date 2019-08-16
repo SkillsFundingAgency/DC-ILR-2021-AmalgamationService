@@ -22,13 +22,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         public IReadOnlyCollection<ILooseLearnerHEFinancialSupport> LearnerHEFinancialSupports
         {
             get => learnerHEFinancialSupportField;
-            set => learnerHEFinancialSupportField = (MessageLearnerLearnerHELearnerHEFinancialSupport[]) value;
+            set => learnerHEFinancialSupportField = (MessageLearnerLearnerHELearnerHEFinancialSupport[])value;
         }
 
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
 
         [XmlIgnore]
-        public string LearnRefNumber => Parent.Parent.LearnRefNumber;
+        public string LearnRefNumber => Parent.LearnRefNumber;
     }
 }
