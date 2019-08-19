@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -173,7 +174,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
             if (selectedFiles?.Length > 0)
             {
-                selectedFiles.ToList().ForEach(x => Files.Add(x));
+                selectedFiles.Where(f => !Files.Select(n => Path.GetFileName(n)).Contains(Path.GetFileName(f), StringComparer.OrdinalIgnoreCase)).ToList().ForEach(x => Files.Add(x));
                 CanMerge = Files.Count > 1;
             }
         }

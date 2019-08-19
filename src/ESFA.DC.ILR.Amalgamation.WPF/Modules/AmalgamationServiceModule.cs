@@ -35,8 +35,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 
             // Cross Record Validation
             containerBuilder.RegisterType<CrossValidationService>().As<ICrossValidationService>();
-
             containerBuilder.RegisterType<DateTimeProvider.DateTimeProvider>().As<IDateTimeProvider>();
+            containerBuilder.RegisterType<InvalidRecordRemovalService>().As<IInvalidRecordRemovalService>();
 
             containerBuilder.RegisterType<AmalgamationOrchestrationService>().As<IAmalgamationOrchestrationService>();
 

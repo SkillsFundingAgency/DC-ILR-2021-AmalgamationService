@@ -18,8 +18,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             var amalgamationValidationErrors = new List<AmalgamationValidationError>();
             var amalgamatedlLDDandHealthProblems = new List<MessageLearnerLLDDandHealthProblem>();
 
-            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
-            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
+            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.LLDDCatNullable, null, "LLDDCat", lLDDandHealthProblems, 21);
+            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.PrimaryLLDDNullable, x => x.LLDDCatNullable, "PrimaryLLDD", lLDDandHealthProblems, 1);
 
             return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
             {
@@ -28,17 +28,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             };
         }
 
-        private void AmalgamateLLDDAndHealthProblem(List<AmalgamationValidationError> amalgamationValidationErrors, List<MessageLearnerLLDDandHealthProblem> lldds, Expression<Func<MessageLearnerLLDDandHealthProblem, long>> selector, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
+        private void AmalgamateLLDDAndHealthProblem(List<AmalgamationValidationError> amalgamationValidationErrors, List<MessageLearnerLLDDandHealthProblem> lldds, Expression<Func<MessageLearnerLLDDandHealthProblem, long?>> selector, Expression<Func<MessageLearnerLLDDandHealthProblem, long?>> groupBy, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
         {
             var selectorFunc = selector.Compile();
 
-            var distinctlLDDandHealthProblems = originallLDDandHealthProblems.SelectMany(v => v).GroupBy(selectorFunc).Select(s => s.First()).ToArray();
+            MessageLearnerLLDDandHealthProblem[] distinctlLDDandHealthProblems = null;
+
+            if (groupBy != null)
+            {
+                var groupByFunc = groupBy.Compile();
+                distinctlLDDandHealthProblems = originallLDDandHealthProblems.SelectMany(v => v).GroupBy(x => new { selectorFunc, groupByFunc }).Where(x => x.Key.groupByFunc != null && x.Key.selectorFunc != null).Select(s => s.First()).ToArray();
+            }
+            else
+            {
+                originallLDDandHealthProblems.SelectMany(v => v).GroupBy(selectorFunc).Where(x => x.Key != null).Select(s => s.First()).ToArray();
+            }
 
             if (distinctlLDDandHealthProblems.Length > maxOccurrence)
             {
                 var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
 
-                amalgamationValidationErrors.AddRange(originallLDDandHealthProblems.SelectMany(v => v).Select(c => new AmalgamationValidationError()
+                amalgamationValidationErrors.AddRange(originallLDDandHealthProblems.SelectMany(v => v).Where(x => selectorFunc(x) != null).Select(c => new AmalgamationValidationError()
                 {
                     File = c.SourceFileName,
                     LearnRefNumber = c.LearnRefNumber,
