@@ -20,7 +20,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             foreach (var groupedDpOutcome in groupedDpOutcomes)
             {
-                if (groupedDpOutcome.Select(v => new { v.OutCodeNullable, v.OutEndDateNullable }).Distinct().Where(x => x.OutCodeNullable != null && x.OutEndDateNullable != null).Count() > 1)
+                if (groupedDpOutcome.Select(v => v.OutEndDateNullable).Where(x => x != null).Distinct().Count() > 1 || groupedDpOutcome.Select(v => v.OutCollDateNullable).Where(x => x != null).Distinct().Count() > 1)
                 {
                     amalgamationValidationErrors.AddRange(groupedDpOutcome.Select(c => new AmalgamationValidationError()
                     {
