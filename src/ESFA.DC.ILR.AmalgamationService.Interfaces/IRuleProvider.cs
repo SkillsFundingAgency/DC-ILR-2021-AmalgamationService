@@ -21,5 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
         IRule<MessageLearnerLearnerFAM[]> BuildLearnerFAMAmalgamationRule();
 
         IRule<MessageLearnerLearningDelivery[]> BuildLearningDeliveryRule();
+
+        IRule<MessageLearnerDestinationandProgressionDPOutcome[]> BuildDPOutcomeRule();
     }
 }

@@ -20,7 +20,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             foreach (var groupedDpOutcome in groupedDpOutcomes)
             {
-                if (groupedDpOutcome.Select(v => new { v.OutCodeNullable, v.OutEndDateNullable }).Distinct().Count() > 1)
+                if (groupedDpOutcome.Select(v => new { v.OutCodeNullable, v.OutEndDateNullable }).Distinct().Where(x => x.OutCodeNullable != null && x.OutEndDateNullable != null).Count() > 1)
                 {
                     amalgamationValidationErrors.AddRange(groupedDpOutcome.Select(c => new AmalgamationValidationError()
                     {
@@ -36,7 +36,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                     continue;
                 }
 
-                amalgamatedDpOutcomes.Add(groupedDpOutcome.Select(v => v).First());
+                amalgamatedDpOutcomes.Add(new MessageLearnerDestinationandProgressionDPOutcome
+                {
+                    OutType = groupedDpOutcome.Key.OutType,
+                    OutCodeNullable = groupedDpOutcome.Key.OutCodeNullable,
+                    OutStartDateNullable = groupedDpOutcome.Key.OutStartDateNullable,
+                    OutEndDateNullable = groupedDpOutcome.Any(x => x.OutEndDateNullable != null) ? groupedDpOutcome.First(x => x.OutEndDateNullable != null).OutEndDateNullable : null,
+                    OutCollDateNullable = groupedDpOutcome.Any(x => x.OutCollDateNullable != null) ? groupedDpOutcome.First(x => x.OutCollDateNullable != null).OutCollDateNullable : null
+                });
             }
 
             return new RuleResult<MessageLearnerDestinationandProgressionDPOutcome[]> { AmalgamatedValue = amalgamatedDpOutcomes.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
