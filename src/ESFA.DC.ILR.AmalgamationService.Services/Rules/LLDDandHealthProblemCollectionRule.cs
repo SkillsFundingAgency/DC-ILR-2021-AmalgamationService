@@ -16,42 +16,39 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
         public IRuleResult<MessageLearnerLLDDandHealthProblem[]> Definition(IEnumerable<MessageLearnerLLDDandHealthProblem[]> lLDDandHealthProblems)
         {
             var amalgamationValidationErrors = new List<AmalgamationValidationError>();
-            var amalgamatedlLDDandHealthProblems = new List<MessageLearnerLLDDandHealthProblem>();
 
-            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.LLDDCat, "LLDDCat", lLDDandHealthProblems, 21);
-            AmalgamateLLDDAndHealthProblem(amalgamationValidationErrors, amalgamatedlLDDandHealthProblems, x => x.PrimaryLLDD, "PrimaryLLDD", lLDDandHealthProblems, 1);
+            var distinctLlddCat = lLDDandHealthProblems.SelectMany(v => v).GroupBy(g => g.LLDDCatNullable).Where(x => x.Key != null).Select(s => s.First()).ToArray();
+
+            if (distinctLlddCat.Length > 21)
+            {
+                amalgamationValidationErrors.AddRange(lLDDandHealthProblems.SelectMany(v => v).Where(x => x.LLDDCatNullable != null).Select(c => GetAmalgamationValidationError(c, "LLDDCat", c.PrimaryLLDDNullable.ToString())));
+            }
+
+            var distinctPrimaryLldd = distinctLlddCat.GroupBy(x => new { x.LLDDCatNullable, x.PrimaryLLDDNullable }).Where(g => g.Key.PrimaryLLDDNullable != null).Select(s => s.First());
+            if (distinctPrimaryLldd.Count() > 1)
+            {
+                amalgamationValidationErrors.AddRange(lLDDandHealthProblems.SelectMany(v => v).Where(x => x.PrimaryLLDDNullable != null).Select(c => GetAmalgamationValidationError(c, "PrimaryLLDD", c.PrimaryLLDDNullable.ToString())));
+            }
 
             return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
             {
-                AmalgamatedValue = amalgamatedlLDDandHealthProblems.ToArray(),
+                AmalgamatedValue = distinctLlddCat.ToArray(),
                 AmalgamationValidationErrors = amalgamationValidationErrors
             };
         }
 
-        private void AmalgamateLLDDAndHealthProblem(List<AmalgamationValidationError> amalgamationValidationErrors, List<MessageLearnerLLDDandHealthProblem> lldds, Expression<Func<MessageLearnerLLDDandHealthProblem, long>> selector, string keyPropertyName, IEnumerable<MessageLearnerLLDDandHealthProblem[]> originallLDDandHealthProblems, int maxOccurrence)
+        private AmalgamationValidationError GetAmalgamationValidationError(MessageLearnerLLDDandHealthProblem lLDDandHealthProblem, string key, string value)
         {
-            var selectorFunc = selector.Compile();
-
-            var distinctlLDDandHealthProblems = originallLDDandHealthProblems.SelectMany(v => v).GroupBy(selectorFunc).Select(s => s.First()).ToArray();
-
-            if (distinctlLDDandHealthProblems.Length > maxOccurrence)
+            return new AmalgamationValidationError()
             {
-                var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
-
-                amalgamationValidationErrors.AddRange(originallLDDandHealthProblems.SelectMany(v => v).Select(c => new AmalgamationValidationError()
-                {
-                    File = c.SourceFileName,
-                    LearnRefNumber = c.LearnRefNumber,
-                    ErrorType = ErrorType.FieldValueConflict,
-                    Entity = _entityName,
-                    Key = $"{keyPropertyName} : {selectorFunc(c)}",
-                    Value = prop.GetValue(c).ToString()
-                }));
-
-                return;
-            }
-
-            lldds.AddRange(distinctlLDDandHealthProblems);
+                File = lLDDandHealthProblem.SourceFileName,
+                LearnRefNumber = lLDDandHealthProblem.LearnRefNumber,
+                ErrorType = ErrorType.FieldValueConflict,
+                Entity = _entityName,
+                Key = key,
+                Value = value,
+                Severity = Severity.Error
+            };
         }
     }
 }

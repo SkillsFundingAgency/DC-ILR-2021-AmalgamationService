@@ -22,6 +22,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         private readonly IValidationErrorHandler _validationErrorHandler;
         private readonly ICrossValidationService _crossValidationService;
         private readonly IParentRelationshipMapper _parentRelationshipMapper;
+        private readonly IInvalidRecordRemovalService _invalidRecordRemovalService;
         private readonly ILogger _loggger;
 
         public AmalgamationOrchestrationService(
@@ -33,6 +34,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             IValidationErrorHandler validationErrorHandler,
             ICrossValidationService crossValidationService,
             IParentRelationshipMapper parentRelationshipMapper,
+            IInvalidRecordRemovalService invalidRecordRemovalService,
             ILogger logger)
         {
             _messageProvider = messageProvider;
@@ -43,6 +45,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _validationErrorHandler = validationErrorHandler;
             _crossValidationService = crossValidationService;
             _parentRelationshipMapper = parentRelationshipMapper;
+            _invalidRecordRemovalService = invalidRecordRemovalService;
             _loggger = logger;
         }
 
@@ -94,6 +97,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
                 var amalgamationResult = await _amalgamationService.AmalgamateAsync(amalgamationRoots, cancellationToken);
 
+                amalgamationResult = _invalidRecordRemovalService.RemoveInvalidLearners(amalgamationResult);
                 await _amalgamationOutputService.ProcessAsync(amalgamationResult, outputDirectoryForInstance, cancellationToken);
 
                 return true;
