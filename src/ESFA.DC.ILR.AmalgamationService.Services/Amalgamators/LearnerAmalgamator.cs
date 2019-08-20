@@ -11,7 +11,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     {
         private readonly IAmalgamator<MessageLearnerLearnerEmploymentStatus> _learnerEmploymentStatusAmalgamator;
         private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
-        private readonly IAmalgamator<MessageLearnerLLDDandHealthProblem> _lLDDandHealthProblemAmalgamator;
         private readonly IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> _providerSpecLearnerMonitoringAmalgamator;
         private IRule<string> _standardRuleString;
         private IRule<long?> _standardRuleLong;
@@ -26,7 +25,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<MessageLearnerLearningDelivery[]> _learningDeliveryRule;
 
         public LearnerAmalgamator(
-            IAmalgamator<MessageLearnerLLDDandHealthProblem> lLDDandHealthProblemAmalgamator,
             IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> providerSpecLearnerMonitoringAmalgamator,
             IAmalgamator<MessageLearnerLearnerEmploymentStatus> learnerEmploymentStatusAmalgamator,
             IAmalgamator<MessageLearnerLearnerHE> learnerHEAmalgamator,
@@ -34,7 +32,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.Learner, (x) => x.LearnRefNumber, amalgamationErrorHandler)
         {
-            _lLDDandHealthProblemAmalgamator = lLDDandHealthProblemAmalgamator;
             _providerSpecLearnerMonitoringAmalgamator = providerSpecLearnerMonitoringAmalgamator;
             _learnerEmploymentStatusAmalgamator = learnerEmploymentStatusAmalgamator;
             _learnerHEAmalgamator = learnerHEAmalgamator;

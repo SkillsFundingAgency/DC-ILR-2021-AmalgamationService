@@ -30,6 +30,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                         Entity = _entityName,
                         Key = $"OutType : {c.OutType}, OutCode : {c.OutCodeNullable}, OutStartDate : {c.OutStartDateNullable}",
                         Value = $"OutEndDate : {c.OutEndDateNullable}, OutCollDate : {c.OutCollDateNullable}",
+                        Severity = Severity.Error
                     }));
 
                     continue;

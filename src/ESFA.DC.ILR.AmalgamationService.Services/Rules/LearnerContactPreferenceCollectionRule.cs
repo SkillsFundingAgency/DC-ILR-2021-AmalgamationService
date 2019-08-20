@@ -42,7 +42,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                         ErrorType = ErrorType.MaxOccurrenceExceeded,
                         Entity = _entityName,
                         Key = $"ContPrefType : {c.ContPrefType}",
-                        Value = c.ContPrefCode.ToString()
+                        Value = c.ContPrefCode.ToString(),
+                        Severity = Severity.Error
                     }));
 
                     continue;
