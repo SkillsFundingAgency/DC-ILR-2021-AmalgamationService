@@ -49,5 +49,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
         {
             return new LearningDeliveryRule();
         }
+
+        public IRule<MessageLearnerDestinationandProgressionDPOutcome[]> BuildDPOutcomeRule()
+        {
+            return new DPOutcomeRule();
+        }
     }
 }

@@ -29,40 +29,73 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             foreach (var type in contPrefTypes)
             {
+                if (!contactPreferencesList.Any(x => x.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue;
+                }
+
                 var groupedContactPreferencesForType = contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).GroupBy(x => new { x.ContPrefType, x.ContPrefCodeNullable }).Select(c => c.First()).ToArray();
 
                 var amlgamatedContactPreferencesForType = new List<MessageLearnerContactPreference>();
 
-                if (groupedContactPreferencesForType.Count() > type.Value)
+                if (type.Key.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase))
                 {
-                    amalgamationValidationErrors.AddRange(contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).Select(c => new AmalgamationValidationError()
+                    // RUI3 takes precedence over all other RUI records. Only one record of RUI3, 4 or 5 should be stored. Other RUI records discarded if RUI3, 4 or 5 is present.
+                    if (groupedContactPreferencesForType.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
                     {
-                        File = c.SourceFileName,
-                        LearnRefNumber = c.LearnRefNumber,
-                        ErrorType = ErrorType.MaxOccurrenceExceeded,
-                        Entity = _entityName,
-                        Key = $"ContPrefType : {c.ContPrefType}",
-                        Value = c.ContPrefCode.ToString(),
-                        Severity = Severity.Error
-                    }));
+                        amlgamatedContactPreferencesForType.Add(groupedContactPreferencesForType.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
+                    }
+                    else
+                    {
+                        if (groupedContactPreferencesForType.Count() > type.Value)
+                        {
+                            amalgamationValidationErrors.AddRange(contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).Select(GetAmalgamationValidationError));
+                            continue;
+                        }
 
-                    continue;
+                        // Append unique records of RUI until max occurrence reached, unless there is RUI 3,4,5 exists.
+                        amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Take(type.Value));
+                    }
                 }
 
-                if (groupedContactPreferencesForType.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
+                if (type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase))
                 {
-                    amlgamatedContactPreferencesForType.Add(groupedContactPreferencesForType.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
-                }
+                    // Append all PMC 3, 4 or 5 records
+                    if (groupedContactPreferencesForType.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
+                    {
+                        amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Where(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
+                    }
+                    else
+                    {
+                        if (groupedContactPreferencesForType.Count() > type.Value)
+                        {
+                            amalgamationValidationErrors.AddRange(contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).Select(GetAmalgamationValidationError));
+                            continue;
+                        }
 
-                if (!(type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase) && amlgamatedContactPreferencesForType.Any()))
-                {
-                    amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Where(x => x.ContPrefCodeNullable != 3 && x.ContPrefCodeNullable != 4 && x.ContPrefCodeNullable != 5).Take(type.Value - amlgamatedContactPreferencesForType.Count()));
+                        // Append unique records of PMC until max occurrence reached, unless there is PMC 3,4,5 exists.
+                        amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Take(type.Value));
+                    }
                 }
 
                 amalgamatedContactPreferences.AddRange(amlgamatedContactPreferencesForType);
             }
 
             return new RuleResult<MessageLearnerContactPreference[]> { AmalgamatedValue = amalgamatedContactPreferences.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
+        }
+
+        private AmalgamationValidationError GetAmalgamationValidationError(MessageLearnerContactPreference c)
+        {
+            return new AmalgamationValidationError()
+            {
+                File = c.SourceFileName,
+                LearnRefNumber = c.LearnRefNumber,
+                ErrorType = ErrorType.MaxOccurrenceExceeded,
+                Entity = _entityName,
+                Key = $"ContPrefType : {c.ContPrefType}",
+                Value = c.ContPrefCode.ToString(),
+                Severity = Severity.Error
+            };
         }
     }
 }
