@@ -45,7 +45,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         public IAmalgamationRoot AmalgamationRoot { get; set; }
 
         [XmlIgnore]
-        public string SourceFileName => AmalgamationRoot.Filename;
+        public string SourceFileName => Parent.Filename;
 
         [XmlIgnore]
         public string LearnRefNumber => null;
