@@ -51,7 +51,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     Entity = Enum.GetName(typeof(Entity), _entityType),
                     Key = $"{GetKeyPropertyName()} : {_keyValueSelectorFunc(x)}",
                     Value = prop.GetValue(x) == null ? string.Empty : prop.GetValue(x).ToString(),
-                    ConflictingAttribute = prop.Name,
+                    ConflictingAttribute = prop.Name.Replace("Nullable", string.Empty),
                     Severity = severity,
                     ErrorType = ErrorType.FieldValueConflict
                 }));
@@ -121,15 +121,19 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                 return default(T);
             }
 
-            var inputCollection = inputEntities.Where(e => e != null).Select(selectorFunc).Where(x => x != null).SelectMany(x => x);
-
-            var inputGroups = inputCollection.GroupBy(groupByFunc);
-            var amalgamatedGroups = inputGroups.Select(amalgamator.Amalgamate);
+            var amalgamatedGroups = inputEntities
+                    .Where(e => e != null)
+                    .Select(selectorFunc)
+                    .Where(x => x != null)
+                    .SelectMany(x => x)
+                    .GroupBy(groupByFunc)
+                    .Select(amalgamator.Amalgamate)
+                    .ToArray();
 
             if (amalgamatedGroups.Any())
             {
                 var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
-                prop.SetValue(entity, amalgamatedGroups.ToArray<TValue>());
+                prop.SetValue(entity, amalgamatedGroups);
             }
 
             return entity;

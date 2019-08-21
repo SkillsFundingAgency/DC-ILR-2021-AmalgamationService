@@ -110,7 +110,12 @@
 
             <Button Grid.Row="3" Content="Cancel" Command="{Binding CancelCommand}"/>
 
-            <TextBlock Grid.Column="1" Grid.Row="3" Text="Validation Error found within XML document. Please see error report." Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" Visibility="{Binding ShowErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" Visibility="{Binding ShowErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    Validation Error found within XML document. Please see error report : 
+                <Hyperlink Command="{Binding OutputDirectoryCommand}">
+                    <TextBlock Text="{Binding OutputDirectory}"/>
+                </Hyperlink>
+            </TextBlock>
         </Grid>
     </Grid>
 </Window>
