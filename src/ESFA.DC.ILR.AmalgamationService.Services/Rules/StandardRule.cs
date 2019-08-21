@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,9 +14,18 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 return new RuleResult<T>();
             }
 
-            var distinctValues = values.Distinct().Where(x => x != null).ToList();
+            IEnumerable<T> distinctValues;
 
-            if (distinctValues.Count == 1)
+            if (typeof(T) == typeof(string))
+            {
+                distinctValues = (IEnumerable<T>)((IEnumerable<string>)values).Distinct(StringComparer.CurrentCultureIgnoreCase).Where(x => x != null).ToList();
+            }
+            else
+            {
+                distinctValues = values.Distinct().Where(x => x != null).ToList();
+            }
+
+            if (distinctValues.Count() == 1)
             {
                 return new RuleResult<T>()
                 {
