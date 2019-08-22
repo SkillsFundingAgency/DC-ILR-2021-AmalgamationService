@@ -4,6 +4,7 @@ using ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract;
 using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 {
@@ -15,7 +16,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<string> _standardRuleString;
         private IRule<long?> _standardRuleLong;
         private IRule<DateTime?> _standardRuleDateTime;
-        private IRule<string> _addressRule;
+        private IRule<MessageLearner> _addressRule;
         private IRule<long?> _ulnRule;
         private IRule<long?> _alsCostrule;
         private IRule<string> _postCodeRule;
@@ -79,10 +80,19 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.PostcodePrior, _postCodeRule.Definition, models, messageLearner);
             ApplyRule(s => s.Postcode, _postCodeRule.Definition, models, messageLearner);
-            ApplyRule(s => s.AddLine1, _addressRule.Definition, models, messageLearner, Severity.Warning);
-            ApplyRule(s => s.AddLine2, _addressRule.Definition, models, messageLearner, Severity.Warning);
-            ApplyRule(s => s.AddLine3, _addressRule.Definition, models, messageLearner, Severity.Warning);
-            ApplyRule(s => s.AddLine4, _addressRule.Definition, models, messageLearner, Severity.Warning);
+
+            ApplyMultiplePropertyRule(
+                new List<Expression<Func<MessageLearner, string>>>()
+                {
+                s => s.AddLine1,
+                s => s.AddLine2,
+                s => s.AddLine3,
+                s => s.AddLine4
+                },
+                _addressRule.Definition,
+                models,
+                messageLearner);
+
             ApplyRule(s => s.TelNo, _standardRuleString.Definition, models, messageLearner);
 
             ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, Severity.Warning);

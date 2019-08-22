@@ -1,4 +1,5 @@
 ﻿using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using System.Collections.Generic;
 
 namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
@@ -6,7 +7,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
     {
         IRule<T> BuildStandardRule<T>();
 
-        IRule<string> BuildAddressRule();
+        IRule<MessageLearner> BuildAddressRule();
 
         IRule<long?> BuildUlnRule();
 

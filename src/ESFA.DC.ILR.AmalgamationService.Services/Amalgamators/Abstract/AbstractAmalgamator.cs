@@ -60,6 +60,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             return entity;
         }
 
+        protected T ApplyMultiplePropertyRule<TValue>(IEnumerable<Expression<Func<T, TValue>>> selectors, Func<IEnumerable<T>, IRuleResult<T>> rule, IEnumerable<T> inputEntities, T entity)
+        {
+            var ruleResult = rule.Invoke(inputEntities);
+            foreach (var selector in selectors)
+            {
+                var prop = (PropertyInfo)((MemberExpression)selector.Body).Member;
+
+                prop.SetValue(entity, prop.GetValue(ruleResult.AmalgamatedValue));
+            }
+
+            _amalgamationErrorHandler.HandleErrors(ruleResult.AmalgamationValidationErrors);
+
+            return entity;
+        }
+
         protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, TValue[]>> selector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity)
         {
             if (inputEntities == null || !inputEntities.Any())
