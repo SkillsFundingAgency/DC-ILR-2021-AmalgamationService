@@ -86,7 +86,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 SoftwareSupplier = "ESFA",
                 SoftwarePackage = "FileMerge",
                 Release = "01",
-                SerialNo = "01"
+                SerialNo = "00"
             };
 
             List<MessageHeaderSource> headerSourcesList = new List<MessageHeaderSource>()
