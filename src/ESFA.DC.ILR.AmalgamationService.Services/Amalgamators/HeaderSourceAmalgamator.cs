@@ -31,7 +31,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
                 SoftwareSupplier = "ESFA",
                 SoftwarePackage = "FileMerge",
                 Release = "01",
-                SerialNo = "01"
+                SerialNo = "00"
             };
 
             return source;
