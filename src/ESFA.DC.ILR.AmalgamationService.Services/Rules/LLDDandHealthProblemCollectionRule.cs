@@ -21,7 +21,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 
             if (distinctLlddCat.Length > 21)
             {
-                amalgamationValidationErrors.AddRange(lLDDandHealthProblems.SelectMany(v => v).Where(x => x.LLDDCatNullable != null).Select(c => GetAmalgamationValidationError(c, "LLDDCat", c.PrimaryLLDDNullable.ToString())));
+                amalgamationValidationErrors.AddRange(lLDDandHealthProblems.SelectMany(v => v).Where(x => x.LLDDCatNullable != null).Select(c => GetAmalgamationValidationError(c, "LLDDCat", c.LLDDCatNullable.ToString())));
             }
 
             var distinctPrimaryLldd = distinctLlddCat.GroupBy(x => new { x.LLDDCatNullable, x.PrimaryLLDDNullable }).Where(g => g.Key.PrimaryLLDDNullable != null).Select(s => s.First());

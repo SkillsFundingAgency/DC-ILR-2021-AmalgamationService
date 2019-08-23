@@ -14,6 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Mapper
             Map(m => m.File).Name("File");
             Map(m => m.Value).Name("Value");
             Map(m => m.ErrorType).Name("ErrorType");
+            Map(m => m.Severity).Name("Severity");
         }
     }
 }
