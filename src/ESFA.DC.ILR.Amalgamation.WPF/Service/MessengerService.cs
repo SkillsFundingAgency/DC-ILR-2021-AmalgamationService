@@ -1,5 +1,5 @@
 ﻿using System;
-using ESFA.DC.ILR.Amalgamation.WPF.Interface;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.Service

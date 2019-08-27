@@ -10,6 +10,8 @@ using ESFA.DC.ILR.Amalgamation.WPF.Enum;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
 using ESFA.DC.ILR.Amalgamation.WPF.Message;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Services;
 using ESFA.DC.Logging.Interfaces;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -50,6 +52,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             _windowService = windowService;
             _dialogInteractionService = dialogInteractionService;
             _messengerService.Register<TaskProgressMessage>(this, HandleTaskProgressMessage);
+            _messengerService.Register<AmalgamationSummary>(this, x => AmalgamationSummary = x);
             _windowsProcessService = windowsProcessService;
             _settingsService = settingsService;
             _logger = logger;
@@ -61,8 +64,11 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             AboutNavigationCommand = new RelayCommand(AboutNavigate);
             RemoveFileCommand = new RelayCommand<object>(RemoveFile);
 
+            MergeAnotherSetOfFilesCommand = new RelayCommand(() => CurrentStage = StageKeys.ChooseFile);
             CancelCommand = new RelayCommand(Cancel, () => (CurrentStage == StageKeys.Processing) && (!_cancellationTokenSource?.IsCancellationRequested ?? false));
         }
+
+        public AmalgamationSummary AmalgamationSummary { get; set; }
 
         public StageKeys CurrentStage
         {
@@ -74,6 +80,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
                 RaisePropertyChanged(nameof(ChooseFileVisibility));
                 RaisePropertyChanged(nameof(ProcessingVisibility));
                 RaisePropertyChanged(nameof(ProcessedSuccessfullyVisibility));
+                RaisePropertyChanged(nameof(AmalgamationSummary));
             }
         }
 
@@ -92,7 +99,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
         }
 
-        public bool ChooseFileVisibility => CurrentStage == StageKeys.ChooseFile;
+        public bool ChooseFileVisibility => CurrentStage != StageKeys.ProcessedSuccessfully;
 
         public bool ProcessingVisibility => CurrentStage == StageKeys.Processing;
 
@@ -149,6 +156,8 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         public RelayCommand ChooseFileCommand { get; set; }
 
         public RelayCommand<object> RemoveFileCommand { get; set; }
+
+        public RelayCommand MergeAnotherSetOfFilesCommand { get; }
 
         public AsyncCommand AmalgamateFilesCommand { get; set; }
 
