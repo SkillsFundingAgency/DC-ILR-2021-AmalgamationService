@@ -7,6 +7,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
     {
         IRule<T> BuildStandardRule<T>();
 
+        IRule<T> BuildStandardRuleFirstItem<T>();
+
         IRule<MessageLearner> BuildAddressRule();
 
         IRule<long?> BuildUlnRule();

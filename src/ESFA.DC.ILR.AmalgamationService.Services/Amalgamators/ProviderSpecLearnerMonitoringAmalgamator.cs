@@ -9,21 +9,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
     public class ProviderSpecLearnerMonitoringAmalgamator : AbstractAmalgamator<MessageLearnerProviderSpecLearnerMonitoring>, IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring>
     {
         private IRule<string> _standardRuleString;
-        private IRule<long?> _standardRuleLong;
+        private IRule<string> _standardRuleFirstString;
 
         public ProviderSpecLearnerMonitoringAmalgamator(IRuleProvider ruleProvider, IAmalgamationErrorHandler amalgamationErrorHandler)
             : base(Entity.ProviderSpecLearnerMonitoring, (x) => x.ProvSpecLearnMonOccur.ToString(), amalgamationErrorHandler)
         {
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
-            _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
+            _standardRuleFirstString = ruleProvider.BuildStandardRuleFirstItem<string>();
         }
 
         public MessageLearnerProviderSpecLearnerMonitoring Amalgamate(IEnumerable<MessageLearnerProviderSpecLearnerMonitoring> models)
         {
             var messageLearnerProviderSpecLearnerMonitoring = new MessageLearnerProviderSpecLearnerMonitoring();
 
-            ApplyRule(s => s.ProvSpecLearnMon, _standardRuleString.Definition, models, messageLearnerProviderSpecLearnerMonitoring, Severity.Warning);
-            ApplyRule(s => s.ProvSpecLearnMonOccur, _standardRuleString.Definition, models, messageLearnerProviderSpecLearnerMonitoring);
+            ApplyRule(s => s.ProvSpecLearnMonOccur, _standardRuleString.Definition, models, messageLearnerProviderSpecLearnerMonitoring, Severity.Warning);
+            ApplyRule(s => s.ProvSpecLearnMon, _standardRuleFirstString.Definition, models, messageLearnerProviderSpecLearnerMonitoring, Severity.Warning);
 
             return messageLearnerProviderSpecLearnerMonitoring;
         }

@@ -11,6 +11,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
             return new StandardRule<T>();
         }
 
+        public IRule<T> BuildStandardRuleFirstItem<T>()
+        {
+            return new StandardRuleFirstItem<T>();
+        }
+
         public IRule<MessageLearner> BuildAddressRule()
         {
             return new AddressRule();

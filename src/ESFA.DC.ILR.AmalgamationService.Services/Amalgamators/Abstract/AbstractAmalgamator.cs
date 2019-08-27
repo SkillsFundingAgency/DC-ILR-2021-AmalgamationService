@@ -44,6 +44,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             }
             else
             {
+                if (severity == Severity.Warning && value.AmalgamatedValue != null)
+                {
+                    prop.SetValue(entity, value.AmalgamatedValue);
+                }
+
                 _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
                 {
                     File = x.SourceFileName,

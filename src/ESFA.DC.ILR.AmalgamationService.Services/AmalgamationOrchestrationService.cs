@@ -104,7 +104,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 amalgamationResult = _invalidRecordRemovalService.RemoveInvalidLearners(amalgamationResult);
                 await _amalgamationOutputService.ProcessAsync(amalgamationResult, outputDirectoryForInstance, cancellationToken);
 
-                var learnersInAllFiles = amalgamationRoots.SelectMany(x => x.Message.Learners).Count();
+                var learnersInAllFiles = amalgamationRoots.SelectMany(x => x.Message.Learners).GroupBy(y => y.LearnRefNumber).Count();
                 var learnersInAmalgamatedFile = amalgamationResult.Message.Learners.Count();
                 _messengerService.Send(new AmalgamationSummary()
                 {
