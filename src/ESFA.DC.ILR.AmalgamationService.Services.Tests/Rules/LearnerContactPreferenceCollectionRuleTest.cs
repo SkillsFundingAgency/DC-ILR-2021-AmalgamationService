@@ -32,7 +32,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         }
 
         [Fact]
-        public void Rui3PMC345()
+        public void Rui3ExistsNoPMC()
         {
             var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
 
@@ -45,8 +45,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
-            result.AmalgamatedValue.Count().Equals(5);
+            result.AmalgamatedValue.Count().Equals(1);
             result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase)).Count().Equals(1);
+            result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase)).Count().Equals(0);
+        }
+
+        [Fact]
+        public void RuiManyPMCMany()
+        {
+            var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
+
+            var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypePMC), GetMessageLearnerContactPreference(5, contPrefTypePMC) };
+            var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(5, contPrefTypePMC), GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(4, contPrefTypePMC) };
+
+            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            {
+                input1, input2
+            };
+
+            var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
+            result.AmalgamatedValue.Count().Equals(1);
+            result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase)).Count().Equals(2);
             result.AmalgamatedValue.Where(x => x.ContPrefType.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase)).Count().Equals(3);
         }
 

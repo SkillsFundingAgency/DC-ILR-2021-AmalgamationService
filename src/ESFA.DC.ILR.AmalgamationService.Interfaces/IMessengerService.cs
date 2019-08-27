@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace ESFA.DC.ILR.Amalgamation.WPF.Interface
+namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 {
     public interface IMessengerService
     {

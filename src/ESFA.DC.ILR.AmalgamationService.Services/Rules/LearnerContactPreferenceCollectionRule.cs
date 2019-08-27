@@ -52,18 +52,20 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                             amalgamationValidationErrors.AddRange(contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).Select(GetAmalgamationValidationError));
                             continue;
                         }
-
-                        // Append unique records of RUI until max occurrence reached, unless there is RUI 3,4,5 exists.
-                        amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Take(type.Value));
+                        else
+                        {
+                            // Append unique records of RUI until max occurrence reached, unless there is RUI 3,4,5 exists.
+                            amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Take(type.Value));
+                        }
                     }
                 }
 
                 if (type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase))
                 {
                     // Append all PMC 3, 4 or 5 records
-                    if (groupedContactPreferencesForType.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
+                    if (amalgamatedContactPreferences.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
                     {
-                        amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Where(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
+                        continue;
                     }
                     else
                     {
@@ -72,9 +74,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                             amalgamationValidationErrors.AddRange(contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).Select(GetAmalgamationValidationError));
                             continue;
                         }
-
-                        // Append unique records of PMC until max occurrence reached, unless there is PMC 3,4,5 exists.
-                        amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Take(type.Value));
+                        else
+                        {
+                            // Append unique records of PMC until max occurrence reached, unless there is PMC 3,4,5 exists.
+                            amlgamatedContactPreferencesForType.AddRange(groupedContactPreferencesForType.Take(type.Value));
+                        }
                     }
                 }
 

@@ -3,6 +3,7 @@ using Autofac;
 using ESFA.DC.ILR.Amalgamation.WPF.Interface;
 using ESFA.DC.ILR.Amalgamation.WPF.Service;
 using ESFA.DC.ILR.Amalgamation.WPF.Service.Interface;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
 
 namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 {

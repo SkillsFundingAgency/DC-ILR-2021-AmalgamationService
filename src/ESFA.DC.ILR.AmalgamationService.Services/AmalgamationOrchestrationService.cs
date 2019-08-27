@@ -1,14 +1,15 @@
-﻿using System;
+﻿using ESFA.DC.DateTimeProvider.Interface;
+using ESFA.DC.ILR.AmalgamationService.Interfaces;
+using ESFA.DC.ILR.AmalgamationService.Interfaces.Enum;
+using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using ESFA.DC.Logging.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ESFA.DC.DateTimeProvider.Interface;
-using ESFA.DC.ILR.AmalgamationService.Interfaces;
-using ESFA.DC.ILR.Model.Loose.ReadWrite;
-using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
-using ESFA.DC.Logging.Interfaces;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services
 {
@@ -23,6 +24,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         private readonly ICrossValidationService _crossValidationService;
         private readonly IParentRelationshipMapper _parentRelationshipMapper;
         private readonly IInvalidRecordRemovalService _invalidRecordRemovalService;
+        private readonly IMessengerService _messengerService;
         private readonly ILogger _loggger;
 
         public AmalgamationOrchestrationService(
@@ -35,6 +37,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             ICrossValidationService crossValidationService,
             IParentRelationshipMapper parentRelationshipMapper,
             IInvalidRecordRemovalService invalidRecordRemovalService,
+            IMessengerService messengerService,
             ILogger logger)
         {
             _messageProvider = messageProvider;
@@ -46,6 +49,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
             _crossValidationService = crossValidationService;
             _parentRelationshipMapper = parentRelationshipMapper;
             _invalidRecordRemovalService = invalidRecordRemovalService;
+            _messengerService = messengerService;
             _loggger = logger;
         }
 
@@ -84,7 +88,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
                 foreach (var file in filePaths)
                 {
                     var amalgamationRoot = await _messageProvider.ProvideAsync(file, cancellationToken);
-                   _parentRelationshipMapper.MapChildren(amalgamationRoot as IAmalgamationRoot);
+                    _parentRelationshipMapper.MapChildren(amalgamationRoot as IAmalgamationRoot);
                     amalgamationRoot.Message = _crossValidationService.CrossValidateLearners(amalgamationRoot.Message);
                     amalgamationRoots.Add(amalgamationRoot);
                 }
@@ -99,6 +103,18 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
                 amalgamationResult = _invalidRecordRemovalService.RemoveInvalidLearners(amalgamationResult);
                 await _amalgamationOutputService.ProcessAsync(amalgamationResult, outputDirectoryForInstance, cancellationToken);
+
+                var learnersInAllFiles = amalgamationRoots.SelectMany(x => x.Message.Learners).Count();
+                var learnersInAmalgamatedFile = amalgamationResult.Message.Learners.Count();
+                _messengerService.Send(new AmalgamationSummary()
+                {
+                    FileLearnerCount = amalgamationRoots.Select(x => new KeyValuePair<string, int>(x.Filename, x.Message.Learners.Count())),
+                    LearnersInAllFiles = learnersInAllFiles,
+                    AmalgamationErrors = amalgamationResult.ValidationErrors.Count(x => x.Severity == Severity.Error),
+                    AmalgamationWarnings = amalgamationResult.ValidationErrors.Count(x => x.Severity == Severity.Warning),
+                    LearnersInAmalgamatedFile = learnersInAmalgamatedFile,
+                    RejectedLearners = learnersInAllFiles - learnersInAmalgamatedFile
+                });
 
                 return true;
             }

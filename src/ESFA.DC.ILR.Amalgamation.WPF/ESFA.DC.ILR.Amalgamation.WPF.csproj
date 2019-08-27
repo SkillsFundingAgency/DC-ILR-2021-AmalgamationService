@@ -91,7 +91,6 @@
     <Compile Include="Converters\ParameterisedBoolToVisibilityConverter.cs" />
     <Compile Include="Enum\StageKeys.cs" />
     <Compile Include="Interface\IAmalgamationManagementService.cs" />
-    <Compile Include="Interface\IMessengerService.cs" />
     <Compile Include="Interface\ISettingsService.cs" />
     <Compile Include="Service\Interface\IVersionInformation.cs" />
     <Compile Include="Message\TaskProgressMessage.cs" />

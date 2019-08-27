@@ -121,7 +121,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
             var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
 
-            amalgamate.DateTime.Should().Be(objToCompare.DateTime);
+            amalgamate.DateTime.Should().Be(dateTimeNow);
             amalgamate.ProtectiveMarkingString.Should().Be(objToCompare.ProtectiveMarkingString);
             amalgamate.UKPRN.Should().Be(objToCompare.UKPRN);
             amalgamate.SoftwareSupplier.Should().Be(objToCompare.SoftwareSupplier);

@@ -12,6 +12,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
     public class AddressRule : IRule<MessageLearner>
     {
+        private static string _entityName = Enum.GetName(typeof(Entity), Entity.Learner);
+
         private readonly HashSet<Expression<Func<MessageLearner, string>>> selectors = new HashSet<Expression<Func<MessageLearner, string>>>()
         {
             s => s.AddLine1,
@@ -49,7 +51,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                         File = c.SourceFileName,
                         LearnRefNumber = c.LearnRefNumber,
                         ErrorType = ErrorType.FieldValueConflict,
-                        Entity = Enum.GetName(typeof(Entity), Entity.Learner),
+                        Entity = _entityName,
                         Key = $"LearnRefNumber : {c.LearnRefNumber}",
                         Value = prop.GetValue(c) == null ? string.Empty : prop.GetValue(c).ToString(),
                         ConflictingAttribute = prop.Name,

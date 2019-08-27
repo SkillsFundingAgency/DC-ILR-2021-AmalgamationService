@@ -47,14 +47,58 @@
             <Image Source="../Resources/Images/ESFA_logo.jpg" HorizontalAlignment="Left" Margin="15 5"/>
         </Grid>
 
-        <Border Grid.Row="2" BorderThickness="2" BorderBrush="#FF28A197" Margin="15 0" Height="45"
+        <Border Grid.Row="2" BorderThickness="2" BorderBrush="#FF28A197" Margin="15 0" Height="270"
                 Visibility="{Binding ProcessedSuccessfullyVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel>
-                <TextBlock Text="Amalgamation Completed" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" />
-                <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    Go to filemerge output folder: <Hyperlink Command="{Binding OutputDirectoryCommand}"><TextBlock Text="{Binding OutputDirectory}"/></Hyperlink>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold">
+                    File merge Completed 
+                    <Hyperlink Command="{Binding MergeAnotherSetOfFilesCommand}">
+                        <TextBlock FontWeight="Regular" Text="Merge another set of files"/>
+                    </Hyperlink>
                 </TextBlock>
-            </StackPanel>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    Go to filemerge output folder: 
+                    <Hyperlink Command="{Binding OutputDirectoryCommand}">
+                        <TextBlock Text="{Binding OutputDirectory}"/>
+                    </Hyperlink>
+                </TextBlock>
+                    <Grid Margin="50,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="505"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ListView ItemsSource="{Binding AmalgamationSummary.FileLearnerCount}" Grid.ColumnSpan="2" Margin="0, 20">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Files" Width="500" DisplayMemberBinding="{Binding Path=Key}" />
+                                    <GridViewColumn Header="Learner Records" DisplayMemberBinding="{Binding Path=Value}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <TextBlock Grid.Row="1" Grid.Column="1" FontWeight="Bold">Count</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" >Learners in all files</TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AmalgamationSummary.LearnersInAllFiles}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" >Rejected Learners</TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AmalgamationSummary.RejectedLearners}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" >Learners in the merged file</TextBlock>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding AmalgamationSummary.LearnersInAmalgamatedFile}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" >File merge Errors</TextBlock>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding AmalgamationSummary.AmalgamationErrors}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="0" >File merge Warnings</TextBlock>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding AmalgamationSummary.AmalgamationWarnings}"/>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Border>
 
         <Grid Grid.Row="3" Margin="10">

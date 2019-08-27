@@ -21,11 +21,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
         public MessageHeaderSource Amalgamate(IEnumerable<MessageHeaderSource> models)
         {
-            var latestDate = models.All(x => x.DateTime == DateTime.MinValue) ? _dateTimeProvider.GetNowUtc() : models.Select(x => x.DateTime).Max();
-
             var source = new MessageHeaderSource()
             {
-                DateTime = latestDate,
+                DateTime = _dateTimeProvider.GetNowUtc(),
                 ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIALSENSITIVEPersonal,
                 UKPRN = models.Select(x => x.UKPRN).First(),
                 SoftwareSupplier = "ESFA",

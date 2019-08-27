@@ -30,7 +30,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Modules
 
             // XSD Validation
             containerBuilder.RegisterType<SchemaProvider>().As<ISchemaProvider>();
-            containerBuilder.RegisterType<ValidationErrorHandler>().As<IValidationErrorHandler>().InstancePerLifetimeScope(); ;
+            containerBuilder.RegisterType<ValidationErrorHandler>().As<IValidationErrorHandler>().InstancePerLifetimeScope();
             containerBuilder.RegisterType<XsdValidationService>().As<IXsdValidationService>();
 
             // Cross Record Validation
