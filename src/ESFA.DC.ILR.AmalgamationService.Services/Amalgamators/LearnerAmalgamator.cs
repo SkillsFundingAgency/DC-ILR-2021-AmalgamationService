@@ -14,6 +14,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private readonly IAmalgamator<MessageLearnerLearnerHE> _learnerHEAmalgamator;
         private readonly IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> _providerSpecLearnerMonitoringAmalgamator;
         private IRule<string> _standardRuleString;
+        private IRule<string> _standardRuleStringFirstItem;
         private IRule<long?> _standardRuleLong;
         private IRule<DateTime?> _standardRuleDateTime;
         private IRule<MessageLearner> _addressRule;
@@ -38,6 +39,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             _learnerHEAmalgamator = learnerHEAmalgamator;
 
             _standardRuleString = ruleProvider.BuildStandardRule<string>();
+            _standardRuleStringFirstItem = ruleProvider.BuildStandardRuleFirstItem<string>();
             _standardRuleLong = ruleProvider.BuildStandardRule<long?>();
             _standardRuleDateTime = ruleProvider.BuildStandardRule<DateTime?>();
             _addressRule = ruleProvider.BuildAddressRule();
@@ -95,7 +97,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.TelNo, _standardRuleString.Definition, models, messageLearner);
 
-            ApplyRule(s => s.Email, _standardRuleString.Definition, models, messageLearner, Severity.Warning);
+            ApplyRule(s => s.Email, _standardRuleStringFirstItem.Definition, models, messageLearner, Severity.Warning);
 
             ApplyGroupedCollectionRule(s => s.ContactPreference, _learnerContactPreferenceCollectionRule.Definition, models, messageLearner);
             ApplyGroupedCollectionRule(s => s.LLDDandHealthProblem, _lLDDandHealthProblemCollectionRule.Definition, models, messageLearner);
