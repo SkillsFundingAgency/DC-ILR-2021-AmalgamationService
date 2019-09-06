@@ -106,6 +106,7 @@
     <Compile Include="Rules\AlsCostRuleTest.cs" />
     <Compile Include="Rules\LearnerContactPreferenceCollectionRuleTest.cs" />
     <Compile Include="Rules\LearnerFAMAmalgamationRuleTest.cs" />
+    <Compile Include="Rules\LLDDandHealthProblemCollectionRuleTest.cs" />
     <Compile Include="Rules\StandardRuleFirstItemTest.cs" />
     <Compile Include="Rules\StandardRuleTest.cs" />
     <Compile Include="SchemaValidation\XsdValidationServiceTest.cs" />
