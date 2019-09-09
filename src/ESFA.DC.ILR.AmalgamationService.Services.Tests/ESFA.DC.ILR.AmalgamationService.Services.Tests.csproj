@@ -104,6 +104,7 @@
     <Compile Include="LearnerAmalgamatorTest.cs" />
     <Compile Include="Rules\AddressRuleTest.cs" />
     <Compile Include="Rules\AlsCostRuleTest.cs" />
+    <Compile Include="Rules\DPOutcomeRuleTest.cs" />
     <Compile Include="Rules\LearnerContactPreferenceCollectionRuleTest.cs" />
     <Compile Include="Rules\LearnerFAMAmalgamationRuleTest.cs" />
     <Compile Include="Rules\LLDDandHealthProblemCollectionRuleTest.cs" />

@@ -46,7 +46,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 });
             }
 
-            return new RuleResult<MessageLearnerDestinationandProgressionDPOutcome[]> { AmalgamatedValue = amalgamatedDpOutcomes.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
+            return new RuleResult<MessageLearnerDestinationandProgressionDPOutcome[]>
+            {
+                AmalgamatedValue = amalgamatedDpOutcomes.ToArray(),
+                Success = amalgamationValidationErrors.Count < 1,
+                AmalgamationValidationErrors = amalgamationValidationErrors
+            };
         }
     }
 }
