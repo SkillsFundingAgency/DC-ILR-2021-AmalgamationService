@@ -22,37 +22,38 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
     public class PerformanceTest
     {
         private const string _testDataDirectory = @"..\..\Test Files";
-        IAmalgamationManagementService _amalgamationManagementService;
-        IFileService _fileService;
-        IJsonSerializationService _jsonSerializationService;
-        IDateTimeProvider _dateTimeProvider;
+        private IAmalgamationManagementService _amalgamationManagementService;
+        private IFileService _fileService;
+        private IJsonSerializationService _jsonSerializationService;
+        private IDateTimeProvider _dateTimeProvider;
 
         [Fact]
         public async void TimeTracker()
         {
             var containerBuilder = BuildContainerBuilder();
 
-            var container = containerBuilder.Build();
-
-            ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
-            _amalgamationManagementService = container.Resolve<IAmalgamationManagementService>();
-            _fileService = container.Resolve<IFileService>();
-            _jsonSerializationService = container.Resolve<IJsonSerializationService>();
-            _dateTimeProvider = container.Resolve<IDateTimeProvider>();
-
-            var cancellationToken = new CancellationToken();
-
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            await _amalgamationManagementService.ProcessAsync(Directory.GetFiles(_testDataDirectory, "*.xml"), _testDataDirectory, cancellationToken);
-            timer.Stop();
-
-            var outputPath = new DirectoryInfo(_testDataDirectory).GetDirectories().OrderByDescending(d => d.LastWriteTimeUtc).FirstOrDefault().FullName;
-
-            using (var stream = await _fileService.OpenWriteStreamAsync($"TimeTracker{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}.txt", outputPath, cancellationToken))
+            using (var container = containerBuilder.Build())
             {
-                var timeConsumed = $" total time elapsed to file merge {timer.Elapsed.TotalSeconds} seconds";
-                _jsonSerializationService.Serialize(timeConsumed, stream);
+                ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
+                _amalgamationManagementService = container.Resolve<IAmalgamationManagementService>();
+                _fileService = container.Resolve<IFileService>();
+                _jsonSerializationService = container.Resolve<IJsonSerializationService>();
+                _dateTimeProvider = container.Resolve<IDateTimeProvider>();
+
+                var cancellationToken = default(CancellationToken);
+
+                Stopwatch timer = new Stopwatch();
+                timer.Start();
+                await _amalgamationManagementService.ProcessAsync(Directory.GetFiles(_testDataDirectory, "*.xml"), _testDataDirectory, cancellationToken);
+                timer.Stop();
+
+                var outputPath = new DirectoryInfo(_testDataDirectory).GetDirectories().OrderByDescending(d => d.LastWriteTimeUtc).FirstOrDefault().FullName;
+
+                using (var stream = await _fileService.OpenWriteStreamAsync($"TimeTracker{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}.txt", outputPath, cancellationToken))
+                {
+                    var timeConsumed = $" total time elapsed to file merge {timer.Elapsed.TotalSeconds} seconds";
+                    _jsonSerializationService.Serialize(timeConsumed, stream);
+                }
             }
         }
 
