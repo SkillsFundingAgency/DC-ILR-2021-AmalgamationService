@@ -4,8 +4,6 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
@@ -30,11 +28,21 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 amalgamationValidationErrors.AddRange(lLDDandHealthProblems.SelectMany(v => v).Where(x => x.PrimaryLLDDNullable != null).Select(c => GetAmalgamationValidationError(c, "PrimaryLLDD", c.PrimaryLLDDNullable.ToString())));
             }
 
-            return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
+            if (amalgamationValidationErrors.Count == 0)
             {
-                AmalgamatedValue = distinctLlddCat.ToArray(),
-                AmalgamationValidationErrors = amalgamationValidationErrors
-            };
+                return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
+                {
+                    Success = true,
+                    AmalgamatedValue = distinctLlddCat.ToArray()
+                };
+            }
+            else
+            {
+                return new RuleResult<MessageLearnerLLDDandHealthProblem[]>
+                {
+                    AmalgamationValidationErrors = amalgamationValidationErrors
+                };
+            }
         }
 
         private AmalgamationValidationError GetAmalgamationValidationError(MessageLearnerLLDDandHealthProblem lLDDandHealthProblem, string key, string value)
