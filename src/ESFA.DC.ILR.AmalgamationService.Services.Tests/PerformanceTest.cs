@@ -35,10 +35,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             var container = containerBuilder.Build();
 
             ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
-            _amalgamationManagementService = ServiceLocator.Current.GetInstance<IAmalgamationManagementService>();
-            _fileService = ServiceLocator.Current.GetInstance<IFileService>();
-            _jsonSerializationService = ServiceLocator.Current.GetInstance<IJsonSerializationService>();
-            _dateTimeProvider = ServiceLocator.Current.GetInstance<IDateTimeProvider>();
+            _amalgamationManagementService = container.Resolve<IAmalgamationManagementService>();
+            _fileService = container.Resolve<IFileService>();
+            _jsonSerializationService = container.Resolve<IJsonSerializationService>();
+            _dateTimeProvider = container.Resolve<IDateTimeProvider>();
 
             var cancellationToken = new CancellationToken();
 
