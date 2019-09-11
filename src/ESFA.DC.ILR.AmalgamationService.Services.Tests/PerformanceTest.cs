@@ -24,7 +24,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         private const string _testDataDirectory = @"..\..\Test Files";
         IAmalgamationManagementService _amalgamationManagementService;
         IFileService _fileService;
-        IJsonSerializationService _xmlSerializationService;
+        IJsonSerializationService _jsonSerializationService;
         IDateTimeProvider _dateTimeProvider;
 
         [Fact]
@@ -35,10 +35,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             var container = containerBuilder.Build();
 
             ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
-            container.TryResolve<IAmalgamationManagementService>(out _amalgamationManagementService);
-            container.TryResolve<IFileService>(out _fileService);
-            container.TryResolve<IJsonSerializationService>(out _xmlSerializationService);
-            container.TryResolve<IDateTimeProvider>(out _dateTimeProvider);
+            _amalgamationManagementService = ServiceLocator.Current.GetInstance<IAmalgamationManagementService>();
+            _fileService = ServiceLocator.Current.GetInstance<IFileService>();
+            _jsonSerializationService = ServiceLocator.Current.GetInstance<IJsonSerializationService>();
+            _dateTimeProvider = ServiceLocator.Current.GetInstance<IDateTimeProvider>();
 
             var cancellationToken = new CancellationToken();
 
@@ -52,7 +52,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             using (var stream = await _fileService.OpenWriteStreamAsync($"TimeTracker{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}.txt", outputPath, cancellationToken))
             {
                 var timeConsumed = $" total time elapsed to file merge {timer.Elapsed.TotalSeconds} seconds";
-                _xmlSerializationService.Serialize(timeConsumed, stream);
+                _jsonSerializationService.Serialize(timeConsumed, stream);
             }
         }
 
