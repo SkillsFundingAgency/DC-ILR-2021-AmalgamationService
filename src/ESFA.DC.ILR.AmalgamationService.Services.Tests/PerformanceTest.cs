@@ -34,7 +34,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
             using (var container = containerBuilder.Build())
             {
-                ServiceLocator.SetLocatorProvider(() => new AutofacServiceLocator(container));
                 _amalgamationManagementService = container.Resolve<IAmalgamationManagementService>();
                 _fileService = container.Resolve<IFileService>();
                 _jsonSerializationService = container.Resolve<IJsonSerializationService>();
