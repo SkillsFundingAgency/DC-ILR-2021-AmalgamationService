@@ -1,8 +1,10 @@
+
 name: $(GitVersion_NuGetVersion)
+#name: $(VersionNumberMajor).$(VersionNumberMinor).$(VersionNumberBuild)$(Rev:.rrrr)
 
 resources:
 - repo: self
-  fetchDepth: 15
+  fetchDepth: 30
 
 pool:
   name: DCT
@@ -13,21 +15,42 @@ pool:
   - vstest
 
 variables:
-  BuildConfiguration: 'Release'
-  BuildPlatform: 'Any CPU'
-  Parameters.solution: '**\*.sln'
-  Parameters.nugetFeedName: 'dct-pkg'
+- group: 'CodeSign KV'
+#- name: VersionNumberMajor 
+#  value: '1'
+#- name: VersionNumberMinor 
+#  value: '0'
+#- name: VersionNumberBuild 
+#  value: '3'
+- name: Parameters.solution 
+  value: '**\*.sln'
+- name: Parameters.nugetFeedName 
+  value: 'dct-pkg'
+- name: BuildConfiguration
+  value: 'Release'
+- name: BuildPlatform
+  value: 'Any CPU'
 
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@4
   displayName: GitVersion
+  enabled: true
   inputs:
     updateAssemblyInfo: true
     preferBundledVersion: false
 
+- task: VersionAssemblies@2
+  enabled: false
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    VersionNumber: '$(Build.BuildNumber)'
+    InjectVersion: False
+    FilenamePattern: 'AssemblyInfo.*'
+    OutputVersion: 'OutputedVersion'
+
 - task: PowerShell@1
-  displayName: 'Dissplay Variables'
-  enabled: true
+  displayName: 'Display Variables'
+  enabled: false
   inputs:
     scriptType: inlineScript
     inlineScript: |
@@ -58,6 +81,10 @@ steps:
     configuration: '$(BuildConfiguration)'
     clean: true
 
+#********************************************************************************
+# Copy Files into Aftifact Folder before test.
+#********************************************************************************
+
 - task: CopyFiles@2
   displayName: 'Copy Nuget Interface Packages Files - Artifact NugetInterface Directory'
   inputs:
@@ -85,45 +112,63 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy Application File to Artifact Folder'
   inputs:
-    SourceFolder: 'src/ESFA.DC.ILR.Amalgamation.WPF/bin/$(BuildConfiguration)'  
+    SourceFolder: 'src\ESFA.DC.ILR.Amalgamation.WPF\bin\$(BuildConfiguration)'  
     Contents: '**\!(*.pdb)'
     TargetFolder: '$(build.ArtifactStagingDirectory)\DesktopApplication'
 
-- task: CopyFiles@2
-  displayName: 'Copy Published Storage Account Files - Artifact StorageAccount Directory'
-  inputs:
-    SourceFolder: '$(build.sourcesdirectory)\StorageAccount'
-    Contents: |
-      **\*
-    TargetFolder: '$(build.artifactstagingdirectory)\StorageAccount'
-    CleanTargetFolder: true
-    flattenFolders: false
-
 - task: TotalALM.totalalm-tokenization.tokenization-build-task.Tokenization@2
   displayName: 'Tokenization: Transform Application config file'
-  enabled: false
+  enabled: true
   inputs:
     SourcePath: '$(build.ArtifactStagingDirectory)\DesktopApplication'
     TargetFileNames: '*.exe.config'
     RequireVariable: false
 
+
+#********************************************************************************
+# CodeSign Script body
+# Application Signing execution begins here
+#********************************************************************************
+
+- task: PowerShell@2
+  displayName: 'CodeSign DfE DesktopApplications'
+  enabled: true  
+  env:
+    CODESIGNPASSWORD: $(CodeSignPwdDfE)
+    CODESIGNCERT: $(CodeSignCertificatePFX)
+  inputs:
+    filePath: 'DFE_Code_Signing.ps1'
+    arguments: '-StartFolder "$(build.ArtifactStagingDirectory)\DesktopApplication"'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+#********************************************************************************
+# Run Unit Tests
+#********************************************************************************
 - task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
+  displayName: 'Run Unit Tests'
+  enabled: true
   inputs:
     testAssemblyVer2: |
      **\$(BuildConfiguration)\*test*.dll
      !**\obj\**
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
-
+    runInParallel: true
+    codeCoverageEnabled: true
+    diagnosticsEnabled: true
+ 
+#********************************************************************************
+# Publish Artifacts
+#********************************************************************************
+ 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
+  enabled: false
   inputs:
     SearchPattern: '**\bin\**\*.pdb'
     PublishSymbols: false
-  enabled: false
   continueOnError: true
-  
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: NugetPackages'
   enabled: false
@@ -137,11 +182,3 @@ steps:
   inputs:
     ArtifactName: DesktopApplication
     PathtoPublish: '$(build.artifactstagingdirectory)\DesktopApplication'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: StoraegAccount Display Files'
-  enabled: true
-  inputs:
-    ArtifactName: StorageAccount
-    PathtoPublish: '$(build.artifactstagingdirectory)\StorageAccount'
-

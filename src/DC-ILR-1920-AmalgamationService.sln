@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.AmalgamationService.Services", "ESFA.DC.ILR.AmalgamationService.Services\ESFA.DC.ILR.AmalgamationService.Services.csproj", "{F6E83C4C-AA25-4740-97C1-6BDC1F4F6678}"
 EndProject
@@ -12,6 +12,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESFA.DC.ILR.Model.Loose.ReadWrite", "ESFA.DC.ILR.Model.Loose.ReadWrite\ESFA.DC.ILR.Model.Loose.ReadWrite.csproj", "{2F7697FA-BF58-455E-A87C-1BF9AC137CC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.ILR.Amalgamation.WPF", "ESFA.DC.ILR.Amalgamation.WPF\ESFA.DC.ILR.Amalgamation.WPF.csproj", "{440A11B8-DFF6-4E85-922A-E0F9193C7093}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF696574-707C-40A9-93FE-425262D0C68E}"
+	ProjectSection(SolutionItems) = preProject
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
+		..\DFE_Code_Signing.ps1 = ..\DFE_Code_Signing.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
