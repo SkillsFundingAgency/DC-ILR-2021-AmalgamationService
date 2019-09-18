@@ -163,7 +163,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: NugetPackages'
-  enabled: true
+  enabled: false
   inputs:
     ArtifactName: NugetPackages
     PathtoPublish: '$(build.artifactstagingdirectory)\Nuget'
@@ -174,11 +174,3 @@ steps:
   inputs:
     ArtifactName: DesktopApplication
     PathtoPublish: '$(build.artifactstagingdirectory)\DesktopApplication'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: StoraegAccount Display Files'
-  enabled: false
-  inputs:
-    ArtifactName: StorageAccount
-    PathtoPublish: '$(build.artifactstagingdirectory)\StorageAccount'
