@@ -109,13 +109,6 @@ steps:
     CleanTargetFolder: true
     flattenFolders: true
 
-- task: CopyFiles@2
-  displayName: 'Copy Application File to Artifact Folder'
-  inputs:
-    SourceFolder: 'src/ESFA.DC.ILR.Amalgamation.WPF\bin\$(BuildConfiguration)'  
-    Contents: '**\!(*.pdb)'
-    TargetFolder: '$(build.ArtifactStagingDirectory)\DesktopApplication'
-
 - task: TotalALM.totalalm-tokenization.tokenization-build-task.Tokenization@2
   displayName: 'Tokenization: Transform Application config file'
   enabled: false
