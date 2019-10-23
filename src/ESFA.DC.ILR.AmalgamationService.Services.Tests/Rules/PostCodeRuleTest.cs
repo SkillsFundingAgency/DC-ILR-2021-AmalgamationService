@@ -11,14 +11,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         [InlineData("CV1 2WT", "CV1 2WT", "CV1 2WT", "CV1 2WT")]
         [InlineData("CV1 2WT", null, null, "CV1 2WT")]
         [InlineData("CV1 2WT", "ZZ99 9ZZ", null, "CV1 2WT")]
-        [InlineData(null, null, null, "")]
+        [InlineData(null, null, null, null)]
+        [InlineData("ZZ99 9ZZ", "ZZ99 9ZZ", "ZZ99 9ZZ", "ZZ99 9ZZ")]
+        [InlineData(null, "ZZ99 9ZZ", "", "ZZ99 9ZZ")]
         public void PostCodeRuleTest_True(string firstItem, string secondItem, string thirdItem, string expectedResult)
         {
             var postCodeRule = new PostCodeRule();
             List<string> items = new List<string>() { firstItem, secondItem, thirdItem };
             var result = postCodeRule.Definition(items);
             result.Success.Should().BeTrue();
-            result.AmalgamatedValue.Equals(expectedResult);
+            result.AmalgamatedValue.Should().Be(expectedResult);
         }
 
         [Theory]
