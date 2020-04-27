@@ -1,0 +1,184 @@
+
+name: $(GitVersion_NuGetVersion)
+#name: $(VersionNumberMajor).$(VersionNumberMinor).$(VersionNumberBuild)$(Rev:.rrrr)
+
+resources:
+- repo: self
+  fetchDepth: 30
+
+pool:
+  name: DCT
+  demands:
+  - IsBuildServer
+  - msbuild
+  - visualstudio
+  - vstest
+
+variables:
+- group: 'CodeSign KV'
+#- name: VersionNumberMajor 
+#  value: '1'
+#- name: VersionNumberMinor 
+#  value: '0'
+#- name: VersionNumberBuild 
+#  value: '3'
+- name: Parameters.solution 
+  value: '**\*.sln'
+- name: Parameters.nugetFeedName 
+  value: 'dct-pkg'
+- name: BuildConfiguration
+  value: 'Release'
+- name: BuildPlatform
+  value: 'Any CPU'
+
+steps:
+- task: gittools.gitversion.gitversion-task.GitVersion@4
+  displayName: GitVersion
+  enabled: true
+  inputs:
+    updateAssemblyInfo: true
+    preferBundledVersion: false
+
+- task: VersionAssemblies@2
+  enabled: false
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    VersionNumber: '$(Build.BuildNumber)'
+    InjectVersion: False
+    FilenamePattern: 'AssemblyInfo.*'
+    OutputVersion: 'OutputedVersion'
+
+- task: PowerShell@1
+  displayName: 'Display Variables'
+  enabled: false
+  inputs:
+    scriptType: inlineScript
+    inlineScript: |
+     $var = (gci env:*).GetEnumerator() | Sort-Object Name
+     $out = ""
+     Foreach ($v in $var) 
+     {
+     write-output "Name: $($v.Name)  | Value : $($v.Value)"
+     }
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet >=4.7.0'
+  inputs:
+    versionSpec: '>=4.7.0'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(Parameters.solution)'
+    vstsFeed: '$(Parameters.nugetFeedName)'
+
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
+  inputs:
+    solution: '$(Parameters.solution)'
+    msbuildArgs: '/p:version=$(Build.BuildNumber) /p:FileVersion=$(Build.BuildNumber)'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    clean: true
+
+#********************************************************************************
+# Copy Files into Aftifact Folder before test.
+#********************************************************************************
+
+- task: CopyFiles@2
+  displayName: 'Copy Nuget Interface Packages Files - Artifact NugetInterface Directory'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)\src'
+    Contents: |
+     **\*$(BuildConfiguration)*\*Interface.nupkg
+     !**\packages\**
+     !**\bin\x64\**
+    TargetFolder: '$(build.artifactstagingdirectory)\Nuget\Interface'
+    CleanTargetFolder: true
+    flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: 'Copy NugetPackages Files - Artifact NugetPackages Directory'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)\src'
+    Contents: |
+     **\*$(BuildConfiguration)*\*.nupkg
+     !**\packages\**
+     !**\bin\x64\**
+    TargetFolder: '$(build.artifactstagingdirectory)\Nuget\Packages'
+    CleanTargetFolder: true
+    flattenFolders: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Application File to Artifact Folder'
+  inputs:
+    SourceFolder: 'src\ESFA.DC.ILR.Amalgamation.WPF\bin\$(BuildConfiguration)'  
+    Contents: '**\!(*.pdb)'
+    TargetFolder: '$(build.ArtifactStagingDirectory)\DesktopApplication'
+
+- task: TotalALM.totalalm-tokenization.tokenization-build-task.Tokenization@2
+  displayName: 'Tokenization: Transform Application config file'
+  enabled: true
+  inputs:
+    SourcePath: '$(build.ArtifactStagingDirectory)\DesktopApplication'
+    TargetFileNames: '*.exe.config'
+    RequireVariable: false
+
+
+#********************************************************************************
+# CodeSign Script body
+# Application Signing execution begins here
+#********************************************************************************
+
+- task: PowerShell@2
+  displayName: 'CodeSign DfE DesktopApplications'
+  enabled: true  
+  env:
+    CODESIGNPASSWORD: $(CodeSignPwdDfE)
+    CODESIGNCERT: $(CodeSignCertificatePFX)
+  inputs:
+    filePath: 'DFE_Code_Signing.ps1'
+    arguments: '-StartFolder "$(build.ArtifactStagingDirectory)\DesktopApplication"'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+#********************************************************************************
+# Run Unit Tests
+#********************************************************************************
+- task: VSTest@2
+  displayName: 'Run Unit Tests'
+  enabled: true
+  inputs:
+    testAssemblyVer2: |
+     **\$(BuildConfiguration)\*test*.dll
+     !**\obj\**
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+    runInParallel: true
+    codeCoverageEnabled: true
+    diagnosticsEnabled: true
+ 
+#********************************************************************************
+# Publish Artifacts
+#********************************************************************************
+ 
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  enabled: false
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: NugetPackages'
+  enabled: false
+  inputs:
+    ArtifactName: NugetPackages
+    PathtoPublish: '$(build.artifactstagingdirectory)\Nuget'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: DesktopApplication'
+  enabled: true
+  inputs:
+    ArtifactName: DesktopApplication
+    PathtoPublish: '$(build.artifactstagingdirectory)\DesktopApplication'
