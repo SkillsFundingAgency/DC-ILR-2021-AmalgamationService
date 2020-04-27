@@ -1,0 +1,1 @@
+xsd Schema/ILR-2019-20-v2.xsd /classes /namespace:"ESFA.DC.ILR.Model.Loose.ReadWrite"
