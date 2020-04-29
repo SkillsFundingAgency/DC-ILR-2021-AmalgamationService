@@ -5,20 +5,13 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageSourceFile : AbstractLooseReadWriteModel<ILooseMessage>, ILooseSourceFile
+    public partial class MessageSourceFile : AbstractLooseReadWriteModel<Message>, IParentRelationship<Message>, IAmalgamationModel
     {
-        [XmlIgnore]
-        public DateTime? DateTimeNullable
-        {
-            get => dateTimeFieldSpecified ? dateTimeField : default(DateTime?);
-            set
-            {
-                dateTimeFieldSpecified = value.HasValue;
-                dateTimeField = value.GetValueOrDefault();
-            }
-        }
-
+       
         [XmlIgnore]
         public string LearnRefNumber => null;
+
+        [XmlIgnore]
+        public string SourceFileName => Parent.Parent.Filename;
     }
 }
