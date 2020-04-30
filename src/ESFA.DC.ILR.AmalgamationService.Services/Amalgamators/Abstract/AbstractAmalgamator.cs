@@ -148,7 +148,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     .SelectMany(x => x)
                     .GroupBy(groupByFunc)
                     .Select(amalgamator.Amalgamate)
-                    .ToArray();
+                    .ToList();
 
             if (amalgamatedGroups.Any())
             {
