@@ -14,6 +14,8 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Xml.Serialization;
+    using System.Linq;
+    using System.ComponentModel;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -22,11 +24,37 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute("Message", Namespace="ESFA/ILR/2020-21")]
-    public partial class Message
+    public partial class Message : System.ComponentModel.INotifyPropertyChanged
     {
         
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageHeader _header;
+        
         [System.Xml.Serialization.XmlElementAttribute("Header")]
-        public MessageHeader Header { get; set; }
+        public MessageHeader Header
+        {
+            get
+            {
+                return _header;
+            }
+            set
+            {
+                if (_header == value)
+                    return;
+                if (_header == null || value == null || !_header.Equals(value))
+                {
+                    _header = value;
+                    OnPropertyChanged(nameof(Header));
+                }
+            }
+        }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         private System.Collections.Generic.List<MessageSourceFilesSourceFile> _sourceFiles;
@@ -37,11 +65,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._sourceFiles;
+                return _sourceFiles;
             }
             private set
             {
-                this._sourceFiles = value;
+                if (_sourceFiles == value)
+                    return;
+                if (_sourceFiles == null || value == null || !_sourceFiles.SequenceEqual(value))
+                {
+                    _sourceFiles = value;
+                    OnPropertyChanged(nameof(SourceFiles));
+                }
             }
         }
         
@@ -69,8 +103,27 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             this._learnerDestinationandProgression = new System.Collections.Generic.List<MessageLearnerDestinationandProgression>();
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageLearningProvider _learningProvider;
+        
         [System.Xml.Serialization.XmlElementAttribute("LearningProvider")]
-        public MessageLearningProvider LearningProvider { get; set; }
+        public MessageLearningProvider LearningProvider
+        {
+            get
+            {
+                return _learningProvider;
+            }
+            set
+            {
+                if (_learningProvider == value)
+                    return;
+                if (_learningProvider == null || value == null || !_learningProvider.Equals(value))
+                {
+                    _learningProvider = value;
+                    OnPropertyChanged(nameof(LearningProvider));
+                }
+            }
+        }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         private System.Collections.Generic.List<MessageLearner> _learner;
@@ -80,11 +133,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learner;
+                return _learner;
             }
             private set
             {
-                this._learner = value;
+                if (_learner == value)
+                    return;
+                if (_learner == null || value == null || !_learner.SequenceEqual(value))
+                {
+                    _learner = value;
+                    OnPropertyChanged(nameof(Learner));
+                }
             }
         }
         
@@ -109,11 +168,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learnerDestinationandProgression;
+                return _learnerDestinationandProgression;
             }
             private set
             {
-                this._learnerDestinationandProgression = value;
+                if (_learnerDestinationandProgression == value)
+                    return;
+                if (_learnerDestinationandProgression == null || value == null || !_learnerDestinationandProgression.SequenceEqual(value))
+                {
+                    _learnerDestinationandProgression = value;
+                    OnPropertyChanged(nameof(LearnerDestinationandProgression));
+                }
             }
         }
         
@@ -136,14 +201,59 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageHeader", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageHeader
+    public partial class MessageHeader : System.ComponentModel.INotifyPropertyChanged
     {
         
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageHeaderCollectionDetails _collectionDetails;
+        
         [System.Xml.Serialization.XmlElementAttribute("CollectionDetails")]
-        public MessageHeaderCollectionDetails CollectionDetails { get; set; }
+        public MessageHeaderCollectionDetails CollectionDetails
+        {
+            get
+            {
+                return _collectionDetails;
+            }
+            set
+            {
+                if (_collectionDetails == value)
+                    return;
+                if (_collectionDetails == null || value == null || !_collectionDetails.Equals(value))
+                {
+                    _collectionDetails = value;
+                    OnPropertyChanged(nameof(CollectionDetails));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageHeaderSource _source;
         
         [System.Xml.Serialization.XmlElementAttribute("Source")]
-        public MessageHeaderSource Source { get; set; }
+        public MessageHeaderSource Source
+        {
+            get
+            {
+                return _source;
+            }
+            set
+            {
+                if (_source == value)
+                    return;
+                if (_source == null || value == null || !_source.Equals(value))
+                {
+                    _source = value;
+                    OnPropertyChanged(nameof(Source));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -151,17 +261,75 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageHeaderCollectionDetails", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageHeaderCollectionDetails
+    public partial class MessageHeaderCollectionDetails : System.ComponentModel.INotifyPropertyChanged
     {
         
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageHeaderCollectionDetailsCollection _collection;
+        
         [System.Xml.Serialization.XmlElementAttribute("Collection")]
-        public MessageHeaderCollectionDetailsCollection Collection { get; set; }
+        public MessageHeaderCollectionDetailsCollection Collection
+        {
+            get
+            {
+                return _collection;
+            }
+            set
+            {
+                if (!_collection.Equals(value))
+                {
+                    _collection = value;
+                    OnPropertyChanged(nameof(Collection));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageHeaderCollectionDetailsYear _year;
         
         [System.Xml.Serialization.XmlElementAttribute("Year")]
-        public MessageHeaderCollectionDetailsYear Year { get; set; }
+        public MessageHeaderCollectionDetailsYear Year
+        {
+            get
+            {
+                return _year;
+            }
+            set
+            {
+                if (!_year.Equals(value))
+                {
+                    _year = value;
+                    OnPropertyChanged(nameof(Year));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _filePreparationDate;
         
         [System.Xml.Serialization.XmlElementAttribute("FilePreparationDate", DataType="date")]
-        public System.DateTime FilePreparationDate { get; set; }
+        public System.DateTime FilePreparationDate
+        {
+            get
+            {
+                return _filePreparationDate;
+            }
+            set
+            {
+                if (!_filePreparationDate.Equals(value))
+                {
+                    _filePreparationDate = value;
+                    OnPropertyChanged(nameof(FilePreparationDate));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -188,11 +356,38 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageHeaderSource", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageHeaderSource
+    public partial class MessageHeaderSource : System.ComponentModel.INotifyPropertyChanged
     {
         
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private MessageHeaderSourceProtectiveMarking _protectiveMarking;
+        
         [System.Xml.Serialization.XmlElementAttribute("ProtectiveMarking")]
-        public MessageHeaderSourceProtectiveMarking ProtectiveMarking { get; set; }
+        public MessageHeaderSourceProtectiveMarking ProtectiveMarking
+        {
+            get
+            {
+                return _protectiveMarking;
+            }
+            set
+            {
+                if (!_protectiveMarking.Equals(value))
+                {
+                    _protectiveMarking = value;
+                    OnPropertyChanged(nameof(ProtectiveMarking));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private int _uKPRN;
         
         /// <summary>
         /// <para xml:lang="en">Minimum inclusive value: 10000000.</para>
@@ -200,7 +395,24 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         /// </summary>
         [System.ComponentModel.DataAnnotations.RangeAttribute(typeof(int), "10000000", "99999999 ")]
         [System.Xml.Serialization.XmlElementAttribute("UKPRN")]
-        public int UKPRN { get; set; }
+        public int UKPRN
+        {
+            get
+            {
+                return _uKPRN;
+            }
+            set
+            {
+                if (!_uKPRN.Equals(value))
+                {
+                    _uKPRN = value;
+                    OnPropertyChanged(nameof(UKPRN));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _softwareSupplier;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -209,7 +421,26 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(40)]
         [System.Xml.Serialization.XmlElementAttribute("SoftwareSupplier")]
-        public string SoftwareSupplier { get; set; }
+        public string SoftwareSupplier
+        {
+            get
+            {
+                return _softwareSupplier;
+            }
+            set
+            {
+                if (_softwareSupplier == value)
+                    return;
+                if (_softwareSupplier == null || value == null || !_softwareSupplier.Equals(value))
+                {
+                    _softwareSupplier = value;
+                    OnPropertyChanged(nameof(SoftwareSupplier));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _softwarePackage;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -218,7 +449,26 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(30)]
         [System.Xml.Serialization.XmlElementAttribute("SoftwarePackage")]
-        public string SoftwarePackage { get; set; }
+        public string SoftwarePackage
+        {
+            get
+            {
+                return _softwarePackage;
+            }
+            set
+            {
+                if (_softwarePackage == value)
+                    return;
+                if (_softwarePackage == null || value == null || !_softwarePackage.Equals(value))
+                {
+                    _softwarePackage = value;
+                    OnPropertyChanged(nameof(SoftwarePackage));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _release;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -227,17 +477,72 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(20)]
         [System.Xml.Serialization.XmlElementAttribute("Release")]
-        public string Release { get; set; }
+        public string Release
+        {
+            get
+            {
+                return _release;
+            }
+            set
+            {
+                if (_release == value)
+                    return;
+                if (_release == null || value == null || !_release.Equals(value))
+                {
+                    _release = value;
+                    OnPropertyChanged(nameof(Release));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _serialNo;
         
         /// <summary>
         /// <para xml:lang="en">Pattern: [0-9]{1,2}.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.RegularExpressionAttribute("[0-9]{1,2}")]
         [System.Xml.Serialization.XmlElementAttribute("SerialNo")]
-        public string SerialNo { get; set; }
+        public string SerialNo
+        {
+            get
+            {
+                return _serialNo;
+            }
+            set
+            {
+                if (_serialNo == value)
+                    return;
+                if (_serialNo == null || value == null || !_serialNo.Equals(value))
+                {
+                    _serialNo = value;
+                    OnPropertyChanged(nameof(SerialNo));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _dateTime;
         
         [System.Xml.Serialization.XmlElementAttribute("DateTime", DataType="dateTime")]
-        public System.DateTime DateTime { get; set; }
+        public System.DateTime DateTime
+        {
+            get
+            {
+                return _dateTime;
+            }
+            set
+            {
+                if (!_dateTime.Equals(value))
+                {
+                    _dateTime = value;
+                    OnPropertyChanged(nameof(DateTime));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _referenceData;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -246,7 +551,26 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("ReferenceData")]
-        public string ReferenceData { get; set; }
+        public string ReferenceData
+        {
+            get
+            {
+                return _referenceData;
+            }
+            set
+            {
+                if (_referenceData == value)
+                    return;
+                if (_referenceData == null || value == null || !_referenceData.Equals(value))
+                {
+                    _referenceData = value;
+                    OnPropertyChanged(nameof(ReferenceData));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _componentSetVersion;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -255,7 +579,23 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(20)]
         [System.Xml.Serialization.XmlElementAttribute("ComponentSetVersion")]
-        public string ComponentSetVersion { get; set; }
+        public string ComponentSetVersion
+        {
+            get
+            {
+                return _componentSetVersion;
+            }
+            set
+            {
+                if (_componentSetVersion == value)
+                    return;
+                if (_componentSetVersion == null || value == null || !_componentSetVersion.Equals(value))
+                {
+                    _componentSetVersion = value;
+                    OnPropertyChanged(nameof(ComponentSetVersion));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -273,8 +613,15 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageSourceFiles", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageSourceFiles
+    public partial class MessageSourceFiles : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         private System.Collections.Generic.List<MessageSourceFilesSourceFile> _sourceFile;
@@ -284,11 +631,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._sourceFile;
+                return _sourceFile;
             }
             private set
             {
-                this._sourceFile = value;
+                if (_sourceFile == value)
+                    return;
+                if (_sourceFile == null || value == null || !_sourceFile.SequenceEqual(value))
+                {
+                    _sourceFile = value;
+                    OnPropertyChanged(nameof(SourceFile));
+                }
             }
         }
         
@@ -307,8 +660,18 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageSourceFilesSourceFile", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageSourceFilesSourceFile
+    public partial class MessageSourceFilesSourceFile : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _sourceFileName;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -317,10 +680,46 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(50)]
         [System.Xml.Serialization.XmlElementAttribute("SourceFileName")]
-        public string SourceFileName { get; set; }
+        public string SourceFileName
+        {
+            get
+            {
+                return _sourceFileName;
+            }
+            set
+            {
+                if (_sourceFileName == value)
+                    return;
+                if (_sourceFileName == null || value == null || !_sourceFileName.Equals(value))
+                {
+                    _sourceFileName = value;
+                    OnPropertyChanged(nameof(SourceFileName));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _filePreparationDate;
         
         [System.Xml.Serialization.XmlElementAttribute("FilePreparationDate", DataType="date")]
-        public System.DateTime FilePreparationDate { get; set; }
+        public System.DateTime FilePreparationDate
+        {
+            get
+            {
+                return _filePreparationDate;
+            }
+            set
+            {
+                if (!_filePreparationDate.Equals(value))
+                {
+                    _filePreparationDate = value;
+                    OnPropertyChanged(nameof(FilePreparationDate));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _softwareSupplier;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -329,7 +728,26 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(40)]
         [System.Xml.Serialization.XmlElementAttribute("SoftwareSupplier")]
-        public string SoftwareSupplier { get; set; }
+        public string SoftwareSupplier
+        {
+            get
+            {
+                return _softwareSupplier;
+            }
+            set
+            {
+                if (_softwareSupplier == value)
+                    return;
+                if (_softwareSupplier == null || value == null || !_softwareSupplier.Equals(value))
+                {
+                    _softwareSupplier = value;
+                    OnPropertyChanged(nameof(SoftwareSupplier));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _softwarePackage;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -338,7 +756,26 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(30)]
         [System.Xml.Serialization.XmlElementAttribute("SoftwarePackage")]
-        public string SoftwarePackage { get; set; }
+        public string SoftwarePackage
+        {
+            get
+            {
+                return _softwarePackage;
+            }
+            set
+            {
+                if (_softwarePackage == value)
+                    return;
+                if (_softwarePackage == null || value == null || !_softwarePackage.Equals(value))
+                {
+                    _softwarePackage = value;
+                    OnPropertyChanged(nameof(SoftwarePackage));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _release;
         
         /// <summary>
         /// <para xml:lang="en">Minimum length: 1.</para>
@@ -347,18 +784,70 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.MinLengthAttribute(1)]
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(20)]
         [System.Xml.Serialization.XmlElementAttribute("Release")]
-        public string Release { get; set; }
+        public string Release
+        {
+            get
+            {
+                return _release;
+            }
+            set
+            {
+                if (_release == value)
+                    return;
+                if (_release == null || value == null || !_release.Equals(value))
+                {
+                    _release = value;
+                    OnPropertyChanged(nameof(Release));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _serialNo;
         
         /// <summary>
         /// <para xml:lang="en">Pattern: [0-9]{1,2}.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.RegularExpressionAttribute("[0-9]{1,2}")]
         [System.Xml.Serialization.XmlElementAttribute("SerialNo")]
-        public string SerialNo { get; set; }
+        public string SerialNo
+        {
+            get
+            {
+                return _serialNo;
+            }
+            set
+            {
+                if (_serialNo == value)
+                    return;
+                if (_serialNo == null || value == null || !_serialNo.Equals(value))
+                {
+                    _serialNo = value;
+                    OnPropertyChanged(nameof(SerialNo));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _dateTime;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("DateTime", DataType="dateTime")]
-        public System.DateTime DateTimeValue { get; set; }
+        public System.DateTime DateTimeValue
+        {
+            get
+            {
+                return _dateTime;
+            }
+            set
+            {
+                if (!_dateTime.Equals(value))
+                {
+                    _dateTime = value;
+                    OnPropertyChanged(nameof(DateTimeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die DateTime-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -384,8 +873,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.DateTimeValue = value.GetValueOrDefault();
-                this.DateTimeValueSpecified = value.HasValue;
+                if (((this.DateTimeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.DateTimeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.DateTimeValue = value.GetValueOrDefault();
+                    this.DateTimeValueSpecified = value.HasValue;
+                    OnPropertyChanged("DateTime");
+                }
             }
         }
     }
@@ -395,8 +889,18 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearningProvider", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearningProvider
+    public partial class MessageLearningProvider : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private int _uKPRN;
         
         /// <summary>
         /// <para xml:lang="en">Minimum inclusive value: 10000000.</para>
@@ -404,7 +908,21 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         /// </summary>
         [System.ComponentModel.DataAnnotations.RangeAttribute(typeof(int), "10000000", "99999999")]
         [System.Xml.Serialization.XmlElementAttribute("UKPRN")]
-        public int UKPRN { get; set; }
+        public int UKPRN
+        {
+            get
+            {
+                return _uKPRN;
+            }
+            set
+            {
+                if (!_uKPRN.Equals(value))
+                {
+                    _uKPRN = value;
+                    OnPropertyChanged(nameof(UKPRN));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -412,29 +930,91 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearner", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearner
+    public partial class MessageLearner : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _learnRefNumber;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("LearnRefNumber")]
-        public string LearnRefNumber { get; set; }
+        public string LearnRefNumber
+        {
+            get
+            {
+                return _learnRefNumber;
+            }
+            set
+            {
+                if (_learnRefNumber == value)
+                    return;
+                if (_learnRefNumber == null || value == null || !_learnRefNumber.Equals(value))
+                {
+                    _learnRefNumber = value;
+                    OnPropertyChanged(nameof(LearnRefNumber));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _prevLearnRefNumber;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("PrevLearnRefNumber")]
-        public string PrevLearnRefNumber { get; set; }
+        public string PrevLearnRefNumber
+        {
+            get
+            {
+                return _prevLearnRefNumber;
+            }
+            set
+            {
+                if (_prevLearnRefNumber == value)
+                    return;
+                if (_prevLearnRefNumber == null || value == null || !_prevLearnRefNumber.Equals(value))
+                {
+                    _prevLearnRefNumber = value;
+                    OnPropertyChanged(nameof(PrevLearnRefNumber));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _prevUKPRN;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PrevUKPRN")]
-        public long PrevUKPRNValue { get; set; }
+        public long PrevUKPRNValue
+        {
+            get
+            {
+                return _prevUKPRN;
+            }
+            set
+            {
+                if (!_prevUKPRN.Equals(value))
+                {
+                    _prevUKPRN = value;
+                    OnPropertyChanged(nameof(PrevUKPRNValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PrevUKPRN-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -463,17 +1043,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PrevUKPRNValue = value.GetValueOrDefault();
-                this.PrevUKPRNValueSpecified = value.HasValue;
+                if (((this.PrevUKPRNValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PrevUKPRNValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PrevUKPRNValue = value.GetValueOrDefault();
+                    this.PrevUKPRNValueSpecified = value.HasValue;
+                    OnPropertyChanged("PrevUKPRN");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _pMUKPRN;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PMUKPRN")]
-        public long PMUKPRNValue { get; set; }
+        public long PMUKPRNValue
+        {
+            get
+            {
+                return _pMUKPRN;
+            }
+            set
+            {
+                if (!_pMUKPRN.Equals(value))
+                {
+                    _pMUKPRN = value;
+                    OnPropertyChanged(nameof(PMUKPRNValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PMUKPRN-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -502,24 +1104,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PMUKPRNValue = value.GetValueOrDefault();
-                this.PMUKPRNValueSpecified = value.HasValue;
+                if (((this.PMUKPRNValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PMUKPRNValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PMUKPRNValue = value.GetValueOrDefault();
+                    this.PMUKPRNValueSpecified = value.HasValue;
+                    OnPropertyChanged("PMUKPRN");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _campId;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("CampId")]
-        public string CampId { get; set; }
+        public string CampId
+        {
+            get
+            {
+                return _campId;
+            }
+            set
+            {
+                if (_campId == value)
+                    return;
+                if (_campId == null || value == null || !_campId.Equals(value))
+                {
+                    _campId = value;
+                    OnPropertyChanged(nameof(CampId));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _uLN;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ULN")]
-        public long ULNValue { get; set; }
+        public long ULNValue
+        {
+            get
+            {
+                return _uLN;
+            }
+            set
+            {
+                if (!_uLN.Equals(value))
+                {
+                    _uLN = value;
+                    OnPropertyChanged(nameof(ULNValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ULN-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -548,28 +1191,88 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ULNValue = value.GetValueOrDefault();
-                this.ULNValueSpecified = value.HasValue;
+                if (((this.ULNValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ULNValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ULNValue = value.GetValueOrDefault();
+                    this.ULNValueSpecified = value.HasValue;
+                    OnPropertyChanged("ULN");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _familyName;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("FamilyName")]
-        public string FamilyName { get; set; }
+        public string FamilyName
+        {
+            get
+            {
+                return _familyName;
+            }
+            set
+            {
+                if (_familyName == value)
+                    return;
+                if (_familyName == null || value == null || !_familyName.Equals(value))
+                {
+                    _familyName = value;
+                    OnPropertyChanged(nameof(FamilyName));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _givenNames;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("GivenNames")]
-        public string GivenNames { get; set; }
+        public string GivenNames
+        {
+            get
+            {
+                return _givenNames;
+            }
+            set
+            {
+                if (_givenNames == value)
+                    return;
+                if (_givenNames == null || value == null || !_givenNames.Equals(value))
+                {
+                    _givenNames = value;
+                    OnPropertyChanged(nameof(GivenNames));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _dateOfBirth;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("DateOfBirth", DataType="date")]
-        public System.DateTime DateOfBirthValue { get; set; }
+        public System.DateTime DateOfBirthValue
+        {
+            get
+            {
+                return _dateOfBirth;
+            }
+            set
+            {
+                if (!_dateOfBirth.Equals(value))
+                {
+                    _dateOfBirth = value;
+                    OnPropertyChanged(nameof(DateOfBirthValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die DateOfBirth-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -595,17 +1298,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.DateOfBirthValue = value.GetValueOrDefault();
-                this.DateOfBirthValueSpecified = value.HasValue;
+                if (((this.DateOfBirthValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.DateOfBirthValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.DateOfBirthValue = value.GetValueOrDefault();
+                    this.DateOfBirthValueSpecified = value.HasValue;
+                    OnPropertyChanged("DateOfBirth");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _ethnicity;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("Ethnicity")]
-        public long EthnicityValue { get; set; }
+        public long EthnicityValue
+        {
+            get
+            {
+                return _ethnicity;
+            }
+            set
+            {
+                if (!_ethnicity.Equals(value))
+                {
+                    _ethnicity = value;
+                    OnPropertyChanged(nameof(EthnicityValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die Ethnicity-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -634,24 +1359,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.EthnicityValue = value.GetValueOrDefault();
-                this.EthnicityValueSpecified = value.HasValue;
+                if (((this.EthnicityValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.EthnicityValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.EthnicityValue = value.GetValueOrDefault();
+                    this.EthnicityValueSpecified = value.HasValue;
+                    OnPropertyChanged("Ethnicity");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _sex;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("Sex")]
-        public string Sex { get; set; }
+        public string Sex
+        {
+            get
+            {
+                return _sex;
+            }
+            set
+            {
+                if (_sex == value)
+                    return;
+                if (_sex == null || value == null || !_sex.Equals(value))
+                {
+                    _sex = value;
+                    OnPropertyChanged(nameof(Sex));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _lLDDHealthProb;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LLDDHealthProb")]
-        public long LLDDHealthProbValue { get; set; }
+        public long LLDDHealthProbValue
+        {
+            get
+            {
+                return _lLDDHealthProb;
+            }
+            set
+            {
+                if (!_lLDDHealthProb.Equals(value))
+                {
+                    _lLDDHealthProb = value;
+                    OnPropertyChanged(nameof(LLDDHealthProbValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LLDDHealthProb-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -680,24 +1446,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LLDDHealthProbValue = value.GetValueOrDefault();
-                this.LLDDHealthProbValueSpecified = value.HasValue;
+                if (((this.LLDDHealthProbValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LLDDHealthProbValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LLDDHealthProbValue = value.GetValueOrDefault();
+                    this.LLDDHealthProbValueSpecified = value.HasValue;
+                    OnPropertyChanged("LLDDHealthProb");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _nINumber;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("NINumber")]
-        public string NINumber { get; set; }
+        public string NINumber
+        {
+            get
+            {
+                return _nINumber;
+            }
+            set
+            {
+                if (_nINumber == value)
+                    return;
+                if (_nINumber == null || value == null || !_nINumber.Equals(value))
+                {
+                    _nINumber = value;
+                    OnPropertyChanged(nameof(NINumber));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _priorAttain;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PriorAttain")]
-        public long PriorAttainValue { get; set; }
+        public long PriorAttainValue
+        {
+            get
+            {
+                return _priorAttain;
+            }
+            set
+            {
+                if (!_priorAttain.Equals(value))
+                {
+                    _priorAttain = value;
+                    OnPropertyChanged(nameof(PriorAttainValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PriorAttain-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -726,17 +1533,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PriorAttainValue = value.GetValueOrDefault();
-                this.PriorAttainValueSpecified = value.HasValue;
+                if (((this.PriorAttainValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PriorAttainValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PriorAttainValue = value.GetValueOrDefault();
+                    this.PriorAttainValueSpecified = value.HasValue;
+                    OnPropertyChanged("PriorAttain");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _accom;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("Accom")]
-        public long AccomValue { get; set; }
+        public long AccomValue
+        {
+            get
+            {
+                return _accom;
+            }
+            set
+            {
+                if (!_accom.Equals(value))
+                {
+                    _accom = value;
+                    OnPropertyChanged(nameof(AccomValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die Accom-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -765,17 +1594,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AccomValue = value.GetValueOrDefault();
-                this.AccomValueSpecified = value.HasValue;
+                if (((this.AccomValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AccomValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AccomValue = value.GetValueOrDefault();
+                    this.AccomValueSpecified = value.HasValue;
+                    OnPropertyChanged("Accom");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _aLSCost;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ALSCost")]
-        public long ALSCostValue { get; set; }
+        public long ALSCostValue
+        {
+            get
+            {
+                return _aLSCost;
+            }
+            set
+            {
+                if (!_aLSCost.Equals(value))
+                {
+                    _aLSCost = value;
+                    OnPropertyChanged(nameof(ALSCostValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ALSCost-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -804,17 +1655,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ALSCostValue = value.GetValueOrDefault();
-                this.ALSCostValueSpecified = value.HasValue;
+                if (((this.ALSCostValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ALSCostValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ALSCostValue = value.GetValueOrDefault();
+                    this.ALSCostValueSpecified = value.HasValue;
+                    OnPropertyChanged("ALSCost");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _planLearnHours;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PlanLearnHours")]
-        public long PlanLearnHoursValue { get; set; }
+        public long PlanLearnHoursValue
+        {
+            get
+            {
+                return _planLearnHours;
+            }
+            set
+            {
+                if (!_planLearnHours.Equals(value))
+                {
+                    _planLearnHours = value;
+                    OnPropertyChanged(nameof(PlanLearnHoursValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PlanLearnHours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -843,17 +1716,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PlanLearnHoursValue = value.GetValueOrDefault();
-                this.PlanLearnHoursValueSpecified = value.HasValue;
+                if (((this.PlanLearnHoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PlanLearnHoursValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PlanLearnHoursValue = value.GetValueOrDefault();
+                    this.PlanLearnHoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("PlanLearnHours");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _planEEPHours;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PlanEEPHours")]
-        public long PlanEEPHoursValue { get; set; }
+        public long PlanEEPHoursValue
+        {
+            get
+            {
+                return _planEEPHours;
+            }
+            set
+            {
+                if (!_planEEPHours.Equals(value))
+                {
+                    _planEEPHours = value;
+                    OnPropertyChanged(nameof(PlanEEPHoursValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PlanEEPHours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -882,80 +1777,275 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PlanEEPHoursValue = value.GetValueOrDefault();
-                this.PlanEEPHoursValueSpecified = value.HasValue;
+                if (((this.PlanEEPHoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PlanEEPHoursValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PlanEEPHoursValue = value.GetValueOrDefault();
+                    this.PlanEEPHoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("PlanEEPHours");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _mathGrade;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("MathGrade")]
-        public string MathGrade { get; set; }
+        public string MathGrade
+        {
+            get
+            {
+                return _mathGrade;
+            }
+            set
+            {
+                if (_mathGrade == value)
+                    return;
+                if (_mathGrade == null || value == null || !_mathGrade.Equals(value))
+                {
+                    _mathGrade = value;
+                    OnPropertyChanged(nameof(MathGrade));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _engGrade;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("EngGrade")]
-        public string EngGrade { get; set; }
+        public string EngGrade
+        {
+            get
+            {
+                return _engGrade;
+            }
+            set
+            {
+                if (_engGrade == value)
+                    return;
+                if (_engGrade == null || value == null || !_engGrade.Equals(value))
+                {
+                    _engGrade = value;
+                    OnPropertyChanged(nameof(EngGrade));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _postcodePrior;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("PostcodePrior")]
-        public string PostcodePrior { get; set; }
+        public string PostcodePrior
+        {
+            get
+            {
+                return _postcodePrior;
+            }
+            set
+            {
+                if (_postcodePrior == value)
+                    return;
+                if (_postcodePrior == null || value == null || !_postcodePrior.Equals(value))
+                {
+                    _postcodePrior = value;
+                    OnPropertyChanged(nameof(PostcodePrior));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _postcode;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("Postcode")]
-        public string Postcode { get; set; }
+        public string Postcode
+        {
+            get
+            {
+                return _postcode;
+            }
+            set
+            {
+                if (_postcode == value)
+                    return;
+                if (_postcode == null || value == null || !_postcode.Equals(value))
+                {
+                    _postcode = value;
+                    OnPropertyChanged(nameof(Postcode));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _addLine1;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("AddLine1")]
-        public string AddLine1 { get; set; }
+        public string AddLine1
+        {
+            get
+            {
+                return _addLine1;
+            }
+            set
+            {
+                if (_addLine1 == value)
+                    return;
+                if (_addLine1 == null || value == null || !_addLine1.Equals(value))
+                {
+                    _addLine1 = value;
+                    OnPropertyChanged(nameof(AddLine1));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _addLine2;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("AddLine2")]
-        public string AddLine2 { get; set; }
+        public string AddLine2
+        {
+            get
+            {
+                return _addLine2;
+            }
+            set
+            {
+                if (_addLine2 == value)
+                    return;
+                if (_addLine2 == null || value == null || !_addLine2.Equals(value))
+                {
+                    _addLine2 = value;
+                    OnPropertyChanged(nameof(AddLine2));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _addLine3;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("AddLine3")]
-        public string AddLine3 { get; set; }
+        public string AddLine3
+        {
+            get
+            {
+                return _addLine3;
+            }
+            set
+            {
+                if (_addLine3 == value)
+                    return;
+                if (_addLine3 == null || value == null || !_addLine3.Equals(value))
+                {
+                    _addLine3 = value;
+                    OnPropertyChanged(nameof(AddLine3));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _addLine4;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("AddLine4")]
-        public string AddLine4 { get; set; }
+        public string AddLine4
+        {
+            get
+            {
+                return _addLine4;
+            }
+            set
+            {
+                if (_addLine4 == value)
+                    return;
+                if (_addLine4 == null || value == null || !_addLine4.Equals(value))
+                {
+                    _addLine4 = value;
+                    OnPropertyChanged(nameof(AddLine4));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _telNo;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("TelNo")]
-        public string TelNo { get; set; }
+        public string TelNo
+        {
+            get
+            {
+                return _telNo;
+            }
+            set
+            {
+                if (_telNo == value)
+                    return;
+                if (_telNo == null || value == null || !_telNo.Equals(value))
+                {
+                    _telNo = value;
+                    OnPropertyChanged(nameof(TelNo));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _email;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("Email")]
-        public string Email { get; set; }
+        public string Email
+        {
+            get
+            {
+                return _email;
+            }
+            set
+            {
+                if (_email == value)
+                    return;
+                if (_email == null || value == null || !_email.Equals(value))
+                {
+                    _email = value;
+                    OnPropertyChanged(nameof(Email));
+                }
+            }
+        }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         private System.Collections.Generic.List<MessageLearnerContactPreference> _contactPreference;
@@ -965,11 +2055,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._contactPreference;
+                return _contactPreference;
             }
             private set
             {
-                this._contactPreference = value;
+                if (_contactPreference == value)
+                    return;
+                if (_contactPreference == null || value == null || !_contactPreference.SequenceEqual(value))
+                {
+                    _contactPreference = value;
+                    OnPropertyChanged(nameof(ContactPreference));
+                }
             }
         }
         
@@ -1009,11 +2105,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._lLDDandHealthProblem;
+                return _lLDDandHealthProblem;
             }
             private set
             {
-                this._lLDDandHealthProblem = value;
+                if (_lLDDandHealthProblem == value)
+                    return;
+                if (_lLDDandHealthProblem == null || value == null || !_lLDDandHealthProblem.SequenceEqual(value))
+                {
+                    _lLDDandHealthProblem = value;
+                    OnPropertyChanged(nameof(LLDDandHealthProblem));
+                }
             }
         }
         
@@ -1038,11 +2140,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learnerFAM;
+                return _learnerFAM;
             }
             private set
             {
-                this._learnerFAM = value;
+                if (_learnerFAM == value)
+                    return;
+                if (_learnerFAM == null || value == null || !_learnerFAM.SequenceEqual(value))
+                {
+                    _learnerFAM = value;
+                    OnPropertyChanged(nameof(LearnerFAM));
+                }
             }
         }
         
@@ -1067,11 +2175,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._providerSpecLearnerMonitoring;
+                return _providerSpecLearnerMonitoring;
             }
             private set
             {
-                this._providerSpecLearnerMonitoring = value;
+                if (_providerSpecLearnerMonitoring == value)
+                    return;
+                if (_providerSpecLearnerMonitoring == null || value == null || !_providerSpecLearnerMonitoring.SequenceEqual(value))
+                {
+                    _providerSpecLearnerMonitoring = value;
+                    OnPropertyChanged(nameof(ProviderSpecLearnerMonitoring));
+                }
             }
         }
         
@@ -1096,11 +2210,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learnerEmploymentStatus;
+                return _learnerEmploymentStatus;
             }
             private set
             {
-                this._learnerEmploymentStatus = value;
+                if (_learnerEmploymentStatus == value)
+                    return;
+                if (_learnerEmploymentStatus == null || value == null || !_learnerEmploymentStatus.SequenceEqual(value))
+                {
+                    _learnerEmploymentStatus = value;
+                    OnPropertyChanged(nameof(LearnerEmploymentStatus));
+                }
             }
         }
         
@@ -1125,11 +2245,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learnerHE;
+                return _learnerHE;
             }
             private set
             {
-                this._learnerHE = value;
+                if (_learnerHE == value)
+                    return;
+                if (_learnerHE == null || value == null || !_learnerHE.SequenceEqual(value))
+                {
+                    _learnerHE = value;
+                    OnPropertyChanged(nameof(LearnerHE));
+                }
             }
         }
         
@@ -1154,11 +2280,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learningDelivery;
+                return _learningDelivery;
             }
             private set
             {
-                this._learningDelivery = value;
+                if (_learningDelivery == value)
+                    return;
+                if (_learningDelivery == null || value == null || !_learningDelivery.SequenceEqual(value))
+                {
+                    _learningDelivery = value;
+                    OnPropertyChanged(nameof(LearningDelivery));
+                }
             }
         }
         
@@ -1181,22 +2313,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerContactPreference", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerContactPreference
+    public partial class MessageLearnerContactPreference : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _contPrefType;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("ContPrefType")]
-        public string ContPrefType { get; set; }
+        public string ContPrefType
+        {
+            get
+            {
+                return _contPrefType;
+            }
+            set
+            {
+                if (_contPrefType == value)
+                    return;
+                if (_contPrefType == null || value == null || !_contPrefType.Equals(value))
+                {
+                    _contPrefType = value;
+                    OnPropertyChanged(nameof(ContPrefType));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _contPrefCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ContPrefCode")]
-        public long ContPrefCodeValue { get; set; }
+        public long ContPrefCodeValue
+        {
+            get
+            {
+                return _contPrefCode;
+            }
+            set
+            {
+                if (!_contPrefCode.Equals(value))
+                {
+                    _contPrefCode = value;
+                    OnPropertyChanged(nameof(ContPrefCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ContPrefCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1225,8 +2400,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ContPrefCodeValue = value.GetValueOrDefault();
-                this.ContPrefCodeValueSpecified = value.HasValue;
+                if (((this.ContPrefCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ContPrefCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ContPrefCodeValue = value.GetValueOrDefault();
+                    this.ContPrefCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("ContPrefCode");
+                }
             }
         }
     }
@@ -1236,15 +2416,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLLDDandHealthProblem", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLLDDandHealthProblem
+    public partial class MessageLearnerLLDDandHealthProblem : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _lLDDCat;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LLDDCat")]
-        public long LLDDCatValue { get; set; }
+        public long LLDDCatValue
+        {
+            get
+            {
+                return _lLDDCat;
+            }
+            set
+            {
+                if (!_lLDDCat.Equals(value))
+                {
+                    _lLDDCat = value;
+                    OnPropertyChanged(nameof(LLDDCatValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LLDDCat-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1273,17 +2477,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LLDDCatValue = value.GetValueOrDefault();
-                this.LLDDCatValueSpecified = value.HasValue;
+                if (((this.LLDDCatValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LLDDCatValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LLDDCatValue = value.GetValueOrDefault();
+                    this.LLDDCatValueSpecified = value.HasValue;
+                    OnPropertyChanged("LLDDCat");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _primaryLLDD;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PrimaryLLDD")]
-        public long PrimaryLLDDValue { get; set; }
+        public long PrimaryLLDDValue
+        {
+            get
+            {
+                return _primaryLLDD;
+            }
+            set
+            {
+                if (!_primaryLLDD.Equals(value))
+                {
+                    _primaryLLDD = value;
+                    OnPropertyChanged(nameof(PrimaryLLDDValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PrimaryLLDD-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1312,8 +2538,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PrimaryLLDDValue = value.GetValueOrDefault();
-                this.PrimaryLLDDValueSpecified = value.HasValue;
+                if (((this.PrimaryLLDDValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PrimaryLLDDValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PrimaryLLDDValue = value.GetValueOrDefault();
+                    this.PrimaryLLDDValueSpecified = value.HasValue;
+                    OnPropertyChanged("PrimaryLLDD");
+                }
             }
         }
     }
@@ -1323,22 +2554,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearnerFAM", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearnerFAM
+    public partial class MessageLearnerLearnerFAM : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _learnFAMType;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("LearnFAMType")]
-        public string LearnFAMType { get; set; }
+        public string LearnFAMType
+        {
+            get
+            {
+                return _learnFAMType;
+            }
+            set
+            {
+                if (_learnFAMType == value)
+                    return;
+                if (_learnFAMType == null || value == null || !_learnFAMType.Equals(value))
+                {
+                    _learnFAMType = value;
+                    OnPropertyChanged(nameof(LearnFAMType));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _learnFAMCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LearnFAMCode")]
-        public long LearnFAMCodeValue { get; set; }
+        public long LearnFAMCodeValue
+        {
+            get
+            {
+                return _learnFAMCode;
+            }
+            set
+            {
+                if (!_learnFAMCode.Equals(value))
+                {
+                    _learnFAMCode = value;
+                    OnPropertyChanged(nameof(LearnFAMCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LearnFAMCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1367,8 +2641,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LearnFAMCodeValue = value.GetValueOrDefault();
-                this.LearnFAMCodeValueSpecified = value.HasValue;
+                if (((this.LearnFAMCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LearnFAMCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LearnFAMCodeValue = value.GetValueOrDefault();
+                    this.LearnFAMCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("LearnFAMCode");
+                }
             }
         }
     }
@@ -1378,22 +2657,67 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerProviderSpecLearnerMonitoring", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerProviderSpecLearnerMonitoring
+    public partial class MessageLearnerProviderSpecLearnerMonitoring : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _provSpecLearnMonOccur;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("ProvSpecLearnMonOccur")]
-        public string ProvSpecLearnMonOccur { get; set; }
+        public string ProvSpecLearnMonOccur
+        {
+            get
+            {
+                return _provSpecLearnMonOccur;
+            }
+            set
+            {
+                if (_provSpecLearnMonOccur == value)
+                    return;
+                if (_provSpecLearnMonOccur == null || value == null || !_provSpecLearnMonOccur.Equals(value))
+                {
+                    _provSpecLearnMonOccur = value;
+                    OnPropertyChanged(nameof(ProvSpecLearnMonOccur));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _provSpecLearnMon;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("ProvSpecLearnMon")]
-        public string ProvSpecLearnMon { get; set; }
+        public string ProvSpecLearnMon
+        {
+            get
+            {
+                return _provSpecLearnMon;
+            }
+            set
+            {
+                if (_provSpecLearnMon == value)
+                    return;
+                if (_provSpecLearnMon == null || value == null || !_provSpecLearnMon.Equals(value))
+                {
+                    _provSpecLearnMon = value;
+                    OnPropertyChanged(nameof(ProvSpecLearnMon));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -1401,15 +2725,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearnerEmploymentStatus", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearnerEmploymentStatus
+    public partial class MessageLearnerLearnerEmploymentStatus : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _empStat;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("EmpStat")]
-        public long EmpStatValue { get; set; }
+        public long EmpStatValue
+        {
+            get
+            {
+                return _empStat;
+            }
+            set
+            {
+                if (!_empStat.Equals(value))
+                {
+                    _empStat = value;
+                    OnPropertyChanged(nameof(EmpStatValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die EmpStat-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1438,14 +2786,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.EmpStatValue = value.GetValueOrDefault();
-                this.EmpStatValueSpecified = value.HasValue;
+                if (((this.EmpStatValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.EmpStatValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.EmpStatValue = value.GetValueOrDefault();
+                    this.EmpStatValueSpecified = value.HasValue;
+                    OnPropertyChanged("EmpStat");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _dateEmpStatApp;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("DateEmpStatApp", DataType="date")]
-        public System.DateTime DateEmpStatAppValue { get; set; }
+        public System.DateTime DateEmpStatAppValue
+        {
+            get
+            {
+                return _dateEmpStatApp;
+            }
+            set
+            {
+                if (!_dateEmpStatApp.Equals(value))
+                {
+                    _dateEmpStatApp = value;
+                    OnPropertyChanged(nameof(DateEmpStatAppValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die DateEmpStatApp-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1471,17 +2841,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.DateEmpStatAppValue = value.GetValueOrDefault();
-                this.DateEmpStatAppValueSpecified = value.HasValue;
+                if (((this.DateEmpStatAppValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.DateEmpStatAppValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.DateEmpStatAppValue = value.GetValueOrDefault();
+                    this.DateEmpStatAppValueSpecified = value.HasValue;
+                    OnPropertyChanged("DateEmpStatApp");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _empId;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("EmpId")]
-        public long EmpIdValue { get; set; }
+        public long EmpIdValue
+        {
+            get
+            {
+                return _empId;
+            }
+            set
+            {
+                if (!_empId.Equals(value))
+                {
+                    _empId = value;
+                    OnPropertyChanged(nameof(EmpIdValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die EmpId-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1510,8 +2902,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.EmpIdValue = value.GetValueOrDefault();
-                this.EmpIdValueSpecified = value.HasValue;
+                if (((this.EmpIdValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.EmpIdValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.EmpIdValue = value.GetValueOrDefault();
+                    this.EmpIdValueSpecified = value.HasValue;
+                    OnPropertyChanged("EmpId");
+                }
             }
         }
         
@@ -1523,11 +2920,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._employmentStatusMonitoring;
+                return _employmentStatusMonitoring;
             }
             private set
             {
-                this._employmentStatusMonitoring = value;
+                if (_employmentStatusMonitoring == value)
+                    return;
+                if (_employmentStatusMonitoring == null || value == null || !_employmentStatusMonitoring.SequenceEqual(value))
+                {
+                    _employmentStatusMonitoring = value;
+                    OnPropertyChanged(nameof(EmploymentStatusMonitoring));
+                }
             }
         }
         
@@ -1559,22 +2962,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring
+    public partial class MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _eSMType;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("ESMType")]
-        public string ESMType { get; set; }
+        public string ESMType
+        {
+            get
+            {
+                return _eSMType;
+            }
+            set
+            {
+                if (_eSMType == value)
+                    return;
+                if (_eSMType == null || value == null || !_eSMType.Equals(value))
+                {
+                    _eSMType = value;
+                    OnPropertyChanged(nameof(ESMType));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _eSMCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ESMCode")]
-        public long ESMCodeValue { get; set; }
+        public long ESMCodeValue
+        {
+            get
+            {
+                return _eSMCode;
+            }
+            set
+            {
+                if (!_eSMCode.Equals(value))
+                {
+                    _eSMCode = value;
+                    OnPropertyChanged(nameof(ESMCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ESMCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1603,8 +3049,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ESMCodeValue = value.GetValueOrDefault();
-                this.ESMCodeValueSpecified = value.HasValue;
+                if (((this.ESMCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ESMCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ESMCodeValue = value.GetValueOrDefault();
+                    this.ESMCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("ESMCode");
+                }
             }
         }
     }
@@ -1614,22 +3065,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearnerHE", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearnerHE
+    public partial class MessageLearnerLearnerHE : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _uCASPERID;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("UCASPERID")]
-        public string UCASPERID { get; set; }
+        public string UCASPERID
+        {
+            get
+            {
+                return _uCASPERID;
+            }
+            set
+            {
+                if (_uCASPERID == value)
+                    return;
+                if (_uCASPERID == null || value == null || !_uCASPERID.Equals(value))
+                {
+                    _uCASPERID = value;
+                    OnPropertyChanged(nameof(UCASPERID));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _tTACCOM;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("TTACCOM")]
-        public long TTACCOMValue { get; set; }
+        public long TTACCOMValue
+        {
+            get
+            {
+                return _tTACCOM;
+            }
+            set
+            {
+                if (!_tTACCOM.Equals(value))
+                {
+                    _tTACCOM = value;
+                    OnPropertyChanged(nameof(TTACCOMValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die TTACCOM-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1658,8 +3152,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.TTACCOMValue = value.GetValueOrDefault();
-                this.TTACCOMValueSpecified = value.HasValue;
+                if (((this.TTACCOMValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.TTACCOMValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.TTACCOMValue = value.GetValueOrDefault();
+                    this.TTACCOMValueSpecified = value.HasValue;
+                    OnPropertyChanged("TTACCOM");
+                }
             }
         }
         
@@ -1671,11 +3170,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learnerHEFinancialSupport;
+                return _learnerHEFinancialSupport;
             }
             private set
             {
-                this._learnerHEFinancialSupport = value;
+                if (_learnerHEFinancialSupport == value)
+                    return;
+                if (_learnerHEFinancialSupport == null || value == null || !_learnerHEFinancialSupport.SequenceEqual(value))
+                {
+                    _learnerHEFinancialSupport = value;
+                    OnPropertyChanged(nameof(LearnerHEFinancialSupport));
+                }
             }
         }
         
@@ -1707,15 +3212,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearnerHELearnerHEFinancialSupport", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearnerHELearnerHEFinancialSupport
+    public partial class MessageLearnerLearnerHELearnerHEFinancialSupport : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _fINTYPE;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("FINTYPE")]
-        public long FINTYPEValue { get; set; }
+        public long FINTYPEValue
+        {
+            get
+            {
+                return _fINTYPE;
+            }
+            set
+            {
+                if (!_fINTYPE.Equals(value))
+                {
+                    _fINTYPE = value;
+                    OnPropertyChanged(nameof(FINTYPEValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die FINTYPE-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1744,17 +3273,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.FINTYPEValue = value.GetValueOrDefault();
-                this.FINTYPEValueSpecified = value.HasValue;
+                if (((this.FINTYPEValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.FINTYPEValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.FINTYPEValue = value.GetValueOrDefault();
+                    this.FINTYPEValueSpecified = value.HasValue;
+                    OnPropertyChanged("FINTYPE");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _fINAMOUNT;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("FINAMOUNT")]
-        public long FINAMOUNTValue { get; set; }
+        public long FINAMOUNTValue
+        {
+            get
+            {
+                return _fINAMOUNT;
+            }
+            set
+            {
+                if (!_fINAMOUNT.Equals(value))
+                {
+                    _fINAMOUNT = value;
+                    OnPropertyChanged(nameof(FINAMOUNTValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die FINAMOUNT-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1783,8 +3334,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.FINAMOUNTValue = value.GetValueOrDefault();
-                this.FINAMOUNTValueSpecified = value.HasValue;
+                if (((this.FINAMOUNTValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.FINAMOUNTValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.FINAMOUNTValue = value.GetValueOrDefault();
+                    this.FINAMOUNTValueSpecified = value.HasValue;
+                    OnPropertyChanged("FINAMOUNT");
+                }
             }
         }
     }
@@ -1794,22 +3350,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearningDelivery", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearningDelivery
+    public partial class MessageLearnerLearningDelivery : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _learnAimRef;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("LearnAimRef")]
-        public string LearnAimRef { get; set; }
+        public string LearnAimRef
+        {
+            get
+            {
+                return _learnAimRef;
+            }
+            set
+            {
+                if (_learnAimRef == value)
+                    return;
+                if (_learnAimRef == null || value == null || !_learnAimRef.Equals(value))
+                {
+                    _learnAimRef = value;
+                    OnPropertyChanged(nameof(LearnAimRef));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _aimType;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AimType")]
-        public long AimTypeValue { get; set; }
+        public long AimTypeValue
+        {
+            get
+            {
+                return _aimType;
+            }
+            set
+            {
+                if (!_aimType.Equals(value))
+                {
+                    _aimType = value;
+                    OnPropertyChanged(nameof(AimTypeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AimType-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1838,17 +3437,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AimTypeValue = value.GetValueOrDefault();
-                this.AimTypeValueSpecified = value.HasValue;
+                if (((this.AimTypeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AimTypeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AimTypeValue = value.GetValueOrDefault();
+                    this.AimTypeValueSpecified = value.HasValue;
+                    OnPropertyChanged("AimType");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _aimSeqNumber;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AimSeqNumber")]
-        public long AimSeqNumberValue { get; set; }
+        public long AimSeqNumberValue
+        {
+            get
+            {
+                return _aimSeqNumber;
+            }
+            set
+            {
+                if (!_aimSeqNumber.Equals(value))
+                {
+                    _aimSeqNumber = value;
+                    OnPropertyChanged(nameof(AimSeqNumberValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AimSeqNumber-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1877,14 +3498,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AimSeqNumberValue = value.GetValueOrDefault();
-                this.AimSeqNumberValueSpecified = value.HasValue;
+                if (((this.AimSeqNumberValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AimSeqNumberValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AimSeqNumberValue = value.GetValueOrDefault();
+                    this.AimSeqNumberValueSpecified = value.HasValue;
+                    OnPropertyChanged("AimSeqNumber");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _learnStartDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LearnStartDate", DataType="date")]
-        public System.DateTime LearnStartDateValue { get; set; }
+        public System.DateTime LearnStartDateValue
+        {
+            get
+            {
+                return _learnStartDate;
+            }
+            set
+            {
+                if (!_learnStartDate.Equals(value))
+                {
+                    _learnStartDate = value;
+                    OnPropertyChanged(nameof(LearnStartDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LearnStartDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1910,14 +3553,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LearnStartDateValue = value.GetValueOrDefault();
-                this.LearnStartDateValueSpecified = value.HasValue;
+                if (((this.LearnStartDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LearnStartDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LearnStartDateValue = value.GetValueOrDefault();
+                    this.LearnStartDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("LearnStartDate");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _origLearnStartDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OrigLearnStartDate", DataType="date")]
-        public System.DateTime OrigLearnStartDateValue { get; set; }
+        public System.DateTime OrigLearnStartDateValue
+        {
+            get
+            {
+                return _origLearnStartDate;
+            }
+            set
+            {
+                if (!_origLearnStartDate.Equals(value))
+                {
+                    _origLearnStartDate = value;
+                    OnPropertyChanged(nameof(OrigLearnStartDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OrigLearnStartDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1943,14 +3608,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OrigLearnStartDateValue = value.GetValueOrDefault();
-                this.OrigLearnStartDateValueSpecified = value.HasValue;
+                if (((this.OrigLearnStartDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OrigLearnStartDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OrigLearnStartDateValue = value.GetValueOrDefault();
+                    this.OrigLearnStartDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("OrigLearnStartDate");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _learnPlanEndDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LearnPlanEndDate", DataType="date")]
-        public System.DateTime LearnPlanEndDateValue { get; set; }
+        public System.DateTime LearnPlanEndDateValue
+        {
+            get
+            {
+                return _learnPlanEndDate;
+            }
+            set
+            {
+                if (!_learnPlanEndDate.Equals(value))
+                {
+                    _learnPlanEndDate = value;
+                    OnPropertyChanged(nameof(LearnPlanEndDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LearnPlanEndDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -1976,17 +3663,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LearnPlanEndDateValue = value.GetValueOrDefault();
-                this.LearnPlanEndDateValueSpecified = value.HasValue;
+                if (((this.LearnPlanEndDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LearnPlanEndDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LearnPlanEndDateValue = value.GetValueOrDefault();
+                    this.LearnPlanEndDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("LearnPlanEndDate");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _fundModel;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("FundModel")]
-        public long FundModelValue { get; set; }
+        public long FundModelValue
+        {
+            get
+            {
+                return _fundModel;
+            }
+            set
+            {
+                if (!_fundModel.Equals(value))
+                {
+                    _fundModel = value;
+                    OnPropertyChanged(nameof(FundModelValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die FundModel-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2015,17 +3724,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.FundModelValue = value.GetValueOrDefault();
-                this.FundModelValueSpecified = value.HasValue;
+                if (((this.FundModelValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.FundModelValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.FundModelValue = value.GetValueOrDefault();
+                    this.FundModelValueSpecified = value.HasValue;
+                    OnPropertyChanged("FundModel");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _pHours;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PHours")]
-        public long PHoursValue { get; set; }
+        public long PHoursValue
+        {
+            get
+            {
+                return _pHours;
+            }
+            set
+            {
+                if (!_pHours.Equals(value))
+                {
+                    _pHours = value;
+                    OnPropertyChanged(nameof(PHoursValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PHours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2054,10 +3785,18 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PHoursValue = value.GetValueOrDefault();
-                this.PHoursValueSpecified = value.HasValue;
+                if (((this.PHoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PHoursValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PHoursValue = value.GetValueOrDefault();
+                    this.PHoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("PHours");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private int _oTJActhours;
         
         /// <summary>
         /// <para xml:lang="en">Minimum inclusive value: 0.</para>
@@ -2066,7 +3805,21 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         [System.ComponentModel.DataAnnotations.RangeAttribute(typeof(int), "0", "9999")]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OTJActhours")]
-        public int OTJActhoursValue { get; set; }
+        public int OTJActhoursValue
+        {
+            get
+            {
+                return _oTJActhours;
+            }
+            set
+            {
+                if (!_oTJActhours.Equals(value))
+                {
+                    _oTJActhours = value;
+                    OnPropertyChanged(nameof(OTJActhoursValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OTJActhours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2096,17 +3849,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OTJActhoursValue = value.GetValueOrDefault();
-                this.OTJActhoursValueSpecified = value.HasValue;
+                if (((this.OTJActhoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OTJActhoursValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OTJActhoursValue = value.GetValueOrDefault();
+                    this.OTJActhoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("OTJActhours");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _progType;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ProgType")]
-        public long ProgTypeValue { get; set; }
+        public long ProgTypeValue
+        {
+            get
+            {
+                return _progType;
+            }
+            set
+            {
+                if (!_progType.Equals(value))
+                {
+                    _progType = value;
+                    OnPropertyChanged(nameof(ProgTypeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ProgType-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2135,17 +3910,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ProgTypeValue = value.GetValueOrDefault();
-                this.ProgTypeValueSpecified = value.HasValue;
+                if (((this.ProgTypeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ProgTypeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ProgTypeValue = value.GetValueOrDefault();
+                    this.ProgTypeValueSpecified = value.HasValue;
+                    OnPropertyChanged("ProgType");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _fworkCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("FworkCode")]
-        public long FworkCodeValue { get; set; }
+        public long FworkCodeValue
+        {
+            get
+            {
+                return _fworkCode;
+            }
+            set
+            {
+                if (!_fworkCode.Equals(value))
+                {
+                    _fworkCode = value;
+                    OnPropertyChanged(nameof(FworkCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die FworkCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2174,17 +3971,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.FworkCodeValue = value.GetValueOrDefault();
-                this.FworkCodeValueSpecified = value.HasValue;
+                if (((this.FworkCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.FworkCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.FworkCodeValue = value.GetValueOrDefault();
+                    this.FworkCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("FworkCode");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _pwayCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PwayCode")]
-        public long PwayCodeValue { get; set; }
+        public long PwayCodeValue
+        {
+            get
+            {
+                return _pwayCode;
+            }
+            set
+            {
+                if (!_pwayCode.Equals(value))
+                {
+                    _pwayCode = value;
+                    OnPropertyChanged(nameof(PwayCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PwayCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2213,17 +4032,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PwayCodeValue = value.GetValueOrDefault();
-                this.PwayCodeValueSpecified = value.HasValue;
+                if (((this.PwayCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PwayCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PwayCodeValue = value.GetValueOrDefault();
+                    this.PwayCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("PwayCode");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _stdCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("StdCode")]
-        public long StdCodeValue { get; set; }
+        public long StdCodeValue
+        {
+            get
+            {
+                return _stdCode;
+            }
+            set
+            {
+                if (!_stdCode.Equals(value))
+                {
+                    _stdCode = value;
+                    OnPropertyChanged(nameof(StdCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die StdCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2252,17 +4093,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.StdCodeValue = value.GetValueOrDefault();
-                this.StdCodeValueSpecified = value.HasValue;
+                if (((this.StdCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.StdCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.StdCodeValue = value.GetValueOrDefault();
+                    this.StdCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("StdCode");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _partnerUKPRN;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PartnerUKPRN")]
-        public long PartnerUKPRNValue { get; set; }
+        public long PartnerUKPRNValue
+        {
+            get
+            {
+                return _partnerUKPRN;
+            }
+            set
+            {
+                if (!_partnerUKPRN.Equals(value))
+                {
+                    _partnerUKPRN = value;
+                    OnPropertyChanged(nameof(PartnerUKPRNValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PartnerUKPRN-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2291,31 +4154,91 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PartnerUKPRNValue = value.GetValueOrDefault();
-                this.PartnerUKPRNValueSpecified = value.HasValue;
+                if (((this.PartnerUKPRNValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PartnerUKPRNValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PartnerUKPRNValue = value.GetValueOrDefault();
+                    this.PartnerUKPRNValueSpecified = value.HasValue;
+                    OnPropertyChanged("PartnerUKPRN");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _delLocPostCode;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("DelLocPostCode")]
-        public string DelLocPostCode { get; set; }
+        public string DelLocPostCode
+        {
+            get
+            {
+                return _delLocPostCode;
+            }
+            set
+            {
+                if (_delLocPostCode == value)
+                    return;
+                if (_delLocPostCode == null || value == null || !_delLocPostCode.Equals(value))
+                {
+                    _delLocPostCode = value;
+                    OnPropertyChanged(nameof(DelLocPostCode));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _lSDPostcode;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("LSDPostcode")]
-        public string LSDPostcode { get; set; }
+        public string LSDPostcode
+        {
+            get
+            {
+                return _lSDPostcode;
+            }
+            set
+            {
+                if (_lSDPostcode == value)
+                    return;
+                if (_lSDPostcode == null || value == null || !_lSDPostcode.Equals(value))
+                {
+                    _lSDPostcode = value;
+                    OnPropertyChanged(nameof(LSDPostcode));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _addHours;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AddHours")]
-        public long AddHoursValue { get; set; }
+        public long AddHoursValue
+        {
+            get
+            {
+                return _addHours;
+            }
+            set
+            {
+                if (!_addHours.Equals(value))
+                {
+                    _addHours = value;
+                    OnPropertyChanged(nameof(AddHoursValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AddHours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2344,17 +4267,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AddHoursValue = value.GetValueOrDefault();
-                this.AddHoursValueSpecified = value.HasValue;
+                if (((this.AddHoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AddHoursValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AddHoursValue = value.GetValueOrDefault();
+                    this.AddHoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("AddHours");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _priorLearnFundAdj;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PriorLearnFundAdj")]
-        public long PriorLearnFundAdjValue { get; set; }
+        public long PriorLearnFundAdjValue
+        {
+            get
+            {
+                return _priorLearnFundAdj;
+            }
+            set
+            {
+                if (!_priorLearnFundAdj.Equals(value))
+                {
+                    _priorLearnFundAdj = value;
+                    OnPropertyChanged(nameof(PriorLearnFundAdjValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PriorLearnFundAdj-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2383,17 +4328,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PriorLearnFundAdjValue = value.GetValueOrDefault();
-                this.PriorLearnFundAdjValueSpecified = value.HasValue;
+                if (((this.PriorLearnFundAdjValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PriorLearnFundAdjValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PriorLearnFundAdjValue = value.GetValueOrDefault();
+                    this.PriorLearnFundAdjValueSpecified = value.HasValue;
+                    OnPropertyChanged("PriorLearnFundAdj");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _otherFundAdj;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OtherFundAdj")]
-        public long OtherFundAdjValue { get; set; }
+        public long OtherFundAdjValue
+        {
+            get
+            {
+                return _otherFundAdj;
+            }
+            set
+            {
+                if (!_otherFundAdj.Equals(value))
+                {
+                    _otherFundAdj = value;
+                    OnPropertyChanged(nameof(OtherFundAdjValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OtherFundAdj-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2422,31 +4389,91 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OtherFundAdjValue = value.GetValueOrDefault();
-                this.OtherFundAdjValueSpecified = value.HasValue;
+                if (((this.OtherFundAdjValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OtherFundAdjValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OtherFundAdjValue = value.GetValueOrDefault();
+                    this.OtherFundAdjValueSpecified = value.HasValue;
+                    OnPropertyChanged("OtherFundAdj");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _conRefNumber;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("ConRefNumber")]
-        public string ConRefNumber { get; set; }
+        public string ConRefNumber
+        {
+            get
+            {
+                return _conRefNumber;
+            }
+            set
+            {
+                if (_conRefNumber == value)
+                    return;
+                if (_conRefNumber == null || value == null || !_conRefNumber.Equals(value))
+                {
+                    _conRefNumber = value;
+                    OnPropertyChanged(nameof(ConRefNumber));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _ePAOrgID;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("EPAOrgID")]
-        public string EPAOrgID { get; set; }
+        public string EPAOrgID
+        {
+            get
+            {
+                return _ePAOrgID;
+            }
+            set
+            {
+                if (_ePAOrgID == value)
+                    return;
+                if (_ePAOrgID == null || value == null || !_ePAOrgID.Equals(value))
+                {
+                    _ePAOrgID = value;
+                    OnPropertyChanged(nameof(EPAOrgID));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _empOutcome;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("EmpOutcome")]
-        public long EmpOutcomeValue { get; set; }
+        public long EmpOutcomeValue
+        {
+            get
+            {
+                return _empOutcome;
+            }
+            set
+            {
+                if (!_empOutcome.Equals(value))
+                {
+                    _empOutcome = value;
+                    OnPropertyChanged(nameof(EmpOutcomeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die EmpOutcome-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2475,17 +4502,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.EmpOutcomeValue = value.GetValueOrDefault();
-                this.EmpOutcomeValueSpecified = value.HasValue;
+                if (((this.EmpOutcomeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.EmpOutcomeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.EmpOutcomeValue = value.GetValueOrDefault();
+                    this.EmpOutcomeValueSpecified = value.HasValue;
+                    OnPropertyChanged("EmpOutcome");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _compStatus;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("CompStatus")]
-        public long CompStatusValue { get; set; }
+        public long CompStatusValue
+        {
+            get
+            {
+                return _compStatus;
+            }
+            set
+            {
+                if (!_compStatus.Equals(value))
+                {
+                    _compStatus = value;
+                    OnPropertyChanged(nameof(CompStatusValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die CompStatus-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2514,14 +4563,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.CompStatusValue = value.GetValueOrDefault();
-                this.CompStatusValueSpecified = value.HasValue;
+                if (((this.CompStatusValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.CompStatusValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.CompStatusValue = value.GetValueOrDefault();
+                    this.CompStatusValueSpecified = value.HasValue;
+                    OnPropertyChanged("CompStatus");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _learnActEndDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LearnActEndDate", DataType="date")]
-        public System.DateTime LearnActEndDateValue { get; set; }
+        public System.DateTime LearnActEndDateValue
+        {
+            get
+            {
+                return _learnActEndDate;
+            }
+            set
+            {
+                if (!_learnActEndDate.Equals(value))
+                {
+                    _learnActEndDate = value;
+                    OnPropertyChanged(nameof(LearnActEndDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LearnActEndDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2547,17 +4618,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LearnActEndDateValue = value.GetValueOrDefault();
-                this.LearnActEndDateValueSpecified = value.HasValue;
+                if (((this.LearnActEndDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LearnActEndDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LearnActEndDateValue = value.GetValueOrDefault();
+                    this.LearnActEndDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("LearnActEndDate");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _withdrawReason;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("WithdrawReason")]
-        public long WithdrawReasonValue { get; set; }
+        public long WithdrawReasonValue
+        {
+            get
+            {
+                return _withdrawReason;
+            }
+            set
+            {
+                if (!_withdrawReason.Equals(value))
+                {
+                    _withdrawReason = value;
+                    OnPropertyChanged(nameof(WithdrawReasonValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die WithdrawReason-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2586,17 +4679,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.WithdrawReasonValue = value.GetValueOrDefault();
-                this.WithdrawReasonValueSpecified = value.HasValue;
+                if (((this.WithdrawReasonValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.WithdrawReasonValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.WithdrawReasonValue = value.GetValueOrDefault();
+                    this.WithdrawReasonValueSpecified = value.HasValue;
+                    OnPropertyChanged("WithdrawReason");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _outcome;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("Outcome")]
-        public long OutcomeValue { get; set; }
+        public long OutcomeValue
+        {
+            get
+            {
+                return _outcome;
+            }
+            set
+            {
+                if (!_outcome.Equals(value))
+                {
+                    _outcome = value;
+                    OnPropertyChanged(nameof(OutcomeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die Outcome-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2625,14 +4740,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OutcomeValue = value.GetValueOrDefault();
-                this.OutcomeValueSpecified = value.HasValue;
+                if (((this.OutcomeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OutcomeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OutcomeValue = value.GetValueOrDefault();
+                    this.OutcomeValueSpecified = value.HasValue;
+                    OnPropertyChanged("Outcome");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _achDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AchDate", DataType="date")]
-        public System.DateTime AchDateValue { get; set; }
+        public System.DateTime AchDateValue
+        {
+            get
+            {
+                return _achDate;
+            }
+            set
+            {
+                if (!_achDate.Equals(value))
+                {
+                    _achDate = value;
+                    OnPropertyChanged(nameof(AchDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AchDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2658,24 +4795,67 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AchDateValue = value.GetValueOrDefault();
-                this.AchDateValueSpecified = value.HasValue;
+                if (((this.AchDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AchDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AchDateValue = value.GetValueOrDefault();
+                    this.AchDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("AchDate");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _outGrade;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("OutGrade")]
-        public string OutGrade { get; set; }
+        public string OutGrade
+        {
+            get
+            {
+                return _outGrade;
+            }
+            set
+            {
+                if (_outGrade == value)
+                    return;
+                if (_outGrade == null || value == null || !_outGrade.Equals(value))
+                {
+                    _outGrade = value;
+                    OnPropertyChanged(nameof(OutGrade));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _sWSupAimId;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("SWSupAimId")]
-        public string SWSupAimId { get; set; }
+        public string SWSupAimId
+        {
+            get
+            {
+                return _sWSupAimId;
+            }
+            set
+            {
+                if (_sWSupAimId == value)
+                    return;
+                if (_sWSupAimId == null || value == null || !_sWSupAimId.Equals(value))
+                {
+                    _sWSupAimId = value;
+                    OnPropertyChanged(nameof(SWSupAimId));
+                }
+            }
+        }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         private System.Collections.Generic.List<MessageLearnerLearningDeliveryLearningDeliveryFAM> _learningDeliveryFAM;
@@ -2685,11 +4865,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learningDeliveryFAM;
+                return _learningDeliveryFAM;
             }
             private set
             {
-                this._learningDeliveryFAM = value;
+                if (_learningDeliveryFAM == value)
+                    return;
+                if (_learningDeliveryFAM == null || value == null || !_learningDeliveryFAM.SequenceEqual(value))
+                {
+                    _learningDeliveryFAM = value;
+                    OnPropertyChanged(nameof(LearningDeliveryFAM));
+                }
             }
         }
         
@@ -2727,11 +4913,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learningDeliveryWorkPlacement;
+                return _learningDeliveryWorkPlacement;
             }
             private set
             {
-                this._learningDeliveryWorkPlacement = value;
+                if (_learningDeliveryWorkPlacement == value)
+                    return;
+                if (_learningDeliveryWorkPlacement == null || value == null || !_learningDeliveryWorkPlacement.SequenceEqual(value))
+                {
+                    _learningDeliveryWorkPlacement = value;
+                    OnPropertyChanged(nameof(LearningDeliveryWorkPlacement));
+                }
             }
         }
         
@@ -2756,11 +4948,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._appFinRecord;
+                return _appFinRecord;
             }
             private set
             {
-                this._appFinRecord = value;
+                if (_appFinRecord == value)
+                    return;
+                if (_appFinRecord == null || value == null || !_appFinRecord.SequenceEqual(value))
+                {
+                    _appFinRecord = value;
+                    OnPropertyChanged(nameof(AppFinRecord));
+                }
             }
         }
         
@@ -2785,11 +4983,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._providerSpecDeliveryMonitoring;
+                return _providerSpecDeliveryMonitoring;
             }
             private set
             {
-                this._providerSpecDeliveryMonitoring = value;
+                if (_providerSpecDeliveryMonitoring == value)
+                    return;
+                if (_providerSpecDeliveryMonitoring == null || value == null || !_providerSpecDeliveryMonitoring.SequenceEqual(value))
+                {
+                    _providerSpecDeliveryMonitoring = value;
+                    OnPropertyChanged(nameof(ProviderSpecDeliveryMonitoring));
+                }
             }
         }
         
@@ -2814,11 +5018,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._learningDeliveryHE;
+                return _learningDeliveryHE;
             }
             private set
             {
-                this._learningDeliveryHE = value;
+                if (_learningDeliveryHE == value)
+                    return;
+                if (_learningDeliveryHE == null || value == null || !_learningDeliveryHE.SequenceEqual(value))
+                {
+                    _learningDeliveryHE = value;
+                    OnPropertyChanged(nameof(LearningDeliveryHE));
+                }
             }
         }
         
@@ -2841,26 +5051,88 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearningDeliveryLearningDeliveryFAM", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearningDeliveryLearningDeliveryFAM
+    public partial class MessageLearnerLearningDeliveryLearningDeliveryFAM : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _learnDelFAMType;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("LearnDelFAMType")]
-        public string LearnDelFAMType { get; set; }
+        public string LearnDelFAMType
+        {
+            get
+            {
+                return _learnDelFAMType;
+            }
+            set
+            {
+                if (_learnDelFAMType == value)
+                    return;
+                if (_learnDelFAMType == null || value == null || !_learnDelFAMType.Equals(value))
+                {
+                    _learnDelFAMType = value;
+                    OnPropertyChanged(nameof(LearnDelFAMType));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _learnDelFAMCode;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("LearnDelFAMCode")]
-        public string LearnDelFAMCode { get; set; }
+        public string LearnDelFAMCode
+        {
+            get
+            {
+                return _learnDelFAMCode;
+            }
+            set
+            {
+                if (_learnDelFAMCode == value)
+                    return;
+                if (_learnDelFAMCode == null || value == null || !_learnDelFAMCode.Equals(value))
+                {
+                    _learnDelFAMCode = value;
+                    OnPropertyChanged(nameof(LearnDelFAMCode));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _learnDelFAMDateFrom;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LearnDelFAMDateFrom", DataType="date")]
-        public System.DateTime LearnDelFAMDateFromValue { get; set; }
+        public System.DateTime LearnDelFAMDateFromValue
+        {
+            get
+            {
+                return _learnDelFAMDateFrom;
+            }
+            set
+            {
+                if (!_learnDelFAMDateFrom.Equals(value))
+                {
+                    _learnDelFAMDateFrom = value;
+                    OnPropertyChanged(nameof(LearnDelFAMDateFromValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LearnDelFAMDateFrom-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2886,14 +5158,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LearnDelFAMDateFromValue = value.GetValueOrDefault();
-                this.LearnDelFAMDateFromValueSpecified = value.HasValue;
+                if (((this.LearnDelFAMDateFromValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LearnDelFAMDateFromValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LearnDelFAMDateFromValue = value.GetValueOrDefault();
+                    this.LearnDelFAMDateFromValueSpecified = value.HasValue;
+                    OnPropertyChanged("LearnDelFAMDateFrom");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _learnDelFAMDateTo;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("LearnDelFAMDateTo", DataType="date")]
-        public System.DateTime LearnDelFAMDateToValue { get; set; }
+        public System.DateTime LearnDelFAMDateToValue
+        {
+            get
+            {
+                return _learnDelFAMDateTo;
+            }
+            set
+            {
+                if (!_learnDelFAMDateTo.Equals(value))
+                {
+                    _learnDelFAMDateTo = value;
+                    OnPropertyChanged(nameof(LearnDelFAMDateToValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die LearnDelFAMDateTo-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2919,8 +5213,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.LearnDelFAMDateToValue = value.GetValueOrDefault();
-                this.LearnDelFAMDateToValueSpecified = value.HasValue;
+                if (((this.LearnDelFAMDateToValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.LearnDelFAMDateToValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.LearnDelFAMDateToValue = value.GetValueOrDefault();
+                    this.LearnDelFAMDateToValueSpecified = value.HasValue;
+                    OnPropertyChanged("LearnDelFAMDateTo");
+                }
             }
         }
     }
@@ -2930,12 +5229,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement
+    public partial class MessageLearnerLearningDeliveryLearningDeliveryWorkPlacement : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _workPlaceStartDate;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("WorkPlaceStartDate", DataType="date")]
-        public System.DateTime WorkPlaceStartDateValue { get; set; }
+        public System.DateTime WorkPlaceStartDateValue
+        {
+            get
+            {
+                return _workPlaceStartDate;
+            }
+            set
+            {
+                if (!_workPlaceStartDate.Equals(value))
+                {
+                    _workPlaceStartDate = value;
+                    OnPropertyChanged(nameof(WorkPlaceStartDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die WorkPlaceStartDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2961,14 +5284,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.WorkPlaceStartDateValue = value.GetValueOrDefault();
-                this.WorkPlaceStartDateValueSpecified = value.HasValue;
+                if (((this.WorkPlaceStartDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.WorkPlaceStartDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.WorkPlaceStartDateValue = value.GetValueOrDefault();
+                    this.WorkPlaceStartDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("WorkPlaceStartDate");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _workPlaceEndDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("WorkPlaceEndDate", DataType="date")]
-        public System.DateTime WorkPlaceEndDateValue { get; set; }
+        public System.DateTime WorkPlaceEndDateValue
+        {
+            get
+            {
+                return _workPlaceEndDate;
+            }
+            set
+            {
+                if (!_workPlaceEndDate.Equals(value))
+                {
+                    _workPlaceEndDate = value;
+                    OnPropertyChanged(nameof(WorkPlaceEndDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die WorkPlaceEndDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -2994,17 +5339,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.WorkPlaceEndDateValue = value.GetValueOrDefault();
-                this.WorkPlaceEndDateValueSpecified = value.HasValue;
+                if (((this.WorkPlaceEndDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.WorkPlaceEndDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.WorkPlaceEndDateValue = value.GetValueOrDefault();
+                    this.WorkPlaceEndDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("WorkPlaceEndDate");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _workPlaceHours;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("WorkPlaceHours")]
-        public long WorkPlaceHoursValue { get; set; }
+        public long WorkPlaceHoursValue
+        {
+            get
+            {
+                return _workPlaceHours;
+            }
+            set
+            {
+                if (!_workPlaceHours.Equals(value))
+                {
+                    _workPlaceHours = value;
+                    OnPropertyChanged(nameof(WorkPlaceHoursValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die WorkPlaceHours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3033,17 +5400,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.WorkPlaceHoursValue = value.GetValueOrDefault();
-                this.WorkPlaceHoursValueSpecified = value.HasValue;
+                if (((this.WorkPlaceHoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.WorkPlaceHoursValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.WorkPlaceHoursValue = value.GetValueOrDefault();
+                    this.WorkPlaceHoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("WorkPlaceHours");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _workPlaceMode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("WorkPlaceMode")]
-        public long WorkPlaceModeValue { get; set; }
+        public long WorkPlaceModeValue
+        {
+            get
+            {
+                return _workPlaceMode;
+            }
+            set
+            {
+                if (!_workPlaceMode.Equals(value))
+                {
+                    _workPlaceMode = value;
+                    OnPropertyChanged(nameof(WorkPlaceModeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die WorkPlaceMode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3072,17 +5461,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.WorkPlaceModeValue = value.GetValueOrDefault();
-                this.WorkPlaceModeValueSpecified = value.HasValue;
+                if (((this.WorkPlaceModeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.WorkPlaceModeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.WorkPlaceModeValue = value.GetValueOrDefault();
+                    this.WorkPlaceModeValueSpecified = value.HasValue;
+                    OnPropertyChanged("WorkPlaceMode");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _workPlaceEmpId;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("WorkPlaceEmpId")]
-        public long WorkPlaceEmpIdValue { get; set; }
+        public long WorkPlaceEmpIdValue
+        {
+            get
+            {
+                return _workPlaceEmpId;
+            }
+            set
+            {
+                if (!_workPlaceEmpId.Equals(value))
+                {
+                    _workPlaceEmpId = value;
+                    OnPropertyChanged(nameof(WorkPlaceEmpIdValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die WorkPlaceEmpId-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3111,8 +5522,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.WorkPlaceEmpIdValue = value.GetValueOrDefault();
-                this.WorkPlaceEmpIdValueSpecified = value.HasValue;
+                if (((this.WorkPlaceEmpIdValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.WorkPlaceEmpIdValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.WorkPlaceEmpIdValue = value.GetValueOrDefault();
+                    this.WorkPlaceEmpIdValueSpecified = value.HasValue;
+                    OnPropertyChanged("WorkPlaceEmpId");
+                }
             }
         }
     }
@@ -3122,22 +5538,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearningDeliveryAppFinRecord", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearningDeliveryAppFinRecord
+    public partial class MessageLearnerLearningDeliveryAppFinRecord : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _aFinType;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("AFinType")]
-        public string AFinType { get; set; }
+        public string AFinType
+        {
+            get
+            {
+                return _aFinType;
+            }
+            set
+            {
+                if (_aFinType == value)
+                    return;
+                if (_aFinType == null || value == null || !_aFinType.Equals(value))
+                {
+                    _aFinType = value;
+                    OnPropertyChanged(nameof(AFinType));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _aFinCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AFinCode")]
-        public long AFinCodeValue { get; set; }
+        public long AFinCodeValue
+        {
+            get
+            {
+                return _aFinCode;
+            }
+            set
+            {
+                if (!_aFinCode.Equals(value))
+                {
+                    _aFinCode = value;
+                    OnPropertyChanged(nameof(AFinCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AFinCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3166,14 +5625,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AFinCodeValue = value.GetValueOrDefault();
-                this.AFinCodeValueSpecified = value.HasValue;
+                if (((this.AFinCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AFinCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AFinCodeValue = value.GetValueOrDefault();
+                    this.AFinCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("AFinCode");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _aFinDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AFinDate", DataType="date")]
-        public System.DateTime AFinDateValue { get; set; }
+        public System.DateTime AFinDateValue
+        {
+            get
+            {
+                return _aFinDate;
+            }
+            set
+            {
+                if (!_aFinDate.Equals(value))
+                {
+                    _aFinDate = value;
+                    OnPropertyChanged(nameof(AFinDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AFinDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3199,17 +5680,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AFinDateValue = value.GetValueOrDefault();
-                this.AFinDateValueSpecified = value.HasValue;
+                if (((this.AFinDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AFinDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AFinDateValue = value.GetValueOrDefault();
+                    this.AFinDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("AFinDate");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _aFinAmount;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("AFinAmount")]
-        public long AFinAmountValue { get; set; }
+        public long AFinAmountValue
+        {
+            get
+            {
+                return _aFinAmount;
+            }
+            set
+            {
+                if (!_aFinAmount.Equals(value))
+                {
+                    _aFinAmount = value;
+                    OnPropertyChanged(nameof(AFinAmountValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die AFinAmount-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3238,8 +5741,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.AFinAmountValue = value.GetValueOrDefault();
-                this.AFinAmountValueSpecified = value.HasValue;
+                if (((this.AFinAmountValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.AFinAmountValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.AFinAmountValue = value.GetValueOrDefault();
+                    this.AFinAmountValueSpecified = value.HasValue;
+                    OnPropertyChanged("AFinAmount");
+                }
             }
         }
     }
@@ -3249,22 +5757,67 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring
+    public partial class MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _provSpecDelMonOccur;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("ProvSpecDelMonOccur")]
-        public string ProvSpecDelMonOccur { get; set; }
+        public string ProvSpecDelMonOccur
+        {
+            get
+            {
+                return _provSpecDelMonOccur;
+            }
+            set
+            {
+                if (_provSpecDelMonOccur == value)
+                    return;
+                if (_provSpecDelMonOccur == null || value == null || !_provSpecDelMonOccur.Equals(value))
+                {
+                    _provSpecDelMonOccur = value;
+                    OnPropertyChanged(nameof(ProvSpecDelMonOccur));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _provSpecDelMon;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("ProvSpecDelMon")]
-        public string ProvSpecDelMon { get; set; }
+        public string ProvSpecDelMon
+        {
+            get
+            {
+                return _provSpecDelMon;
+            }
+            set
+            {
+                if (_provSpecDelMon == value)
+                    return;
+                if (_provSpecDelMon == null || value == null || !_provSpecDelMon.Equals(value))
+                {
+                    _provSpecDelMon = value;
+                    OnPropertyChanged(nameof(ProvSpecDelMon));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -3272,36 +5825,117 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerLearningDeliveryLearningDeliveryHE", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerLearningDeliveryLearningDeliveryHE
+    public partial class MessageLearnerLearningDeliveryLearningDeliveryHE : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _nUMHUS;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("NUMHUS")]
-        public string NUMHUS { get; set; }
+        public string NUMHUS
+        {
+            get
+            {
+                return _nUMHUS;
+            }
+            set
+            {
+                if (_nUMHUS == value)
+                    return;
+                if (_nUMHUS == null || value == null || !_nUMHUS.Equals(value))
+                {
+                    _nUMHUS = value;
+                    OnPropertyChanged(nameof(NUMHUS));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _sSN;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("SSN")]
-        public string SSN { get; set; }
+        public string SSN
+        {
+            get
+            {
+                return _sSN;
+            }
+            set
+            {
+                if (_sSN == value)
+                    return;
+                if (_sSN == null || value == null || !_sSN.Equals(value))
+                {
+                    _sSN = value;
+                    OnPropertyChanged(nameof(SSN));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _qUALENT3;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("QUALENT3")]
-        public string QUALENT3 { get; set; }
+        public string QUALENT3
+        {
+            get
+            {
+                return _qUALENT3;
+            }
+            set
+            {
+                if (_qUALENT3 == value)
+                    return;
+                if (_qUALENT3 == null || value == null || !_qUALENT3.Equals(value))
+                {
+                    _qUALENT3 = value;
+                    OnPropertyChanged(nameof(QUALENT3));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _sOC2000;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("SOC2000")]
-        public long SOC2000Value { get; set; }
+        public long SOC2000Value
+        {
+            get
+            {
+                return _sOC2000;
+            }
+            set
+            {
+                if (!_sOC2000.Equals(value))
+                {
+                    _sOC2000 = value;
+                    OnPropertyChanged(nameof(SOC2000Value));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die SOC2000-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3330,17 +5964,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.SOC2000Value = value.GetValueOrDefault();
-                this.SOC2000ValueSpecified = value.HasValue;
+                if (((this.SOC2000Value.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.SOC2000ValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.SOC2000Value = value.GetValueOrDefault();
+                    this.SOC2000ValueSpecified = value.HasValue;
+                    OnPropertyChanged("SOC2000");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _sEC;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("SEC")]
-        public long SECValue { get; set; }
+        public long SECValue
+        {
+            get
+            {
+                return _sEC;
+            }
+            set
+            {
+                if (!_sEC.Equals(value))
+                {
+                    _sEC = value;
+                    OnPropertyChanged(nameof(SECValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die SEC-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3369,24 +6025,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.SECValue = value.GetValueOrDefault();
-                this.SECValueSpecified = value.HasValue;
+                if (((this.SECValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.SECValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.SECValue = value.GetValueOrDefault();
+                    this.SECValueSpecified = value.HasValue;
+                    OnPropertyChanged("SEC");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _uCASAPPID;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("UCASAPPID")]
-        public string UCASAPPID { get; set; }
+        public string UCASAPPID
+        {
+            get
+            {
+                return _uCASAPPID;
+            }
+            set
+            {
+                if (_uCASAPPID == value)
+                    return;
+                if (_uCASAPPID == null || value == null || !_uCASAPPID.Equals(value))
+                {
+                    _uCASAPPID = value;
+                    OnPropertyChanged(nameof(UCASAPPID));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _tYPEYR;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("TYPEYR")]
-        public long TYPEYRValue { get; set; }
+        public long TYPEYRValue
+        {
+            get
+            {
+                return _tYPEYR;
+            }
+            set
+            {
+                if (!_tYPEYR.Equals(value))
+                {
+                    _tYPEYR = value;
+                    OnPropertyChanged(nameof(TYPEYRValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die TYPEYR-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3415,17 +6112,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.TYPEYRValue = value.GetValueOrDefault();
-                this.TYPEYRValueSpecified = value.HasValue;
+                if (((this.TYPEYRValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.TYPEYRValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.TYPEYRValue = value.GetValueOrDefault();
+                    this.TYPEYRValueSpecified = value.HasValue;
+                    OnPropertyChanged("TYPEYR");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _mODESTUD;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("MODESTUD")]
-        public long MODESTUDValue { get; set; }
+        public long MODESTUDValue
+        {
+            get
+            {
+                return _mODESTUD;
+            }
+            set
+            {
+                if (!_mODESTUD.Equals(value))
+                {
+                    _mODESTUD = value;
+                    OnPropertyChanged(nameof(MODESTUDValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die MODESTUD-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3454,17 +6173,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.MODESTUDValue = value.GetValueOrDefault();
-                this.MODESTUDValueSpecified = value.HasValue;
+                if (((this.MODESTUDValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.MODESTUDValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.MODESTUDValue = value.GetValueOrDefault();
+                    this.MODESTUDValueSpecified = value.HasValue;
+                    OnPropertyChanged("MODESTUD");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _fUNDLEV;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("FUNDLEV")]
-        public long FUNDLEVValue { get; set; }
+        public long FUNDLEVValue
+        {
+            get
+            {
+                return _fUNDLEV;
+            }
+            set
+            {
+                if (!_fUNDLEV.Equals(value))
+                {
+                    _fUNDLEV = value;
+                    OnPropertyChanged(nameof(FUNDLEVValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die FUNDLEV-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3493,17 +6234,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.FUNDLEVValue = value.GetValueOrDefault();
-                this.FUNDLEVValueSpecified = value.HasValue;
+                if (((this.FUNDLEVValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.FUNDLEVValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.FUNDLEVValue = value.GetValueOrDefault();
+                    this.FUNDLEVValueSpecified = value.HasValue;
+                    OnPropertyChanged("FUNDLEV");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _fUNDCOMP;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("FUNDCOMP")]
-        public long FUNDCOMPValue { get; set; }
+        public long FUNDCOMPValue
+        {
+            get
+            {
+                return _fUNDCOMP;
+            }
+            set
+            {
+                if (!_fUNDCOMP.Equals(value))
+                {
+                    _fUNDCOMP = value;
+                    OnPropertyChanged(nameof(FUNDCOMPValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die FUNDCOMP-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3532,17 +6295,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.FUNDCOMPValue = value.GetValueOrDefault();
-                this.FUNDCOMPValueSpecified = value.HasValue;
+                if (((this.FUNDCOMPValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.FUNDCOMPValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.FUNDCOMPValue = value.GetValueOrDefault();
+                    this.FUNDCOMPValueSpecified = value.HasValue;
+                    OnPropertyChanged("FUNDCOMP");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private decimal _sTULOAD;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 32.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("STULOAD")]
-        public decimal STULOADValue { get; set; }
+        public decimal STULOADValue
+        {
+            get
+            {
+                return _sTULOAD;
+            }
+            set
+            {
+                if (!_sTULOAD.Equals(value))
+                {
+                    _sTULOAD = value;
+                    OnPropertyChanged(nameof(STULOADValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die STULOAD-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3571,17 +6356,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.STULOADValue = value.GetValueOrDefault();
-                this.STULOADValueSpecified = value.HasValue;
+                if (((this.STULOADValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.STULOADValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.STULOADValue = value.GetValueOrDefault();
+                    this.STULOADValueSpecified = value.HasValue;
+                    OnPropertyChanged("STULOAD");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _yEARSTU;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("YEARSTU")]
-        public long YEARSTUValue { get; set; }
+        public long YEARSTUValue
+        {
+            get
+            {
+                return _yEARSTU;
+            }
+            set
+            {
+                if (!_yEARSTU.Equals(value))
+                {
+                    _yEARSTU = value;
+                    OnPropertyChanged(nameof(YEARSTUValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die YEARSTU-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3610,17 +6417,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.YEARSTUValue = value.GetValueOrDefault();
-                this.YEARSTUValueSpecified = value.HasValue;
+                if (((this.YEARSTUValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.YEARSTUValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.YEARSTUValue = value.GetValueOrDefault();
+                    this.YEARSTUValueSpecified = value.HasValue;
+                    OnPropertyChanged("YEARSTU");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _mSTUFEE;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("MSTUFEE")]
-        public long MSTUFEEValue { get; set; }
+        public long MSTUFEEValue
+        {
+            get
+            {
+                return _mSTUFEE;
+            }
+            set
+            {
+                if (!_mSTUFEE.Equals(value))
+                {
+                    _mSTUFEE = value;
+                    OnPropertyChanged(nameof(MSTUFEEValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die MSTUFEE-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3649,17 +6478,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.MSTUFEEValue = value.GetValueOrDefault();
-                this.MSTUFEEValueSpecified = value.HasValue;
+                if (((this.MSTUFEEValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.MSTUFEEValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.MSTUFEEValue = value.GetValueOrDefault();
+                    this.MSTUFEEValueSpecified = value.HasValue;
+                    OnPropertyChanged("MSTUFEE");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private decimal _pCOLAB;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 32.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PCOLAB")]
-        public decimal PCOLABValue { get; set; }
+        public decimal PCOLABValue
+        {
+            get
+            {
+                return _pCOLAB;
+            }
+            set
+            {
+                if (!_pCOLAB.Equals(value))
+                {
+                    _pCOLAB = value;
+                    OnPropertyChanged(nameof(PCOLABValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PCOLAB-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3688,17 +6539,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PCOLABValue = value.GetValueOrDefault();
-                this.PCOLABValueSpecified = value.HasValue;
+                if (((this.PCOLABValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PCOLABValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PCOLABValue = value.GetValueOrDefault();
+                    this.PCOLABValueSpecified = value.HasValue;
+                    OnPropertyChanged("PCOLAB");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private decimal _pCFLDCS;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 32.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PCFLDCS")]
-        public decimal PCFLDCSValue { get; set; }
+        public decimal PCFLDCSValue
+        {
+            get
+            {
+                return _pCFLDCS;
+            }
+            set
+            {
+                if (!_pCFLDCS.Equals(value))
+                {
+                    _pCFLDCS = value;
+                    OnPropertyChanged(nameof(PCFLDCSValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PCFLDCS-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3727,17 +6600,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PCFLDCSValue = value.GetValueOrDefault();
-                this.PCFLDCSValueSpecified = value.HasValue;
+                if (((this.PCFLDCSValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PCFLDCSValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PCFLDCSValue = value.GetValueOrDefault();
+                    this.PCFLDCSValueSpecified = value.HasValue;
+                    OnPropertyChanged("PCFLDCS");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private decimal _pCSLDCS;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 32.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PCSLDCS")]
-        public decimal PCSLDCSValue { get; set; }
+        public decimal PCSLDCSValue
+        {
+            get
+            {
+                return _pCSLDCS;
+            }
+            set
+            {
+                if (!_pCSLDCS.Equals(value))
+                {
+                    _pCSLDCS = value;
+                    OnPropertyChanged(nameof(PCSLDCSValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PCSLDCS-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3766,17 +6661,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PCSLDCSValue = value.GetValueOrDefault();
-                this.PCSLDCSValueSpecified = value.HasValue;
+                if (((this.PCSLDCSValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PCSLDCSValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PCSLDCSValue = value.GetValueOrDefault();
+                    this.PCSLDCSValueSpecified = value.HasValue;
+                    OnPropertyChanged("PCSLDCS");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private decimal _pCTLDCS;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 32.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("PCTLDCS")]
-        public decimal PCTLDCSValue { get; set; }
+        public decimal PCTLDCSValue
+        {
+            get
+            {
+                return _pCTLDCS;
+            }
+            set
+            {
+                if (!_pCTLDCS.Equals(value))
+                {
+                    _pCTLDCS = value;
+                    OnPropertyChanged(nameof(PCTLDCSValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die PCTLDCS-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3805,17 +6722,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.PCTLDCSValue = value.GetValueOrDefault();
-                this.PCTLDCSValueSpecified = value.HasValue;
+                if (((this.PCTLDCSValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.PCTLDCSValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.PCTLDCSValue = value.GetValueOrDefault();
+                    this.PCTLDCSValueSpecified = value.HasValue;
+                    OnPropertyChanged("PCTLDCS");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _sPECFEE;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("SPECFEE")]
-        public long SPECFEEValue { get; set; }
+        public long SPECFEEValue
+        {
+            get
+            {
+                return _sPECFEE;
+            }
+            set
+            {
+                if (!_sPECFEE.Equals(value))
+                {
+                    _sPECFEE = value;
+                    OnPropertyChanged(nameof(SPECFEEValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die SPECFEE-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3844,17 +6783,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.SPECFEEValue = value.GetValueOrDefault();
-                this.SPECFEEValueSpecified = value.HasValue;
+                if (((this.SPECFEEValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.SPECFEEValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.SPECFEEValue = value.GetValueOrDefault();
+                    this.SPECFEEValueSpecified = value.HasValue;
+                    OnPropertyChanged("SPECFEE");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _nETFEE;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("NETFEE")]
-        public long NETFEEValue { get; set; }
+        public long NETFEEValue
+        {
+            get
+            {
+                return _nETFEE;
+            }
+            set
+            {
+                if (!_nETFEE.Equals(value))
+                {
+                    _nETFEE = value;
+                    OnPropertyChanged(nameof(NETFEEValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die NETFEE-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3883,17 +6844,39 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.NETFEEValue = value.GetValueOrDefault();
-                this.NETFEEValueSpecified = value.HasValue;
+                if (((this.NETFEEValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.NETFEEValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.NETFEEValue = value.GetValueOrDefault();
+                    this.NETFEEValueSpecified = value.HasValue;
+                    OnPropertyChanged("NETFEE");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _gROSSFEE;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("GROSSFEE")]
-        public long GROSSFEEValue { get; set; }
+        public long GROSSFEEValue
+        {
+            get
+            {
+                return _gROSSFEE;
+            }
+            set
+            {
+                if (!_gROSSFEE.Equals(value))
+                {
+                    _gROSSFEE = value;
+                    OnPropertyChanged(nameof(GROSSFEEValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die GROSSFEE-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3922,24 +6905,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.GROSSFEEValue = value.GetValueOrDefault();
-                this.GROSSFEEValueSpecified = value.HasValue;
+                if (((this.GROSSFEEValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.GROSSFEEValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.GROSSFEEValue = value.GetValueOrDefault();
+                    this.GROSSFEEValueSpecified = value.HasValue;
+                    OnPropertyChanged("GROSSFEE");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _dOMICILE;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("DOMICILE")]
-        public string DOMICILE { get; set; }
+        public string DOMICILE
+        {
+            get
+            {
+                return _dOMICILE;
+            }
+            set
+            {
+                if (_dOMICILE == value)
+                    return;
+                if (_dOMICILE == null || value == null || !_dOMICILE.Equals(value))
+                {
+                    _dOMICILE = value;
+                    OnPropertyChanged(nameof(DOMICILE));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _eLQ;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ELQ")]
-        public long ELQValue { get; set; }
+        public long ELQValue
+        {
+            get
+            {
+                return _eLQ;
+            }
+            set
+            {
+                if (!_eLQ.Equals(value))
+                {
+                    _eLQ = value;
+                    OnPropertyChanged(nameof(ELQValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ELQ-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -3968,17 +6992,41 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ELQValue = value.GetValueOrDefault();
-                this.ELQValueSpecified = value.HasValue;
+                if (((this.ELQValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ELQValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ELQValue = value.GetValueOrDefault();
+                    this.ELQValueSpecified = value.HasValue;
+                    OnPropertyChanged("ELQ");
+                }
             }
         }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _hEPostCode;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 1000.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(1000)]
         [System.Xml.Serialization.XmlElementAttribute("HEPostCode")]
-        public string HEPostCode { get; set; }
+        public string HEPostCode
+        {
+            get
+            {
+                return _hEPostCode;
+            }
+            set
+            {
+                if (_hEPostCode == value)
+                    return;
+                if (_hEPostCode == null || value == null || !_hEPostCode.Equals(value))
+                {
+                    _hEPostCode = value;
+                    OnPropertyChanged(nameof(HEPostCode));
+                }
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("XmlSchemaClassGenerator", "2.0.373.0")]
@@ -3986,22 +7034,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerDestinationandProgression", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerDestinationandProgression
+    public partial class MessageLearnerDestinationandProgression : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _learnRefNumber;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("LearnRefNumber")]
-        public string LearnRefNumber { get; set; }
+        public string LearnRefNumber
+        {
+            get
+            {
+                return _learnRefNumber;
+            }
+            set
+            {
+                if (_learnRefNumber == value)
+                    return;
+                if (_learnRefNumber == null || value == null || !_learnRefNumber.Equals(value))
+                {
+                    _learnRefNumber = value;
+                    OnPropertyChanged(nameof(LearnRefNumber));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _uLN;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("ULN")]
-        public long ULNValue { get; set; }
+        public long ULNValue
+        {
+            get
+            {
+                return _uLN;
+            }
+            set
+            {
+                if (!_uLN.Equals(value))
+                {
+                    _uLN = value;
+                    OnPropertyChanged(nameof(ULNValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die ULN-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -4030,8 +7121,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.ULNValue = value.GetValueOrDefault();
-                this.ULNValueSpecified = value.HasValue;
+                if (((this.ULNValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.ULNValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.ULNValue = value.GetValueOrDefault();
+                    this.ULNValueSpecified = value.HasValue;
+                    OnPropertyChanged("ULN");
+                }
             }
         }
         
@@ -4043,11 +7139,17 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         {
             get
             {
-                return this._dPOutcome;
+                return _dPOutcome;
             }
             private set
             {
-                this._dPOutcome = value;
+                if (_dPOutcome == value)
+                    return;
+                if (_dPOutcome == null || value == null || !_dPOutcome.SequenceEqual(value))
+                {
+                    _dPOutcome = value;
+                    OnPropertyChanged(nameof(DPOutcome));
+                }
             }
         }
         
@@ -4079,22 +7181,65 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
     [System.Xml.Serialization.XmlTypeAttribute("MessageLearnerDestinationandProgressionDPOutcome", Namespace="ESFA/ILR/2020-21", AnonymousType=true)]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class MessageLearnerDestinationandProgressionDPOutcome
+    public partial class MessageLearnerDestinationandProgressionDPOutcome : System.ComponentModel.INotifyPropertyChanged
     {
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private string _outType;
         
         /// <summary>
         /// <para xml:lang="en">Maximum length: 100.</para>
         /// </summary>
         [System.ComponentModel.DataAnnotations.MaxLengthAttribute(100)]
         [System.Xml.Serialization.XmlElementAttribute("OutType")]
-        public string OutType { get; set; }
+        public string OutType
+        {
+            get
+            {
+                return _outType;
+            }
+            set
+            {
+                if (_outType == value)
+                    return;
+                if (_outType == null || value == null || !_outType.Equals(value))
+                {
+                    _outType = value;
+                    OnPropertyChanged(nameof(OutType));
+                }
+            }
+        }
+        
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private long _outCode;
         
         /// <summary>
         /// <para xml:lang="en">Total number of digits: 18.</para>
         /// </summary>
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OutCode")]
-        public long OutCodeValue { get; set; }
+        public long OutCodeValue
+        {
+            get
+            {
+                return _outCode;
+            }
+            set
+            {
+                if (!_outCode.Equals(value))
+                {
+                    _outCode = value;
+                    OnPropertyChanged(nameof(OutCodeValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OutCode-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -4123,14 +7268,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OutCodeValue = value.GetValueOrDefault();
-                this.OutCodeValueSpecified = value.HasValue;
+                if (((this.OutCodeValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OutCodeValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OutCodeValue = value.GetValueOrDefault();
+                    this.OutCodeValueSpecified = value.HasValue;
+                    OnPropertyChanged("OutCode");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _outStartDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OutStartDate", DataType="date")]
-        public System.DateTime OutStartDateValue { get; set; }
+        public System.DateTime OutStartDateValue
+        {
+            get
+            {
+                return _outStartDate;
+            }
+            set
+            {
+                if (!_outStartDate.Equals(value))
+                {
+                    _outStartDate = value;
+                    OnPropertyChanged(nameof(OutStartDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OutStartDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -4156,14 +7323,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OutStartDateValue = value.GetValueOrDefault();
-                this.OutStartDateValueSpecified = value.HasValue;
+                if (((this.OutStartDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OutStartDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OutStartDateValue = value.GetValueOrDefault();
+                    this.OutStartDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("OutStartDate");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _outEndDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OutEndDate", DataType="date")]
-        public System.DateTime OutEndDateValue { get; set; }
+        public System.DateTime OutEndDateValue
+        {
+            get
+            {
+                return _outEndDate;
+            }
+            set
+            {
+                if (!_outEndDate.Equals(value))
+                {
+                    _outEndDate = value;
+                    OnPropertyChanged(nameof(OutEndDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OutEndDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -4189,14 +7378,36 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OutEndDateValue = value.GetValueOrDefault();
-                this.OutEndDateValueSpecified = value.HasValue;
+                if (((this.OutEndDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OutEndDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OutEndDateValue = value.GetValueOrDefault();
+                    this.OutEndDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("OutEndDate");
+                }
             }
         }
         
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        private System.DateTime _outCollDate;
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Xml.Serialization.XmlElementAttribute("OutCollDate", DataType="date")]
-        public System.DateTime OutCollDateValue { get; set; }
+        public System.DateTime OutCollDateValue
+        {
+            get
+            {
+                return _outCollDate;
+            }
+            set
+            {
+                if (!_outCollDate.Equals(value))
+                {
+                    _outCollDate = value;
+                    OnPropertyChanged(nameof(OutCollDateValue));
+                }
+            }
+        }
         
         /// <summary>
         /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OutCollDate-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
@@ -4222,8 +7433,13 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                this.OutCollDateValue = value.GetValueOrDefault();
-                this.OutCollDateValueSpecified = value.HasValue;
+                if (((this.OutCollDateValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OutCollDateValueSpecified.Equals(value.HasValue) == false)))
+                {
+                    this.OutCollDateValue = value.GetValueOrDefault();
+                    this.OutCollDateValueSpecified = value.HasValue;
+                    OnPropertyChanged("OutCollDate");
+                }
             }
         }
     }

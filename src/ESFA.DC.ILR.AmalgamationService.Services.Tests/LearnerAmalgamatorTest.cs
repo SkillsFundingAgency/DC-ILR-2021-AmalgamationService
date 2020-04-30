@@ -12,7 +12,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
     {
         private string _testString1 = "string1";
         private long _testLong1 = 1111111;
-        private DateTime _testDateTime1 = new DateTime(2019, 6, 1);
+        private DateTime _testDateTime1 = new DateTime(2020, 6, 1);
 
         private string _testString2 = "string2";
         private long _testLong2 = 2222222;

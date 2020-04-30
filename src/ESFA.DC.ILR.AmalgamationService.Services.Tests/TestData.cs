@@ -1,9 +1,10 @@
-﻿using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+﻿using ESFA.DC.ILR.Model.Loose.ReadWrite;
+using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using System;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 {
-    public class TestData : IParentRelationship<ILooseMessage>, IAmalgamationModel
+    public class TestData : IParentRelationship<Message>, IAmalgamationModel
     {
         public string Key { get; set; }
 
@@ -17,7 +18,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
         public string LearnRefNumber => throw new NotImplementedException();
 
-        public ILooseMessage Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Message Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public object ParentSetter { set => throw new NotImplementedException(); }
     }

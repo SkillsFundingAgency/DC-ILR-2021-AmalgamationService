@@ -21,10 +21,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         private IRule<long?> _ulnRule;
         private IRule<long?> _alsCostrule;
         private IRule<string> _postCodeRule;
-        private IRule<MessageLearnerContactPreference[]> _learnerContactPreferenceCollectionRule;
-        private IRule<MessageLearnerLLDDandHealthProblem[]> _lLDDandHealthProblemCollectionRule;
-        private IRule<MessageLearnerLearnerFAM[]> _learnerFAMAmalgamationRule;
-        private IRule<MessageLearnerLearningDelivery[]> _learningDeliveryRule;
+        private IRule<List<MessageLearnerContactPreference>> _learnerContactPreferenceCollectionRule;
+        private IRule<List<MessageLearnerLLDDandHealthProblem>> _lLDDandHealthProblemCollectionRule;
+        private IRule<List<MessageLearnerLearnerFAM>> _learnerFAMAmalgamationRule;
+        private IRule<List<MessageLearnerLearningDelivery>> _learningDeliveryRule;
 
         public LearnerAmalgamator(
             IAmalgamator<MessageLearnerProviderSpecLearnerMonitoring> providerSpecLearnerMonitoringAmalgamator,
@@ -58,25 +58,25 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
 
             ApplyRule(s => s.LearnRefNumber, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.PrevLearnRefNumber, _standardRuleString.Definition, models, messageLearner);
-            ApplyRule(s => s.PrevUKPRNNullable, _standardRuleLong.Definition, models, messageLearner);
-            ApplyRule(s => s.PMUKPRNNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PrevUKPRN, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PMUKPRN, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.CampId, _standardRuleString.Definition, models, messageLearner);
 
-            ApplyRule(s => s.ULNNullable, _ulnRule.Definition, models, messageLearner);
+            ApplyRule(s => s.ULN, _ulnRule.Definition, models, messageLearner);
             ApplyRule(s => s.FamilyName, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.GivenNames, _standardRuleString.Definition, models, messageLearner);
-            ApplyRule(s => s.DateOfBirthNullable, _standardRuleDateTime.Definition, models, messageLearner);
+            ApplyRule(s => s.DateOfBirth, _standardRuleDateTime.Definition, models, messageLearner);
 
-            ApplyRule(s => s.EthnicityNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.Ethnicity, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.Sex, _standardRuleString.Definition, models, messageLearner);
-            ApplyRule(s => s.LLDDHealthProbNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.LLDDHealthProb, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.NINumber, _standardRuleString.Definition, models, messageLearner);
-            ApplyRule(s => s.PriorAttainNullable, _standardRuleLong.Definition, models, messageLearner);
-            ApplyRule(s => s.AccomNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PriorAttain, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.Accom, _standardRuleLong.Definition, models, messageLearner);
 
-            ApplyRule(s => s.ALSCostNullable, _standardRuleLong.Definition, models, messageLearner);
-            ApplyRule(s => s.PlanLearnHoursNullable, _standardRuleLong.Definition, models, messageLearner);
-            ApplyRule(s => s.PlanEEPHoursNullable, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.ALSCost, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PlanLearnHours, _standardRuleLong.Definition, models, messageLearner);
+            ApplyRule(s => s.PlanEEPHours, _standardRuleLong.Definition, models, messageLearner);
             ApplyRule(s => s.MathGrade, _standardRuleString.Definition, models, messageLearner);
             ApplyRule(s => s.EngGrade, _standardRuleString.Definition, models, messageLearner);
 

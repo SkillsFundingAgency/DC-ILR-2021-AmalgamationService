@@ -5,6 +5,7 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 using FluentAssertions;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
@@ -23,10 +24,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 new MessageLearner() { LearnRefNumber = "ABC", Parent = GetParent(filename) }
             };
 
-            ILooseMessage message = new Message()
-            {
-                Learners = learners
-            };
+            Message message = new Message();
+
+            message.Learner.AddRange(learners);
 
             var errorList = new List<IValidationError>();
 
@@ -38,7 +38,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                      errorList.Add(new ValidationError(It.IsAny<string>(), System.Xml.Schema.XmlSeverityType.Error, 0, 0));
                  });
 
-            var duplicateResult = CrossValidationService(mockValidationErrorHandler.Object).GetLearnerDuplicateLearnRefNumbers(learners);
+            var duplicateResult = CrossValidationService(mockValidationErrorHandler.Object).GetLearnerDuplicateLearnRefNumbers(learners.ToList());
             duplicateResult.Should().HaveCount(2);
 
             mockValidationErrorHandler.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(2);
@@ -55,12 +55,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 new MessageLearner() { LearnRefNumber = "abc" }
             };
 
-            ILooseMessage message = new Message()
-            {
-                Learners = learners
-            };
+            Message message = new Message();
 
-            var result = CrossValidationService().GetLearnerDuplicateLearnRefNumbers(learners);
+            message.Learner.AddRange(learners);
+
+            var result = CrossValidationService().GetLearnerDuplicateLearnRefNumbers(learners.ToList());
 
             result.Should().HaveCount(0);
         }
@@ -106,10 +105,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 new MessageLearnerDestinationandProgression() { LearnRefNumber = "abcd", Parent = GetParent(filename) }
             };
 
-            ILooseMessage message = new Message()
-            {
-                LearnerDestinationAndProgressions = progressionList
-            };
+            Message message = new Message();
+
+            message.LearnerDestinationandProgression.AddRange(progressionList);
 
             var result = CrossValidationService().GetDPduplicateLearnRefNumbers(progressionList: progressionList);
 
@@ -137,16 +135,17 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
                 new MessageLearnerDestinationandProgression() { LearnRefNumber = "abc", Parent = GetParent(filename) }
             };
 
-            ILooseMessage message = new Message()
+            Message message = new Message()
             {
-                Learners = learners,
                 Parent = new AmalgamationRoot()
                 {
                     Filename = "xyz.xml",
                     Message = new Message()
-                },
-                LearnerDestinationAndProgressions = progressionList
+                }
             };
+
+            message.Learner.AddRange(learners);
+            message.LearnerDestinationandProgression.AddRange(progressionList);
 
             var errorList = new List<IValidationError>();
 
@@ -160,11 +159,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
 
             var resultMessage = CrossValidationService(mockValidationErrorHandler.Object).CrossValidateLearners(message);
 
-            resultMessage.Learners.Should().HaveCount(1);
-            resultMessage.Learners.Should().NotBeSameAs(learners);
+            resultMessage.Learner.Should().HaveCount(1);
+            resultMessage.Learner.Should().NotBeSameAs(learners);
 
-            resultMessage.LearnerDestinationAndProgressions.Should().HaveCount(2);
-            resultMessage.LearnerDestinationAndProgressions.Should().NotBeSameAs(progressionList);
+            resultMessage.LearnerDestinationandProgression.Should().HaveCount(2);
+            resultMessage.LearnerDestinationandProgression.Should().NotBeSameAs(progressionList);
 
             mockValidationErrorHandler.Object.ValidationErrors.Should().HaveCountGreaterOrEqualTo(3);
             mockValidationErrorHandler.Verify(x => x.CrossRecordValidationErrorHandler(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(3));
@@ -176,12 +175,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.CrossValidation
         }
 
         public Message GetParent(string filename) => new Message()
+        {
+            Parent = new AmalgamationRoot()
             {
-                Parent = new AmalgamationRoot()
-                {
-                    Filename = filename,
-                    Message = new Message()
-                }
+                Filename = filename,
+                Message = new Message()
+            }
         };
     }
 }

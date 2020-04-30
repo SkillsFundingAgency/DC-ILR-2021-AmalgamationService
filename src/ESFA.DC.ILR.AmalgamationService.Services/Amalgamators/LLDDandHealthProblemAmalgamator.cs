@@ -20,8 +20,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         {
             var messageLearnerLLDDandHealthProblem = new MessageLearnerLLDDandHealthProblem();
 
-            ApplyRule(s => s.LLDDCatNullable, _standardRuleLong.Definition, models, messageLearnerLLDDandHealthProblem);
-            ApplyRule(s => s.PrimaryLLDDNullable, _standardRuleLong.Definition, models, messageLearnerLLDDandHealthProblem);
+            ApplyRule(s => s.LLDDCat, _standardRuleLong.Definition, models, messageLearnerLLDDandHealthProblem);
+            ApplyRule(s => s.PrimaryLLDD, _standardRuleLong.Definition, models, messageLearnerLLDDandHealthProblem);
 
             return messageLearnerLLDDandHealthProblem;
         }

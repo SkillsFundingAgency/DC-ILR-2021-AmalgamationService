@@ -80,7 +80,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             return entity;
         }
 
-        protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, TValue[]>> selector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity)
+        protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, List<TValue>>> selector, Func<IEnumerable<List<TValue>>, IRuleResult<List<TValue>>> rule, IEnumerable<T> inputEntities, T entity)
         {
             if (inputEntities == null || !inputEntities.Any())
             {

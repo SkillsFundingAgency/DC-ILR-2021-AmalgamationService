@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
-    public class LearnerContactPreferenceCollectionRule : IRule<MessageLearnerContactPreference[]>
+    public class LearnerContactPreferenceCollectionRule : IRule<List<MessageLearnerContactPreference>>
     {
         private static string _entityName = Enum.GetName(typeof(Entity), Entity.ContactPreference);
 
@@ -20,7 +20,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             new KeyValuePair<string, int>(contPrefTypePMC, 3)
         };
 
-        public IRuleResult<MessageLearnerContactPreference[]> Definition(IEnumerable<MessageLearnerContactPreference[]> contactPreferences)
+        public IRuleResult<List<MessageLearnerContactPreference>> Definition(IEnumerable<List<MessageLearnerContactPreference>> contactPreferences)
         {
             List<AmalgamationValidationError> amalgamationValidationErrors = new List<AmalgamationValidationError>();
             List<MessageLearnerContactPreference> amalgamatedContactPreferences = new List<MessageLearnerContactPreference>();
@@ -34,16 +34,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                     continue;
                 }
 
-                var groupedContactPreferencesForType = contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).GroupBy(x => new { x.ContPrefType, x.ContPrefCodeNullable }).Select(c => c.First()).ToArray();
+                var groupedContactPreferencesForType = contactPreferencesList.Where(cp => cp.ContPrefType.Equals(type.Key, StringComparison.OrdinalIgnoreCase)).GroupBy(x => new { x.ContPrefType, x.ContPrefCode }).Select(c => c.First()).ToArray();
 
                 var amlgamatedContactPreferencesForType = new List<MessageLearnerContactPreference>();
 
                 if (type.Key.Equals(contPrefTypeRUI, StringComparison.OrdinalIgnoreCase))
                 {
                     // RUI3 takes precedence over all other RUI records. Only one record of RUI3, 4 or 5 should be stored. Other RUI records discarded if RUI3, 4 or 5 is present.
-                    if (groupedContactPreferencesForType.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
+                    if (groupedContactPreferencesForType.Any(x => x.ContPrefCode == 3 || x.ContPrefCode == 4 || x.ContPrefCode == 5))
                     {
-                        amlgamatedContactPreferencesForType.Add(groupedContactPreferencesForType.First(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5));
+                        amlgamatedContactPreferencesForType.Add(groupedContactPreferencesForType.First(x => x.ContPrefCode == 3 || x.ContPrefCode == 4 || x.ContPrefCode == 5));
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 if (type.Key.Equals(contPrefTypePMC, StringComparison.OrdinalIgnoreCase))
                 {
                     // Append all PMC 3, 4 or 5 records
-                    if (amalgamatedContactPreferences.Any(x => x.ContPrefCodeNullable == 3 || x.ContPrefCodeNullable == 4 || x.ContPrefCodeNullable == 5))
+                    if (amalgamatedContactPreferences.Any(x => x.ContPrefCode == 3 || x.ContPrefCode == 4 || x.ContPrefCode == 5))
                     {
                         continue;
                     }
@@ -85,7 +85,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 amalgamatedContactPreferences.AddRange(amlgamatedContactPreferencesForType);
             }
 
-            return new RuleResult<MessageLearnerContactPreference[]> { AmalgamatedValue = amalgamatedContactPreferences.ToArray(), AmalgamationValidationErrors = amalgamationValidationErrors };
+            return new RuleResult<List<MessageLearnerContactPreference>> { AmalgamatedValue = amalgamatedContactPreferences, AmalgamationValidationErrors = amalgamationValidationErrors };
         }
 
         private AmalgamationValidationError GetAmalgamationValidationError(MessageLearnerContactPreference c)

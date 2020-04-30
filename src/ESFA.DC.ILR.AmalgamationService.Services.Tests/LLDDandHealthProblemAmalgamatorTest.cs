@@ -30,22 +30,22 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             {
                 new MessageLearnerLLDDandHealthProblem()
                 {
-                    LLDDCatNullable = lLDDCat,
-                    PrimaryLLDDNullable = primaryLLDD,
+                    LLDDCat = lLDDCat,
+                    PrimaryLLDD = primaryLLDD,
                     Parent = messageLearner
                 },
                  new MessageLearnerLLDDandHealthProblem()
                 {
-                    LLDDCatNullable = lLDDCat,
-                    PrimaryLLDDNullable = primaryLLDD,
+                    LLDDCat = lLDDCat,
+                    PrimaryLLDD = primaryLLDD,
                     Parent = messageLearner
                 }
             };
 
             var amalgamate = NewAmalgamator(_ruleProvider, _amalgamationErrorHandler).Amalgamate(msgLearnersLLDDHealthProblem);
 
-            amalgamate.LLDDCatNullable.Should().Be(lLDDCat);
-            amalgamate.PrimaryLLDDNullable.Should().Be(primaryLLDD);
+            amalgamate.LLDDCat.Should().Be(lLDDCat);
+            amalgamate.PrimaryLLDD.Should().Be(primaryLLDD);
         }
 
         [Fact]
@@ -64,14 +64,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             {
                 new MessageLearnerLLDDandHealthProblem()
                 {
-                    LLDDCatNullable = lLDDCat,
-                    PrimaryLLDDNullable = 20,
+                    LLDDCat = lLDDCat,
+                    PrimaryLLDD = 20,
                     Parent = messageLearner
                 },
                  new MessageLearnerLLDDandHealthProblem()
                 {
-                    LLDDCatNullable = lLDDCat,
-                    PrimaryLLDDNullable = primaryLLDD,
+                    LLDDCat = lLDDCat,
+                    PrimaryLLDD = primaryLLDD,
                     Parent = messageLearner
                 }
             };

@@ -1,5 +1,6 @@
 ﻿using ESFA.DC.ILR.Model.Loose.ReadWrite;
 using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
+using System.Linq;
 using Xunit;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
@@ -14,34 +15,35 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 new MessageLearner()
                 {
                     LearnRefNumber = "123",
-                    LearningDeliveries = new[]
-                    {
-                        new MessageLearnerLearningDelivery()
-                        {
-                            ConRefNumber = "conRef1",
-                            ProviderSpecDeliveryMonitorings = new[]
-                            {
-                                new MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring()
-                                {
-                                    ProvSpecDelMon = "ProvSpecDelMon"
-                                }
-                            }
-                        }
-                    }
                 },
                 new MessageLearner() { LearnRefNumber = "1231" }
             };
 
-            ILooseMessage message = new Message()
+            var ldps = new MessageLearnerLearningDeliveryProviderSpecDeliveryMonitoring()
             {
-                HeaderEntity = new MessageHeader()
-                {
-                    CollectionDetails = new MessageHeaderCollectionDetails()
-                },
-                Learners = learners
+                ProvSpecDelMon = "ProvSpecDelMon"
             };
 
-            var result = NewMapper().MapChildren<ILooseMessage>(message);
+            var ld = new MessageLearnerLearningDelivery()
+            {
+                ConRefNumber = "conref1"
+            };
+
+            ld.ProviderSpecDeliveryMonitoring.Add(ldps);
+
+            learners[0].LearningDelivery.Add(ld);
+
+            Message message = new Message()
+            {
+                Header = new MessageHeader()
+                {
+                    CollectionDetails = new MessageHeaderCollectionDetails()
+                }
+            };
+
+            message.Learner.AddRange(learners);
+
+            var result = NewMapper().MapChildren<Message>(message);
         }
 
         private ParentRelationshipMapper NewMapper()

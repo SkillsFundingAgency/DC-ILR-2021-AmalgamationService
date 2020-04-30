@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
-    public class LearningDeliveryRule : IRule<MessageLearnerLearningDelivery[]>
+    public class LearningDeliveryRule : IRule<List<MessageLearnerLearningDelivery>>
     {
-        public IRuleResult<MessageLearnerLearningDelivery[]> Definition(IEnumerable<MessageLearnerLearningDelivery[]> learningDeliveries)
+        public IRuleResult<List<MessageLearnerLearningDelivery>> Definition(IEnumerable<List<MessageLearnerLearningDelivery>> learningDeliveries)
         {
-            var flattenedLearningDeliveries = learningDeliveries.SelectMany(x => x).ToArray();
+            var flattenedLearningDeliveries = learningDeliveries.SelectMany(x => x).ToList();
 
             int aimSeqNumber = 0;
 
@@ -18,7 +18,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 learningDelivery.AimSeqNumber = ++aimSeqNumber;
             }
 
-            return new RuleResult<MessageLearnerLearningDelivery[]> { AmalgamatedValue = flattenedLearningDeliveries, AmalgamationValidationErrors = null };
+            return new RuleResult<List<MessageLearnerLearningDelivery>> { AmalgamatedValue = flattenedLearningDeliveries, AmalgamationValidationErrors = null };
         }
     }
 }

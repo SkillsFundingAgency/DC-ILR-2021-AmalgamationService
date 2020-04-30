@@ -20,9 +20,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypePMC), GetMessageLearnerContactPreference(1, contPrefTypePMC) };
             var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(11, contPrefTypePMC) };
 
-            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            IEnumerable<List<MessageLearnerContactPreference>> contactPreferences = new List<List<MessageLearnerContactPreference>>()
             {
-                input1, input2
+                input1.ToList(), input2.ToList()
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
@@ -39,9 +39,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypePMC), GetMessageLearnerContactPreference(5, contPrefTypePMC) };
             var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(3, contPrefTypePMC), GetMessageLearnerContactPreference(3, contPrefTypeRUI), GetMessageLearnerContactPreference(4, contPrefTypePMC) };
 
-            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            IEnumerable<List<MessageLearnerContactPreference>> contactPreferences = new List<List<MessageLearnerContactPreference>>()
             {
-                input1, input2
+                input1.ToList(), input2.ToList()
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
@@ -58,9 +58,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(2, contPrefTypePMC), GetMessageLearnerContactPreference(5, contPrefTypePMC) };
             var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI), GetMessageLearnerContactPreference(5, contPrefTypePMC), GetMessageLearnerContactPreference(1, contPrefTypeRUI), GetMessageLearnerContactPreference(4, contPrefTypePMC) };
 
-            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            IEnumerable<List<MessageLearnerContactPreference>> contactPreferences = new List<List<MessageLearnerContactPreference>>()
             {
-                input1, input2
+                input1.ToList(), input2.ToList()
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
@@ -74,15 +74,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
 
-            var file1 = GetMessageLearner("ILR-99999999-1920-20190704-092701-05.xml");
-            var file2 = GetMessageLearner("ILR-99999999-1920-20190704-092701-06.xml");
+            var file1 = GetMessageLearner("ILR-99999999-2021-20200704-092701-05.xml");
+            var file2 = GetMessageLearner("ILR-99999999-2021-20200704-092701-06.xml");
 
             var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI, file1), GetMessageLearnerContactPreference(7, contPrefTypePMC, file1), GetMessageLearnerContactPreference(6, contPrefTypeRUI, file1), GetMessageLearnerContactPreference(6, contPrefTypePMC, file1) };
             var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(8, contPrefTypePMC, file2), GetMessageLearnerContactPreference(7, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(9, contPrefTypePMC, file2) };
 
-            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            IEnumerable<List<MessageLearnerContactPreference>> contactPreferences = new List<List<MessageLearnerContactPreference>>()
             {
-                input1, input2
+                input1.ToList(), input2.ToList()
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
@@ -97,15 +97,15 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerContactPreferenceCollectionRule = new LearnerContactPreferenceCollectionRule();
 
-            var file1 = GetMessageLearner("ILR-99999999-1920-20190704-092701-05.xml");
-            var file2 = GetMessageLearner("ILR-99999999-1920-20190704-092701-06.xml");
+            var file1 = GetMessageLearner("ILR-99999999-2021-20200704-092701-05.xml");
+            var file2 = GetMessageLearner("ILR-99999999-2021-20200704-092701-06.xml");
 
             var input1 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(1, contPrefTypeRUI, file1), GetMessageLearnerContactPreference(2, contPrefTypePMC, file1), GetMessageLearnerContactPreference(1, contPrefTypePMC, file1) };
             var input2 = new MessageLearnerContactPreference[] { GetMessageLearnerContactPreference(2, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(2, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(12, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(3, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(12, contPrefTypeRUI, file2), GetMessageLearnerContactPreference(11, contPrefTypePMC, file2) };
 
-            IEnumerable<MessageLearnerContactPreference[]> contactPreferences = new List<MessageLearnerContactPreference[]>()
+            IEnumerable<List<MessageLearnerContactPreference>> contactPreferences = new List<List<MessageLearnerContactPreference>>()
             {
-                input1, input2
+                input1.ToList(), input2.ToList()
             };
 
             var result = learnerContactPreferenceCollectionRule.Definition(contactPreferences);
@@ -118,7 +118,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
 
         private MessageLearnerContactPreference GetMessageLearnerContactPreference(long contPrefCode, string contPrefType, MessageLearner parent = null)
         {
-            MessageLearnerContactPreference messageLearnerContactPreference = new MessageLearnerContactPreference() { ContPrefCodeNullable = contPrefCode, ContPrefType = contPrefType, Parent = parent };
+            MessageLearnerContactPreference messageLearnerContactPreference = new MessageLearnerContactPreference() { ContPrefCode = contPrefCode, ContPrefType = contPrefType, Parent = parent };
 
             return messageLearnerContactPreference;
         }

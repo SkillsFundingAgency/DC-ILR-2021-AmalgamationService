@@ -18,30 +18,30 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void Amalgamate_Pass()
         {
-            var collection = "ILR";
-            var year = "1920";
+            var collection = MessageHeaderCollectionDetailsCollection.ILR;
+            var year = MessageHeaderCollectionDetailsYear.Item2021;
 
             List<MessageHeaderCollectionDetails> msgHeaderCollection = new List<MessageHeaderCollectionDetails>()
             {
                 new MessageHeaderCollectionDetails()
                 {
-                    CollectionString = collection,
-                    FilePreparationDate = new DateTime(2019, 08, 02),
+                    Collection = MessageHeaderCollectionDetailsCollection.ILR,
+                    FilePreparationDate = new DateTime(2020, 08, 02),
                     Parent = GetParent()
                 },
                 new MessageHeaderCollectionDetails()
                 {
-                    CollectionString = collection,
-                    FilePreparationDate = new DateTime(2019, 08, 10),
+                    Collection = MessageHeaderCollectionDetailsCollection.ILR,
+                    FilePreparationDate = new DateTime(2020, 08, 10),
                     Parent = GetParent()
                 }
             };
 
             var amalgamate = NewAmalgamator(_amalgamationErrorHandler).Amalgamate(msgHeaderCollection);
 
-            amalgamate.CollectionString.Should().Be(collection);
-            amalgamate.YearString.Should().Be(year);
-            amalgamate.FilePreparationDate.Should().Be(new DateTime(2019, 08, 10));
+            amalgamate.Collection.Should().Be(collection);
+            amalgamate.Year.Should().Be(year);
+            amalgamate.FilePreparationDate.Should().Be(new DateTime(2020, 08, 10));
         }
 
         public MessageHeader GetParent() => new MessageHeader()

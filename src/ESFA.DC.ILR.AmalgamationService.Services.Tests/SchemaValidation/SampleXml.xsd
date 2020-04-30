@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="ESFA/ILR/2019-20" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="ESFA/ILR/2020-21" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Message">
     <xs:complexType>
       <xs:sequence>

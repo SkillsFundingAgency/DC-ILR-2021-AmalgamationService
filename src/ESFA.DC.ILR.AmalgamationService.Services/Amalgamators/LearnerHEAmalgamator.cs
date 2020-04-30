@@ -25,7 +25,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var messageLearnerLearnerHE = new MessageLearnerLearnerHE();
 
             ApplyRule(s => s.UCASPERID, _standardRuleString.Definition, models, messageLearnerLearnerHE);
-            ApplyRule(s => s.TTACCOMNullable, _standardRuleLong.Definition, models, messageLearnerLearnerHE);
+            ApplyRule(s => s.TTACCOM, _standardRuleLong.Definition, models, messageLearnerLearnerHE);
 
             ApplyGroupedChildCollectionRule(s => s.LearnerHEFinancialSupport, g => g.FINTYPE, _learnerHEFinancialSupportAmalgamator, models, messageLearnerLearnerHE);
 
