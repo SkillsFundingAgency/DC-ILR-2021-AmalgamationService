@@ -22,7 +22,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
             {
                 HashSet<string> duplicateLearners = new HashSet<string>(GetLearnerDuplicateLearnRefNumbers(message.Learner), StringComparer.OrdinalIgnoreCase);
 
-                if (duplicateLearners.Count() > 0)
+                if (duplicateLearners.Any())
                 {
                     message.Learner.RemoveAll(l => duplicateLearners.Contains(l.LearnRefNumber));
                 }
@@ -32,7 +32,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
             {
                 HashSet<string> duplicateProgressionList = new HashSet<string>(GetDPduplicateLearnRefNumbers(message.LearnerDestinationandProgression), StringComparer.OrdinalIgnoreCase);
 
-                if (duplicateProgressionList.Count() > 0)
+                if (duplicateProgressionList.Any())
                 {
                     message.LearnerDestinationandProgression.RemoveAll(ldp => duplicateProgressionList.Contains(ldp.LearnRefNumber));
                 }
