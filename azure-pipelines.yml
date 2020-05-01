@@ -55,7 +55,6 @@ stages:
 #********************************************************************************
 - stage: Build
   displayName: Build
-  dependsOn: PreBuild
   jobs:
   - job: Build
     workspace:
