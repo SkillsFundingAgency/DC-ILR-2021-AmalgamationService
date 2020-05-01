@@ -35,7 +35,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             var assignableProperties = properties.Where(
                 p =>
-                //p.PropertyType.IsInterface &&
                 p.Name != "Parent" &&
                 typeof(IParentRelationshipSetter).IsAssignableFrom(p.PropertyType));
 
