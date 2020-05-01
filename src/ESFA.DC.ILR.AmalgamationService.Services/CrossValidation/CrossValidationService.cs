@@ -25,9 +25,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
                 if (duplicateLearners.Count() > 0)
                 {
                     message.Learner.RemoveAll(l => duplicateLearners.Contains(l.LearnRefNumber));
-                    //var msgLearners = message.Learner.ToArray();
-                    //var validLearners = msgLearners.Where(dp => !duplicateLearners.Contains(dp.LearnRefNumber)).ToArray();
-                    //message.Learner = validLearners;
                 }
             }
 
@@ -38,9 +35,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
                 if (duplicateProgressionList.Count() > 0)
                 {
                     message.LearnerDestinationandProgression.RemoveAll(ldp => duplicateProgressionList.Contains(ldp.LearnRefNumber));
-                    //var msgProgressionList = message.LearnerDestinationandProgression as MessageLearnerDestinationandProgression[];
-                    //var validProgressionList = msgProgressionList.Where(dp => !duplicateProgressionList.Contains(dp.LearnRefNumber)).ToArray();
-                    //message.LearnerDestinationAndProgressions = validProgressionList
                 }
             }
 
