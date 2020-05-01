@@ -67,7 +67,7 @@ stages:
       - IsBuildServer
 
     steps:    
-    - template: Build/Desktop/IsDeployableBranch.yml
+    - template: Build/Desktop/IsDeployableBranch.yml@templates
       parameters:
         VariableNameToStoreOutputIn: 'IsDeployableBranch'
 
