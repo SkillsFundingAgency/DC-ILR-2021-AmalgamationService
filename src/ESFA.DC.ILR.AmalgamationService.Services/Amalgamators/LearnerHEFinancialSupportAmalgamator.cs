@@ -20,8 +20,8 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         {
             var messageLearnerLearnerHELearnerHEFinancialSupport = new MessageLearnerLearnerHELearnerHEFinancialSupport();
 
-            ApplyRule(s => s.FINTYPENullable, _standardRuleLong.Definition, models, messageLearnerLearnerHELearnerHEFinancialSupport);
-            ApplyRule(s => s.FINAMOUNTNullable, _standardRuleLong.Definition, models, messageLearnerLearnerHELearnerHEFinancialSupport);
+            ApplyRule(s => s.FINTYPE, _standardRuleLong.Definition, models, messageLearnerLearnerHELearnerHEFinancialSupport);
+            ApplyRule(s => s.FINAMOUNT, _standardRuleLong.Definition, models, messageLearnerLearnerHELearnerHEFinancialSupport);
 
             return messageLearnerLearnerHELearnerHEFinancialSupport;
         }

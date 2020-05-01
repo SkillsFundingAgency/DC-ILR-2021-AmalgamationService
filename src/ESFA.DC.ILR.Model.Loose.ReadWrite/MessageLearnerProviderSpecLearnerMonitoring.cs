@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerProviderSpecLearnerMonitoring : AbstractLooseReadWriteModel<ILooseLearner>, ILooseProviderSpecLearnerMonitoring
+    public partial class MessageLearnerProviderSpecLearnerMonitoring : AbstractLooseReadWriteModel<MessageLearner>, IParentRelationship<MessageLearner>, IAmalgamationModel
     {
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;

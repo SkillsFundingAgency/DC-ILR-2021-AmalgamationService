@@ -24,7 +24,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var source = new MessageHeaderSource()
             {
                 DateTime = _dateTimeProvider.GetNowUtc(),
-                ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIALSENSITIVEPersonal,
+                ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIAL_SENSITIVE_Personal,
                 UKPRN = models.Select(x => x.UKPRN).First(),
                 SoftwareSupplier = "ESFA",
                 SoftwarePackage = "FileMerge",

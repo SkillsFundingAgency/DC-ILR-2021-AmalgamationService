@@ -4,23 +4,12 @@ using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring : AbstractLooseReadWriteModel<ILooseLearnerEmploymentStatus>, ILooseEmploymentStatusMonitoring
+    public partial class MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring : AbstractLooseReadWriteModel<MessageLearnerLearnerEmploymentStatus>, IParentRelationship<MessageLearnerLearnerEmploymentStatus>, IAmalgamationModel
     {
-        [XmlIgnore]
-        public long? ESMCodeNullable
-        {
-            get => eSMCodeFieldSpecified ? eSMCodeField : default(long?);
-            set
-            {
-                eSMCodeFieldSpecified = value.HasValue;
-                eSMCodeField = value.GetValueOrDefault();
-            }
-        }
-
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Parent.Filename;
 
         [XmlIgnore]
-        public string LearnRefNumber => Parent.Parent.LearnRefNumber;
+        public string LearnRefNumber => Parent.Parent.Parent.LearnRefNumber;
     }
 }

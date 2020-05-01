@@ -41,13 +41,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
 
-            var famsOne = GetFam("ILR-99999999-1920-20190704-092701-05.xml", famType, occurrences);
-            var famsTwo = GetFam("ILR-99999999-1920-20190704-092701-06.xml", famType, occurrences);
+            var famsOne = GetFam("ILR-99999999-2021-20200704-092701-05.xml", famType, occurrences);
+            var famsTwo = GetFam("ILR-99999999-2021-20200704-092701-06.xml", famType, occurrences);
 
-            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            IEnumerable<List<MessageLearnerLearnerFAM>> fams = new List<List<MessageLearnerLearnerFAM>>()
             {
-                famsOne,
-                famsTwo,
+                famsOne.ToList(),
+                famsTwo.ToList(),
             };
 
             var result = learnerFAMAmalgamationRule.Definition(fams);
@@ -73,13 +73,13 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
 
-            var famsOne = GetFam("ILR-99999999-1920-20190704-092701-05.xml", famType, occurrences + 1);
-            var famsTwo = GetFam("ILR-99999999-1920-20190704-092701-06.xml", famType, occurrences + 1);
+            var famsOne = GetFam("ILR-99999999-2021-20200704-092701-05.xml", famType, occurrences + 1);
+            var famsTwo = GetFam("ILR-99999999-2021-20200704-092701-06.xml", famType, occurrences + 1);
 
-            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            IEnumerable<List<MessageLearnerLearnerFAM>> fams = new List<List<MessageLearnerLearnerFAM>>()
             {
-                famsOne,
-                famsTwo,
+                famsOne.ToList(),
+                famsTwo.ToList(),
             };
 
             var result = learnerFAMAmalgamationRule.Definition(fams);
@@ -95,10 +95,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
 
-            var famsOne = GetFam("ILR-99999999-1920-20190704-092701-05.xml", famType, occurrences);
-            var famsTwo = GetFam("ILR-99999999-1920-20190704-092701-06.xml", famType, occurrences);
+            var famsOne = GetFam("ILR-99999999-2021-20200704-092701-05.xml", famType, occurrences);
+            var famsTwo = GetFam("ILR-99999999-2021-20200704-092701-06.xml", famType, occurrences);
 
-            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            IEnumerable<List<MessageLearnerLearnerFAM>> fams = new List<List<MessageLearnerLearnerFAM>>()
             {
                 famsOne,
                 famsTwo,
@@ -114,10 +114,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             var learnerFAMAmalgamationRule = new LearnerFAMAmalgamationRule();
 
-            var famsOne = GetAllValidFams("ILR-99999999-1920-20190704-092701-05.xml");
-            var famsTwo = GetAllValidFams("ILR-99999999-1920-20190704-092701-06.xml");
+            var famsOne = GetAllValidFams("ILR-99999999-2021-20200704-092701-05.xml");
+            var famsTwo = GetAllValidFams("ILR-99999999-2021-20200704-092701-06.xml");
 
-            IEnumerable<MessageLearnerLearnerFAM[]> fams = new List<MessageLearnerLearnerFAM[]>()
+            IEnumerable<List<MessageLearnerLearnerFAM>> fams = new List<List<MessageLearnerLearnerFAM>>()
             {
                 famsOne, famsTwo,
             };
@@ -132,7 +132,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             }
         }
 
-        private MessageLearnerLearnerFAM[] GetAllValidFams(string filename)
+        private List<MessageLearnerLearnerFAM> GetAllValidFams(string filename)
         {
             List<MessageLearnerLearnerFAM> fams = new List<MessageLearnerLearnerFAM>();
 
@@ -146,10 +146,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
                 }
             }
 
-            return fams.ToArray();
+            return fams.ToList();
         }
 
-        private MessageLearnerLearnerFAM[] GetFam(string filename, string famType, int occurences)
+        private List<MessageLearnerLearnerFAM> GetFam(string filename, string famType, int occurences)
         {
             List<MessageLearnerLearnerFAM> fams = new List<MessageLearnerLearnerFAM>();
 
@@ -162,12 +162,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
                 fams.Add(GetMessageLearnerLearnerFAM(famType, famCode++, parent));
             }
 
-            return fams.ToArray();
+            return fams.ToList();
         }
 
         private MessageLearnerLearnerFAM GetMessageLearnerLearnerFAM(string learnFAMType, long famCode, MessageLearner parent = null)
         {
-            return new MessageLearnerLearnerFAM() { LearnFAMType = learnFAMType, LearnFAMCodeNullable = famCode, Parent = parent };
+            return new MessageLearnerLearnerFAM() { LearnFAMType = learnFAMType, LearnFAMCode = famCode, Parent = parent };
         }
 
         private MessageLearner GetMessageLearner(string filename)

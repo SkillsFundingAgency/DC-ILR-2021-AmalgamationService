@@ -46,7 +46,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             if (validMessage != null)
             {
-                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-1920-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}-01.xml";
+                var amalgamatedFileName = $"ILR-{amalgamationResult.Message.Header.Source.UKPRN}-2021-{_dateTimeProvider.GetNowUtc().ToString("yyyyMMdd-HHmmss")}-01.xml";
                 using (var stream = await _fileService.OpenWriteStreamAsync(amalgamatedFileName, outputDirectory, cancellationToken))
                 {
                     _xmlSerializationService.Serialize(validMessage, stream);
@@ -68,8 +68,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
             var invalidLearnRefNumbersHashSet = new HashSet<string>(invalidLearnRefNumbers, StringComparer.OrdinalIgnoreCase);
 
-            message.Learner = message?.Learner?.Where(l => !invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber)).ToArray();
-            message.LearnerDestinationandProgression = message?.LearnerDestinationandProgression?.Where(dp => !invalidLearnRefNumbersHashSet.Contains(dp.LearnRefNumber)).ToArray();
+            message.Learner.RemoveAll(l => invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber));
+
+            message.Learner.RemoveAll(l => invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber));
 
             return message;
         }

@@ -19,31 +19,20 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void ProtectiveMarkingString_Property_NotNull()
         {
-            var valToTest = "OFFICIAL-SENSITIVE-Personal";
+            var valToTest = MessageHeaderSourceProtectiveMarking.OFFICIAL_SENSITIVE_Personal;
 
             var msgHeaderSource = new MessageHeaderSource
             {
-                ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal"
+                ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIAL_SENSITIVE_Personal
             };
 
-            msgHeaderSource.ProtectiveMarkingString.Should().Be(valToTest);
-        }
-
-        [Fact]
-        public void ProtectiveMarkingString_Property_IsNull()
-        {
-            var msgHeaderSource = new MessageHeaderSource
-            {
-                ProtectiveMarkingString = "123"
-            };
-
-            msgHeaderSource.ProtectiveMarkingString.Should().BeNull();
+            msgHeaderSource.ProtectiveMarking.Should().Be(valToTest);
         }
 
         [Fact]
         public void Amalgamate_Pass1()
         {
-            DateTime dateTimeNow = new DateTime(2019, 08, 16);
+            DateTime dateTimeNow = new DateTime(2020, 08, 16);
 
             var mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(dateTimeNow);
@@ -70,10 +59,10 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
         [Fact]
         public void Amalgamate_Pass2()
         {
-            DateTime date1 = new DateTime(2019, 07, 26);
+            DateTime date1 = new DateTime(2020, 07, 26);
             DateTime date2 = new DateTime(2018, 07, 26);
 
-            DateTime dateTimeNow = new DateTime(2019, 08, 16);
+            DateTime dateTimeNow = new DateTime(2020, 08, 16);
 
             var mockDateTimeProvider = new Mock<IDateTimeProvider>();
             mockDateTimeProvider.Setup(d => d.GetNowUtc()).Returns(dateTimeNow);
@@ -82,7 +71,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             {
                 DateTime = date1,
                 UKPRN = 10000001,
-                ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIALSENSITIVEPersonal,
+                ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIAL_SENSITIVE_Personal,
                 SoftwareSupplier = "ESFA",
                 SoftwarePackage = "FileMerge",
                 Release = "01",
@@ -94,11 +83,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                 new MessageHeaderSource()
                 {
                     DateTime = date1,
-                    ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
+                    ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIAL_SENSITIVE_Personal,
                     UKPRN = 10000001,
                     SoftwareSupplier = "Skills Funding Agency",
                     SoftwarePackage = "ILR Learner Entry",
-                    Release = "1920.1.0.14278",
+                    Release = "2021.1.0.14278",
                     SerialNo = "01",
                     ReferenceData = "ReferenceData",
                     ComponentSetVersion = "ComponentSetVersion",
@@ -107,11 +96,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
                  new MessageHeaderSource()
                 {
                     DateTime = date2,
-                    ProtectiveMarkingString = "OFFICIAL-SENSITIVE-Personal",
+                    ProtectiveMarking = MessageHeaderSourceProtectiveMarking.OFFICIAL_SENSITIVE_Personal,
                     UKPRN = 10000001,
                     SoftwareSupplier = "Skills Funding Agency",
                     SoftwarePackage = "ILR Learner Entry",
-                    Release = "1920.1.0.14278",
+                    Release = "2021.1.0.14278",
                     SerialNo = "01",
                     ReferenceData = "ReferenceData",
                     ComponentSetVersion = "ComponentSetVersion",
@@ -122,7 +111,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
             var amalgamate = NewAmalgamator(mockDateTimeProvider.Object, _amalgamationErrorHandler).Amalgamate(headerSourcesList);
 
             amalgamate.DateTime.Should().Be(dateTimeNow);
-            amalgamate.ProtectiveMarkingString.Should().Be(objToCompare.ProtectiveMarkingString);
+            amalgamate.ProtectiveMarking.Should().Be(objToCompare.ProtectiveMarking);
             amalgamate.UKPRN.Should().Be(objToCompare.UKPRN);
             amalgamate.SoftwareSupplier.Should().Be(objToCompare.SoftwareSupplier);
             amalgamate.SoftwarePackage.Should().Be(objToCompare.SoftwarePackage);

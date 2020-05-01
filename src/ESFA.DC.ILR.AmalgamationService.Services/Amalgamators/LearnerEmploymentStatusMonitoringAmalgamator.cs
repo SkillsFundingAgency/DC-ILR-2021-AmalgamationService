@@ -23,7 +23,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var learnerEmploymentStatusEmploymentStatusMonitoring = new MessageLearnerLearnerEmploymentStatusEmploymentStatusMonitoring();
 
             ApplyRule(s => s.ESMType, _standardRuleString.Definition, models, learnerEmploymentStatusEmploymentStatusMonitoring);
-            ApplyRule(s => s.ESMCodeNullable, _standardRuleLong.Definition, models, learnerEmploymentStatusEmploymentStatusMonitoring);
+            ApplyRule(s => s.ESMCode, _standardRuleLong.Definition, models, learnerEmploymentStatusEmploymentStatusMonitoring);
 
             return learnerEmploymentStatusEmploymentStatusMonitoring;
         }

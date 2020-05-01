@@ -10,7 +10,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.Service
     public class SettingsService : ISettingsService
     {
         private const string OutputDirectoryKey = "OutputDirectory";
-        private const string AmalgamationSystem = "FileMerge 2019-20";
+        private const string AmalgamationSystem = "FileMerge 2020-21";
 
         public string OutputDirectory { get; set; }
 

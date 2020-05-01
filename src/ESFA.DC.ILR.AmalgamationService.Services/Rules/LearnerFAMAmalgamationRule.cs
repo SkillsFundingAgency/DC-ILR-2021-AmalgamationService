@@ -7,26 +7,26 @@ using System.Linq;
 
 namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
 {
-    public class LearnerFAMAmalgamationRule : IRule<MessageLearnerLearnerFAM[]>
+    public class LearnerFAMAmalgamationRule : IRule<List<MessageLearnerLearnerFAM>>
     {
         private static string _entityName = Enum.GetName(typeof(Entity), Entity.LearnerFAM);
 
         private readonly IDictionary<string, int> famTypesMaxOccurenceDictionary = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
-           ["HNS"] = 1,
-           ["EHC"] = 1,
-           ["DLA"] = 1,
-           ["LSR"] = 4,
-           ["SEN"] = 1,
-           ["NLM"] = 2,
-           ["EDF"] = 2,
-           ["MCF"] = 1,
-           ["ECF"] = 1,
-           ["FME"] = 1,
-           ["PPE"] = 2,
+            ["HNS"] = 1,
+            ["EHC"] = 1,
+            ["DLA"] = 1,
+            ["LSR"] = 4,
+            ["SEN"] = 1,
+            ["NLM"] = 2,
+            ["EDF"] = 2,
+            ["MCF"] = 1,
+            ["ECF"] = 1,
+            ["FME"] = 1,
+            ["PPE"] = 2,
         };
 
-        public IRuleResult<MessageLearnerLearnerFAM[]> Definition(IEnumerable<MessageLearnerLearnerFAM[]> fams)
+        public IRuleResult<List<MessageLearnerLearnerFAM>> Definition(IEnumerable<List<MessageLearnerLearnerFAM>> fams)
         {
             var amalgamationValidationErrors = new List<AmalgamationValidationError>();
             var amalgamatedFams = new List<MessageLearnerLearnerFAM>();
@@ -41,16 +41,16 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
                 }
             }
 
-            return new RuleResult<MessageLearnerLearnerFAM[]>
+            return new RuleResult<List<MessageLearnerLearnerFAM>>
             {
-                AmalgamatedValue = amalgamatedFams.ToArray(),
+                AmalgamatedValue = amalgamatedFams.ToList(),
                 AmalgamationValidationErrors = amalgamationValidationErrors
             };
         }
 
         private void AmalgamateFAMs(List<AmalgamationValidationError> validationErrors, List<MessageLearnerLearnerFAM> learnerFams, IEnumerable<MessageLearnerLearnerFAM> originalFams, int maxOccurrence)
         {
-            var distinctFamCodes = originalFams.GroupBy(g => g.LearnFAMCodeNullable).Select(s => s.FirstOrDefault());
+            var distinctFamCodes = originalFams.GroupBy(g => g.LearnFAMCode).Select(s => s.FirstOrDefault());
 
             if (distinctFamCodes?.Count() > maxOccurrence)
             {

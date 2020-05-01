@@ -15,12 +15,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             DPOutcomeRule dPOutcomeRule = new DPOutcomeRule();
 
-            DateTime outStartDate = new DateTime(2019, 10, 10);
-            DateTime outEndDate = new DateTime(2019, 10, 10);
-            DateTime outCollDate = new DateTime(2019, 10, 10);
+            DateTime outStartDate = new DateTime(2020, 10, 10);
+            DateTime outEndDate = new DateTime(2020, 10, 10);
+            DateTime outCollDate = new DateTime(2020, 10, 10);
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> firstList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate, outCollDate, "first.xml");
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> secondList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate, outCollDate, "second.xml");
-            List<MessageLearnerDestinationandProgressionDPOutcome[]> items = new List<MessageLearnerDestinationandProgressionDPOutcome[]>() { firstList.ToArray(), secondList.ToArray() };
+            List<List<MessageLearnerDestinationandProgressionDPOutcome>> items = new List<List<MessageLearnerDestinationandProgressionDPOutcome>>() { firstList.ToList(), secondList.ToList() };
             var result = dPOutcomeRule.Definition(items);
 
             result.AmalgamatedValue.Count().Should().Equals(1);
@@ -33,12 +33,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             DPOutcomeRule dPOutcomeRule = new DPOutcomeRule();
 
-            DateTime outStartDate = new DateTime(2019, 10, 10);
-            DateTime outEndDate = new DateTime(2019, 10, 10);
-            DateTime outCollDate = new DateTime(2019, 10, 10);
+            DateTime outStartDate = new DateTime(2020, 10, 10);
+            DateTime outEndDate = new DateTime(2020, 10, 10);
+            DateTime outCollDate = new DateTime(2020, 10, 10);
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> firstList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate, outCollDate, "first.xml");
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> secondList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 2", 2, outStartDate, outEndDate, outCollDate.AddDays(1), "second.xml");
-            List<MessageLearnerDestinationandProgressionDPOutcome[]> items = new List<MessageLearnerDestinationandProgressionDPOutcome[]>() { firstList.ToArray(), secondList.ToArray() };
+            List<List<MessageLearnerDestinationandProgressionDPOutcome>> items = new List<List<MessageLearnerDestinationandProgressionDPOutcome>>() { firstList.ToList(), secondList.ToList() };
             var result = dPOutcomeRule.Definition(items);
 
             result.AmalgamatedValue.Count().Should().Equals(2);
@@ -51,12 +51,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             DPOutcomeRule dPOutcomeRule = new DPOutcomeRule();
 
-            DateTime outStartDate = new DateTime(2019, 10, 10);
-            DateTime outEndDate = new DateTime(2019, 10, 10);
-            DateTime outCollDate = new DateTime(2019, 10, 10);
+            DateTime outStartDate = new DateTime(2020, 10, 10);
+            DateTime outEndDate = new DateTime(2020, 10, 10);
+            DateTime outCollDate = new DateTime(2020, 10, 10);
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> firstList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate, outCollDate, "first.xml");
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> secondList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate.AddDays(1), outCollDate, "second.xml");
-            List<MessageLearnerDestinationandProgressionDPOutcome[]> items = new List<MessageLearnerDestinationandProgressionDPOutcome[]>() { firstList.ToArray(), secondList.ToArray() };
+            List<List<MessageLearnerDestinationandProgressionDPOutcome>> items = new List<List<MessageLearnerDestinationandProgressionDPOutcome>>() { firstList.ToList(), secondList.ToList() };
             var result = dPOutcomeRule.Definition(items);
 
             result.AmalgamatedValue.Count().Should().Equals(0);
@@ -69,12 +69,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         {
             DPOutcomeRule dPOutcomeRule = new DPOutcomeRule();
 
-            DateTime outStartDate = new DateTime(2019, 10, 10);
-            DateTime outEndDate = new DateTime(2019, 10, 10);
-            DateTime outCollDate = new DateTime(2019, 10, 10);
+            DateTime outStartDate = new DateTime(2020, 10, 10);
+            DateTime outEndDate = new DateTime(2020, 10, 10);
+            DateTime outCollDate = new DateTime(2020, 10, 10);
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> firstList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate, outCollDate, "first.xml");
             IEnumerable<MessageLearnerDestinationandProgressionDPOutcome> secondList = GetMessageLearnerDestinationandProgressionDPOutcomes("Outcome 1", 1, outStartDate, outEndDate, outCollDate.AddDays(1), "second.xml");
-            List<MessageLearnerDestinationandProgressionDPOutcome[]> items = new List<MessageLearnerDestinationandProgressionDPOutcome[]>() { firstList.ToArray(), secondList.ToArray() };
+            List<List<MessageLearnerDestinationandProgressionDPOutcome>> items = new List<List<MessageLearnerDestinationandProgressionDPOutcome>>() { firstList.ToList(), secondList.ToList() };
             var result = dPOutcomeRule.Definition(items);
 
             result.AmalgamatedValue.Count().Should().Equals(0);
@@ -89,7 +89,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
 
         private MessageLearnerDestinationandProgressionDPOutcome GetMessageLearnerDestinationandProgressionDPOutcome(string outType, long outCode, DateTime outStartDate, DateTime outEndDate, DateTime outCollDate, string filename)
         {
-            return new MessageLearnerDestinationandProgressionDPOutcome() { OutType = outType, OutCodeNullable = outCode, OutCollDateNullable = outCollDate, OutEndDateNullable = outEndDate, OutStartDateNullable = outStartDate, Parent = GetMessageLearner(filename) };
+            return new MessageLearnerDestinationandProgressionDPOutcome() { OutType = outType, OutCode = outCode, OutCollDate = outCollDate, OutEndDate = outEndDate, OutStartDate = outStartDate, Parent = GetMessageLearner(filename) };
         }
 
         private MessageLearnerDestinationandProgression GetMessageLearner(string filename)

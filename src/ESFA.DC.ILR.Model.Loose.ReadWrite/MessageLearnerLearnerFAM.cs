@@ -4,23 +4,13 @@ using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLearnerFAM : AbstractLooseReadWriteModel<ILooseLearner>, ILooseLearnerFAM
+    public partial class MessageLearnerLearnerFAM : AbstractLooseReadWriteModel<MessageLearner>, IParentRelationship<MessageLearner>, IAmalgamationModel
     {
-        [XmlIgnore]
-        public long? LearnFAMCodeNullable
-        {
-            get => learnFAMCodeFieldSpecified ? learnFAMCodeField : default(long?);
-            set
-            {
-                learnFAMCodeFieldSpecified = value.HasValue;
-                learnFAMCodeField = value.GetValueOrDefault();
-            }
-        }
-
+       
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
 
         [XmlIgnore]
-        public string LearnRefNumber => Parent.LearnRefNumber;
+        public string LearnRefNumber => Parent.Parent.LearnRefNumber;
     }
 }

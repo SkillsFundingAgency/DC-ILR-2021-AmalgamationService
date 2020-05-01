@@ -6,19 +6,8 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageHeaderSource : AbstractLooseReadWriteModel<ILooseHeader>, ILooseSource
+    public partial class MessageHeaderSource : AbstractLooseReadWriteModel<MessageHeader>, IParentRelationship<MessageHeader>, IAmalgamationModel
     {
-        [XmlIgnore]
-        public string ProtectiveMarkingString
-        {
-            get => protectiveMarkingField.XmlEnumToString();
-            set
-            {                
-                Enum.TryParse(value, out MessageHeaderSourceProtectiveMarking enumHeaderSourceProMarking);
-                protectiveMarkingField = enumHeaderSourceProMarking;
-            }
-        }
-
         [XmlIgnore]
         public string SourceFileName { get => Parent.Parent.Parent.Filename; }
 

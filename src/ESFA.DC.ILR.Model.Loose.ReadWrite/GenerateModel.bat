@@ -1,1 +1,2 @@
-xsd Schema/ILR-2019-20-v2.xsd /classes /namespace:"ESFA.DC.ILR.Model.Loose.ReadWrite"
+xscgen --collectionType="System.Collections.Generic.List`1" --nullable --enable-data-binding -nESFA/ILR/2020-21="ESFA.DC.ILR.Model.Loose.ReadWrite" "Schema/ILR-2020-21-v1.xsd"
+pause
