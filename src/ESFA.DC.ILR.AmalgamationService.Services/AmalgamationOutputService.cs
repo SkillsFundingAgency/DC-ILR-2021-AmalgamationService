@@ -68,23 +68,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
         {
             var invalidLearnRefNumbersHashSet = new HashSet<string>(invalidLearnRefNumbers, StringComparer.OrdinalIgnoreCase);
 
-            message.Learner.ForEach(l =>
-            {
-                if (invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber))
-                {
-                    message.Learner.Remove(l);
-                }
-            });
-            //message.Learner = message?.Learner?.Where(l => !invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber)).ToArray();
+            message.Learner.RemoveAll(l => invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber));
 
-            message.LearnerDestinationandProgression.ForEach(l =>
-            {
-                if (invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber))
-                {
-                    message.LearnerDestinationandProgression.Remove(l);
-                }
-            });
-            //message.LearnerDestinationandProgression = message?.LearnerDestinationandProgression?.Where(dp => !invalidLearnRefNumbersHashSet.Contains(dp.LearnRefNumber)).ToArray();
+            message.Learner.RemoveAll(l => invalidLearnRefNumbersHashSet.Contains(l.LearnRefNumber));
 
             return message;
         }
