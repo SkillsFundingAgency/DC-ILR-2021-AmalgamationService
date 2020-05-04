@@ -79,6 +79,8 @@ stages:
         WorkingDirectory: "$(build.sourcesdirectory)/src"
         BuildConfiguration: "${{ parameters.buildConfiguration }}"    
         DesktopApplicationSourceFolder: '$(MainApplicationFolder)'
+        DesktopApplicationCopyContents: '**\!(*.pdb)'
+        CodeSignFileFilter: 'ESFA.DC.**'
 
     - template: Build/Desktop/RunUnitTest.Desktop.yml@templates
       parameters:
