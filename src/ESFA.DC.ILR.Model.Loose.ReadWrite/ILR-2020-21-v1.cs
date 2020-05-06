@@ -3796,7 +3796,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         }
         
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        private int _oTJActhours;
+        private int _oTJActHours;
         
         /// <summary>
         /// <para xml:lang="en">Minimum inclusive value: 0.</para>
@@ -3804,43 +3804,43 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         /// </summary>
         [System.ComponentModel.DataAnnotations.RangeAttribute(typeof(int), "0", "9999")]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        [System.Xml.Serialization.XmlElementAttribute("OTJActhours")]
-        public int OTJActhoursValue
+        [System.Xml.Serialization.XmlElementAttribute("OTJActHours")]
+        public int OTJActHoursValue
         {
             get
             {
-                return _oTJActhours;
+                return _oTJActHours;
             }
             set
             {
-                if (!_oTJActhours.Equals(value))
+                if (!_oTJActHours.Equals(value))
                 {
-                    _oTJActhours = value;
-                    OnPropertyChanged(nameof(OTJActhoursValue));
+                    _oTJActHours = value;
+                    OnPropertyChanged(nameof(OTJActHoursValue));
                 }
             }
         }
         
         /// <summary>
-        /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OTJActhours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
-        /// <para xml:lang="en">Gets or sets a value indicating whether the OTJActhours property is specified.</para>
+        /// <para xml:lang="de">Ruft einen Wert ab, der angibt, ob die OTJActHours-Eigenschaft spezifiziert ist, oder legt diesen fest.</para>
+        /// <para xml:lang="en">Gets or sets a value indicating whether the OTJActHours property is specified.</para>
         /// </summary>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
-        public bool OTJActhoursValueSpecified { get; set; }
+        public bool OTJActHoursValueSpecified { get; set; }
         
         /// <summary>
         /// <para xml:lang="en">Minimum inclusive value: 0.</para>
         /// <para xml:lang="en">Maximum inclusive value: 9999.</para>
         /// </summary>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public System.Nullable<int> OTJActhours
+        public System.Nullable<int> OTJActHours
         {
             get
             {
-                if (this.OTJActhoursValueSpecified)
+                if (this.OTJActHoursValueSpecified)
                 {
-                    return this.OTJActhoursValue;
+                    return this.OTJActHoursValue;
                 }
                 else
                 {
@@ -3849,12 +3849,12 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
             }
             set
             {
-                if (((this.OTJActhoursValue.Equals(value.GetValueOrDefault()) == false) 
-                            || (this.OTJActhoursValueSpecified.Equals(value.HasValue) == false)))
+                if (((this.OTJActHoursValue.Equals(value.GetValueOrDefault()) == false) 
+                            || (this.OTJActHoursValueSpecified.Equals(value.HasValue) == false)))
                 {
-                    this.OTJActhoursValue = value.GetValueOrDefault();
-                    this.OTJActhoursValueSpecified = value.HasValue;
-                    OnPropertyChanged("OTJActhours");
+                    this.OTJActHoursValue = value.GetValueOrDefault();
+                    this.OTJActHoursValueSpecified = value.HasValue;
+                    OnPropertyChanged("OTJActHours");
                 }
             }
         }
