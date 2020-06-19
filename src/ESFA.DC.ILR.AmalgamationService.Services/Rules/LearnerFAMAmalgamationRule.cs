@@ -23,7 +23,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules
             ["MCF"] = 1,
             ["ECF"] = 1,
             ["FME"] = 1,
-            ["PPE"] = 2,
         };
 
         public IRuleResult<List<MessageLearnerLearnerFAM>> Definition(IEnumerable<List<MessageLearnerLearnerFAM>> fams)
