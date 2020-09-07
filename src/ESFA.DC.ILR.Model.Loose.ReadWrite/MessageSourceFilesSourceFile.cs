@@ -5,7 +5,7 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageSourceFilesSourceFile : AbstractLooseReadWriteModel<MessageSourceFile>, IParentRelationship<MessageSourceFile>, IAmalgamationModel
+    public partial class MessageSourceFilesSourceFile : AbstractLooseReadWriteModel<Message>, IParentRelationship<Message>, IAmalgamationModel
     {
        
         [XmlIgnore]
