@@ -51,7 +51,7 @@ variables:
 - name: "Nuget.Version"
   value: '5.3.0'
 - name: "MainApplicationFolder"
-  value: 'src\ESFA.DC.ILR.Amalgamation.WPF'
+  value: 'ESFA.DC.ILR.Amalgamation.WPF'
 
 stages:
 #********************************************************************************
