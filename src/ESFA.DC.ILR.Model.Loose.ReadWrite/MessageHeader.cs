@@ -10,6 +10,6 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
         public string SourceFileName { get => Parent.Parent.Filename; }
 
         [XmlIgnore]
-        public string LearnRefNumber => Parent.LearnRefNumber;
+        public string LearnRefNumber => null;
     }
 }
