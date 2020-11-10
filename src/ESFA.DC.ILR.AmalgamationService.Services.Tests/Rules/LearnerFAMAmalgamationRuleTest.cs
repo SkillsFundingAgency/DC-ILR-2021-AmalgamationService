@@ -22,7 +22,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
             ["MCF"] = 1,
             ["ECF"] = 1,
             ["FME"] = 1,
-            ["PPE"] = 2,
         };
 
         [InlineData("HNS", 1)]
@@ -35,7 +34,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         [InlineData("MCF", 1)]
         [InlineData("ECF", 1)]
         [InlineData("FME", 1)]
-        [InlineData("PPE", 2)]
         [Theory]
         public void TestEachFamtypeInIsolationPass(string famType, int occurrences)
         {
@@ -67,7 +65,6 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
         [InlineData("MCF", 1)]
         [InlineData("ECF", 1)]
         [InlineData("FME", 1)]
-        [InlineData("PPE", 2)]
         [Theory]
         public void TestEachFamtypeInIsolationFail(string famType, int occurrences)
         {
@@ -124,7 +121,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests.Rules
 
             var result = learnerFAMAmalgamationRule.Definition(fams);
 
-            result.AmalgamatedValue.Should().HaveCount(17);
+            result.AmalgamatedValue.Should().HaveCount(15);
 
             foreach (var famType in famTypesMaxOccurenceDictionary)
             {
