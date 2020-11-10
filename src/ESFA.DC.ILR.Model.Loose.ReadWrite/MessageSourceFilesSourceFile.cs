@@ -7,9 +7,7 @@ namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
     public partial class MessageSourceFilesSourceFile : AbstractLooseReadWriteModel<Message>, IParentRelationship<Message>, IAmalgamationModel
     {
-       
         [XmlIgnore]
         public string LearnRefNumber => null;
-
     }
 }

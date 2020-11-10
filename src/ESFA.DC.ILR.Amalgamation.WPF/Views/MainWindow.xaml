@@ -56,13 +56,13 @@
                     <Hyperlink Command="{Binding MergeAnotherSetOfFilesCommand}">
                         <TextBlock FontWeight="Regular" Text="Merge another set of files"/>
                     </Hyperlink>
-                </TextBlock>
+                    </TextBlock>
                     <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                     Go to filemerge output folder: 
                     <Hyperlink Command="{Binding OutputDirectoryCommand}">
                         <TextBlock Text="{Binding OutputDirectory}"/>
                     </Hyperlink>
-                </TextBlock>
+                    </TextBlock>
                     <Grid Margin="50,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="505"/>
@@ -101,7 +101,7 @@
             </ScrollViewer>
         </Border>
 
-        <Grid Grid.Row="3" Margin="10">
+        <Grid Grid.Row="3" Margin="10" Visibility="{Binding ChooseFileVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -112,16 +112,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
             <Label Grid.Column="0" Grid.ColumnSpan="2" Content="Select XML files you want to merge" 
                    FontWeight="Bold" HorizontalAlignment="Left"/>
 
             <StackPanel Grid.Column="0" Grid.Row="1">
                 <Button Grid.Column="0" Grid.Row="1" Content="Choose files" Command="{Binding ChooseFileCommand}"/>
             </StackPanel>
-
             <Grid Grid.Column="1" Grid.Row="1" Margin="5 0">
-
                 <ListView x:Name="lstFiles" BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -147,19 +144,129 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
-
             <Button Grid.Column="0" Grid.Row="2" Content="Start Merge" Command="{Binding AmalgamateFilesCommand}" Margin="0 5 0 0"/>
-
-            <ProgressBar Grid.Column="1" Grid.Row="2" Height="20" IsIndeterminate="{Binding ProcessingVisibility}" Margin="5 0" />
-
             <Button Grid.Row="3" Content="Cancel" Command="{Binding CancelCommand}"/>
-
-            <TextBlock Grid.Column="1" Grid.Row="3" Margin="15 0" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" Visibility="{Binding ShowErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    Validation Error found within XML document. Please see error report : 
-                <Hyperlink Command="{Binding OutputDirectoryCommand}">
-                    <TextBlock Text="{Binding OutputDirectory}"/>
-                </Hyperlink>
-            </TextBlock>
         </Grid>
+
+        <Grid Grid.Row="3" Visibility="{Binding ProcessingVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <Label FontSize="14">Merging files.</Label>
+            </StackPanel>
+
+            <StackPanel Margin="0,44,0,-0.5" Grid.RowSpan="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Column="1" Grid.Row="1" Margin="5 0">
+                        <ListView x:Name="listFiles" BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="X"
+                                            VerticalAlignment="Top"
+                                            VerticalContentAlignment="Top"
+                                            Width="50"
+                                        Foreground="Red" 
+                                        Command="{Binding ElementName=lstFiles, Path=DataContext.RemoveFileCommand}" 
+                                        CommandParameter="{Binding }" 
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0" ToolTip="Remove file"/>
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <ProgressBar Grid.Row="2" Grid.ColumnSpan="2" Height="20" IsIndeterminate="True" Margin="0,5" />
+                </Grid>
+                <Button Content="Cancel and re-import file" Command="{Binding CancelAndReImportCommand}" FontSize="14" HorizontalAlignment="Left" Margin="0,8" Width="180" Height="35"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3" Margin="10" Visibility="{Binding ProcessedUnsuccessfullyVisibility, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel>
+                <Border BorderThickness="2" BorderBrush="#b10e1e" MinHeight="60">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label Content="We can't process your file" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold" />
+                        <TextBlock Grid.Column="1" Grid.Row="3" Margin="15 0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Maroon" >
+                            An Error occurred in merging of files. Please see error report : 
+                            <Hyperlink Command="{Binding OutputDirectoryCommand}">
+                                <TextBlock Text="{Binding OutputDirectory}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                   
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" Content="Select XML files you want to try to merge" 
+                   FontWeight="Bold" HorizontalAlignment="Left"/>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <Button Grid.Column="0" Grid.Row="1" Content="Choose files" Command="{Binding ChooseFileCommand}"/>
+                    </StackPanel>
+                    <Grid Grid.Column="1" Grid.Row="1" Margin="5 0">
+                        <ListView x:Name="listFiless" BorderBrush="LightGray" ItemsSource="{Binding Files}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="X"
+                                            VerticalAlignment="Top"
+                                            VerticalContentAlignment="Top"
+                                            Width="50"
+                                        Foreground="Red" 
+                                        Command="{Binding ElementName=lstFiles, Path=DataContext.RemoveFileCommand}" 
+                                        CommandParameter="{Binding }" 
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0" ToolTip="Remove file"/>
+                                        <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                    <Button Grid.Column="0" Grid.Row="2" Content="Start Merge" Command="{Binding AmalgamateFilesCommand}" Margin="0 5 0 0"/>
+                    <Button Grid.Row="3" Content="Cancel" Command="{Binding CancelCommand}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+       
     </Grid>
 </Window>

@@ -49,7 +49,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     prop.SetValue(entity, value.AmalgamatedValue);
                 }
 
-                _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
+              _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
                 {
                     File = x.SourceFileName,
                     LearnRefNumber = x.LearnRefNumber ?? string.Empty,
