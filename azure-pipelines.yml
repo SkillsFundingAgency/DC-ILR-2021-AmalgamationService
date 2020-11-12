@@ -13,7 +13,7 @@ parameters:
 - name: VersionNumberMajor
   displayName: 'Version Number : Major'
   type: string
-  default: '0'
+  default: '2021'
 - name: VersionNumberMinor
   displayName: 'Version Number : Minor'
   type: string
@@ -95,21 +95,6 @@ stages:
         checkLatest: true
 
 #********************************************************************************
-# Display all current varaiables
-#********************************************************************************   		
-    - task: PowerShell@1
-      displayName: 'Display Variables'
-      enabled: true
-      inputs:
-        scriptType: inlineScript
-        inlineScript: |
-         $var = (gci env:*).GetEnumerator() | Sort-Object Name
-         Foreach ($v in $var) 
-         {
-           write-output "Name: $($v.Name)  | Value : $($v.Value)"
-         }
-
-#********************************************************************************
 # Restore NuGet Packages
 #********************************************************************************   
     - task: NuGetCommand@2
@@ -129,6 +114,21 @@ stages:
         InjectVersion: true
         FilenamePattern: 'AssemblyVersionInfo.*'
         OutputVersion: 'OutputedVersion'
+
+#********************************************************************************
+# Display all current varaiables
+#********************************************************************************   		
+    - task: PowerShell@1
+      displayName: 'Display Variables'
+      enabled: true
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |
+         $var = (gci env:*).GetEnumerator() | Sort-Object Name
+         Foreach ($v in $var) 
+         {
+           write-output "Name: $($v.Name)  | Value : $($v.Value)"
+         }
 
 #********************************************************************************
 # Build Solution
