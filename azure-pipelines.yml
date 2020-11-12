@@ -83,12 +83,11 @@ stages:
 #********************************************************************************
 # Install required software
 #********************************************************************************   
-    - task: UseGitVersion@5
-      enabled: true
-      displayName: "Check forGitVersion"
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk : $(DotnetCore.Version)'
       inputs:
-        versionSpec: '5.x'
-        updateAssemblyInfo: true
+        packageType: sdk
+        version:  ${{ parameters.DotnetCore_Version }} 
 
     - task: NuGetToolInstaller@1
       displayName: "Check for NuGet Tools"
@@ -108,13 +107,20 @@ stages:
 #********************************************************************************
 # Set Assemblt to Build Number
 #********************************************************************************   
-#    - task: VersionAssemblies@2
-#      inputs:
-#        Path: '$(Build.SourcesDirectory)\src'
-#        VersionNumber: '$(Build.BuildNumber)'
-#        InjectVersion: true
-#        FilenamePattern: 'AssemblyVersionInfo.*'
-#       OutputVersion: 'OutputedVersion'
+    - task: gittools.gitversion.gitversion-task.GitVersion@4
+      displayName: GitVersion
+      enabled: false
+      inputs:
+        updateAssemblyInfo: true
+        preferBundledVersion: false
+    
+    - task: VersionAssemblies@2
+      inputs:
+        Path: '$(Build.SourcesDirectory)'
+        VersionNumber: '$(Build.BuildNumber)'
+        InjectVersion: False
+        FilenamePattern: 'AssemblyInfo.*'
+        OutputVersion: 'OutputedVersion'
 
 #********************************************************************************
 # Display all current varaiables
