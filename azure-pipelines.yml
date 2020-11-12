@@ -88,6 +88,8 @@ stages:
       displayName: "Check forGitVersion"
       inputs:
         versionSpec: '5.x'
+        updateAssemblyInfo: true
+
 
     - task: NuGetToolInstaller@1
       displayName: "Check for NuGet Tools"
