@@ -84,7 +84,7 @@ stages:
 # Install required software
 #********************************************************************************   
     - task: UseGitVersion@5
-      enabled: false
+      enabled: true
       displayName: "Check forGitVersion"
       inputs:
         versionSpec: '5.x'
