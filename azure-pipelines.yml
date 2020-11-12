@@ -146,7 +146,7 @@ stages:
         solution: 'src\**\*.sln'
         platform: '$(Build.Platform)'
         configuration: '${{ parameters.BuildConfiguration }}'
-        msbuildArguments: '-p:version=$(Build.BuildNumber) -p:FileVersion=$(Build.BuildNumber)'
+        msbuildArguments: '/p:version=$(Build.BuildNumber) /p:FileVersion=$(Build.BuildNumber)'
         clean: true
         maximumCpuCount: true
         restoreNugetPackages: false
