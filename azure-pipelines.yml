@@ -17,7 +17,7 @@ parameters:
 - name: VersionNumberMinor
   displayName: 'Version Number : Minor'
   type: string
-  default: '0'
+  default: '3'
 - name: VersionNumberBuild
   displayName: 'Version Number : Build'
   type: string
