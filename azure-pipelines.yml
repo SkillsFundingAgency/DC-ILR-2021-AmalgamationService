@@ -1,6 +1,6 @@
 
 #name: $(GitVersion_NuGetVersion)
-name: ${{ parameters.VersionNumberMajor }}.${{ parameters.VersionNumberMinor }}.${{ parameters.VersionNumberBuild }}.$(Rev:rrrr)
+name: ${{ parameters.VersionNumberMajor }}.${{ parameters.VersionNumberMinor }}.$(Rev:rrrr)
 
 parameters:
 - name: buildConfiguration
@@ -18,10 +18,6 @@ parameters:
   displayName: 'Version Number : Minor'
   type: string
   default: '3'
-- name: VersionNumberBuild
-  displayName: 'Version Number : Build'
-  type: string
-  default: '0'
 - name: DotnetCore_Version
   displayName: .net Coer SDK Version 
   type: string
