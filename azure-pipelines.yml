@@ -1,6 +1,6 @@
 
 #name: $(GitVersion_NuGetVersion)
-name: ${{ parameters.VersionNumberMajor }}.${{ parameters.VersionNumberMinor }}.${{ parameters.VersionNumberBuild }}.$(Rev:rrrr)
+name: ${{ parameters.VersionNumberMajor }}.${{ parameters.VersionNumberMinor }}.$(Rev:r)
 
 parameters:
 - name: buildConfiguration
@@ -14,14 +14,12 @@ parameters:
   displayName: 'Version Number : Major'
   type: string
   default: '2021'
+
 - name: VersionNumberMinor
   displayName: 'Version Number : Minor'
   type: string
   default: '3'
-- name: VersionNumberBuild
-  displayName: 'Version Number : Build'
-  type: string
-  default: '0'
+
 - name: DotnetCore_Version
   displayName: .net Coer SDK Version 
   type: string
@@ -107,18 +105,11 @@ stages:
 #********************************************************************************
 # Set Assemblt to Build Number
 #********************************************************************************   
-    - task: gittools.gitversion.gitversion-task.GitVersion@4
-      displayName: GitVersion
-      enabled: false
-      inputs:
-        updateAssemblyInfo: true
-        preferBundledVersion: false
-    
     - task: VersionAssemblies@2
       inputs:
         Path: '$(Build.SourcesDirectory)'
         VersionNumber: '$(Build.BuildNumber)'
-        InjectVersion: False
+        InjectVersion: true
         FilenamePattern: 'AssemblyInfo.*'
         OutputVersion: 'OutputedVersion'
 
