@@ -4,30 +4,8 @@ using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerLLDDandHealthProblem : AbstractLooseReadWriteModel<ILooseLearner>, ILooseLLDDAndHealthProblem
+    public partial class MessageLearnerLLDDandHealthProblem : AbstractLooseReadWriteModel<MessageLearner>, IParentRelationship<MessageLearner>, IAmalgamationModel
     {
-        [XmlIgnore]
-        public long? LLDDCatNullable
-        {
-            get => lLDDCatFieldSpecified ? lLDDCatField : default(long?);
-            set
-            {
-                lLDDCatFieldSpecified = value.HasValue;
-                lLDDCatField = value.GetValueOrDefault();
-            }
-        }
-
-        [XmlIgnore]
-        public long? PrimaryLLDDNullable
-        {
-            get => primaryLLDDFieldSpecified ? primaryLLDDField : default(long?);
-            set
-            {
-                primaryLLDDFieldSpecified = value.HasValue;
-                primaryLLDDField = value.GetValueOrDefault();
-            }
-        }
-
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
 

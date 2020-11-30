@@ -17,9 +17,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services
 
             if (invalidLearners.Count() > 0)
             {
-                var amalgamatedLearners = amalgamationResult.Message.Learners as MessageLearner[];
-                var validLearners = amalgamatedLearners.Where(l => !invalidLearners.Contains(l.LearnRefNumber)).ToArray();
-                amalgamationResult.Message.Learners = validLearners;
+                amalgamationResult.Message.Learner.RemoveAll(l => invalidLearners.Contains(l.LearnRefNumber));
             }
 
             return amalgamationResult;

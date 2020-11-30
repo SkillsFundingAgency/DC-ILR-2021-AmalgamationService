@@ -29,10 +29,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
         {
             var messageLearnerLearnerEmploymentStatus = new MessageLearnerLearnerEmploymentStatus();
 
-            ApplyRule(s => s.DateEmpStatAppNullable, _standardRuleDateTime.Definition, models, messageLearnerLearnerEmploymentStatus);
-            ApplyRule(s => s.EmpStatNullable, _standardRuleLong.Definition, models, messageLearnerLearnerEmploymentStatus);
-            ApplyRule(s => s.EmpIdNullable, _standardRuleLong.Definition, models, messageLearnerLearnerEmploymentStatus);
-            ApplyRule(s => s.AgreeId, _standardRuleString.Definition, models, messageLearnerLearnerEmploymentStatus);
+            ApplyRule(s => s.DateEmpStatApp, _standardRuleDateTime.Definition, models, messageLearnerLearnerEmploymentStatus);
+            ApplyRule(s => s.EmpStat, _standardRuleLong.Definition, models, messageLearnerLearnerEmploymentStatus);
+            ApplyRule(s => s.EmpId, _standardRuleLong.Definition, models, messageLearnerLearnerEmploymentStatus);
 
             ApplyGroupedChildCollectionRule(s => s.EmploymentStatusMonitoring, g => g.ESMType, _learnerEmploymentStatusMonitoringAmalgamator, models, messageLearnerLearnerEmploymentStatus);
 

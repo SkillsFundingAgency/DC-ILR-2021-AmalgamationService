@@ -4,19 +4,8 @@ using System.Xml.Serialization;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageLearnerContactPreference : AbstractLooseReadWriteModel<ILooseLearner>,  ILooseContactPreference
+    public partial class MessageLearnerContactPreference : AbstractLooseReadWriteModel<MessageLearner>, IParentRelationship<MessageLearner>, IAmalgamationModel
     {
-
-        [XmlIgnore]
-        public long? ContPrefCodeNullable
-        {
-            get => contPrefCodeFieldSpecified ? contPrefCodeField : default(long?);
-            set
-            {
-                contPrefCodeFieldSpecified = value.HasValue;
-                contPrefCodeField = value.GetValueOrDefault();
-            }
-        }
 
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;

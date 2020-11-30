@@ -36,27 +36,27 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Rules.Factory
             return new PostCodeRule();
         }
 
-        public IRule<MessageLearnerContactPreference[]> BuildLearnerContactPreferenceCollectionRule()
+        public IRule<List<MessageLearnerContactPreference>> BuildLearnerContactPreferenceCollectionRule()
         {
             return new LearnerContactPreferenceCollectionRule();
         }
 
-        public IRule<MessageLearnerLLDDandHealthProblem[]> BuildLLDDandHealthProblemCollectionRule()
+        public IRule<List<MessageLearnerLLDDandHealthProblem>> BuildLLDDandHealthProblemCollectionRule()
         {
             return new LLDDandHealthProblemCollectionRule();
         }
 
-        public IRule<MessageLearnerLearnerFAM[]> BuildLearnerFAMAmalgamationRule()
+        public IRule<List<MessageLearnerLearnerFAM>> BuildLearnerFAMAmalgamationRule()
         {
             return new LearnerFAMAmalgamationRule();
         }
 
-        public IRule<MessageLearnerLearningDelivery[]> BuildLearningDeliveryRule()
+        public IRule<List<MessageLearnerLearningDelivery>> BuildLearningDeliveryRule()
         {
             return new LearningDeliveryRule();
         }
 
-        public IRule<MessageLearnerDestinationandProgressionDPOutcome[]> BuildDPOutcomeRule()
+        public IRule<List<MessageLearnerDestinationandProgressionDPOutcome>> BuildDPOutcomeRule()
         {
             return new DPOutcomeRule();
         }

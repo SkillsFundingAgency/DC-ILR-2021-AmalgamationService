@@ -17,14 +17,14 @@ namespace ESFA.DC.ILR.AmalgamationService.Interfaces
 
         IRule<string> BuildPostCodeRule();
 
-        IRule<MessageLearnerContactPreference[]> BuildLearnerContactPreferenceCollectionRule();
+        IRule<List<MessageLearnerContactPreference>> BuildLearnerContactPreferenceCollectionRule();
 
-        IRule<MessageLearnerLLDDandHealthProblem[]> BuildLLDDandHealthProblemCollectionRule();
+        IRule<List<MessageLearnerLLDDandHealthProblem>> BuildLLDDandHealthProblemCollectionRule();
 
-        IRule<MessageLearnerLearnerFAM[]> BuildLearnerFAMAmalgamationRule();
+        IRule<List<MessageLearnerLearnerFAM>> BuildLearnerFAMAmalgamationRule();
 
-        IRule<MessageLearnerLearningDelivery[]> BuildLearningDeliveryRule();
+        IRule<List<MessageLearnerLearningDelivery>> BuildLearningDeliveryRule();
 
-        IRule<MessageLearnerDestinationandProgressionDPOutcome[]> BuildDPOutcomeRule();
+        IRule<List<MessageLearnerDestinationandProgressionDPOutcome>> BuildDPOutcomeRule();
     }
 }

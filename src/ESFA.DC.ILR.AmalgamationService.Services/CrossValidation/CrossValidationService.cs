@@ -16,36 +16,32 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
             _validationErrorHandler = validationErrorHandler;
         }
 
-        public ILooseMessage CrossValidateLearners(ILooseMessage message)
+        public Message CrossValidateLearners(Message message)
         {
-            if (message.Learners != null && message.Learners.Count > 1)
+            if (message.Learner != null && message.Learner.Count > 1)
             {
-                HashSet<string> duplicateLearners = new HashSet<string>(GetLearnerDuplicateLearnRefNumbers(message.Learners), StringComparer.OrdinalIgnoreCase);
+                HashSet<string> duplicateLearners = new HashSet<string>(GetLearnerDuplicateLearnRefNumbers(message.Learner), StringComparer.OrdinalIgnoreCase);
 
-                if (duplicateLearners.Count() > 0)
+                if (duplicateLearners.Any())
                 {
-                    var msgLearners = message.Learners as MessageLearner[];
-                    var validLearners = msgLearners.Where(dp => !duplicateLearners.Contains(dp.LearnRefNumber)).ToArray();
-                    message.Learners = validLearners;
+                    message.Learner.RemoveAll(l => duplicateLearners.Contains(l.LearnRefNumber));
                 }
             }
 
-            if (message.LearnerDestinationAndProgressions != null && message.LearnerDestinationAndProgressions.Count > 1)
+            if (message.LearnerDestinationandProgression != null && message.LearnerDestinationandProgression.Count > 1)
             {
-                HashSet<string> duplicateProgressionList = new HashSet<string>(GetDPduplicateLearnRefNumbers(message.LearnerDestinationAndProgressions), StringComparer.OrdinalIgnoreCase);
+                HashSet<string> duplicateProgressionList = new HashSet<string>(GetDPduplicateLearnRefNumbers(message.LearnerDestinationandProgression), StringComparer.OrdinalIgnoreCase);
 
-                if (duplicateProgressionList.Count() > 0)
+                if (duplicateProgressionList.Any())
                 {
-                    var msgProgressionList = message.LearnerDestinationAndProgressions as MessageLearnerDestinationandProgression[];
-                    var validProgressionList = msgProgressionList.Where(dp => !duplicateProgressionList.Contains(dp.LearnRefNumber)).ToArray();
-                    message.LearnerDestinationAndProgressions = validProgressionList;
+                    message.LearnerDestinationandProgression.RemoveAll(ldp => duplicateProgressionList.Contains(ldp.LearnRefNumber));
                 }
             }
 
             return message;
         }
 
-        public IEnumerable<string> GetLearnerDuplicateLearnRefNumbers(IEnumerable<ILooseLearner> learners)
+        public IEnumerable<string> GetLearnerDuplicateLearnRefNumbers(List<MessageLearner> learners)
         {
             var duplicates = learners.GroupBy(x => x.LearnRefNumber, StringComparer.OrdinalIgnoreCase)
                            .Where(g => g.Count() > 1)
@@ -64,7 +60,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.CrossValidation
         /// </summary>
         /// <param name="progressionList">list to check for duplicates</param>
         /// <returns>duplicate items</returns>
-        public IEnumerable<string> GetDPduplicateLearnRefNumbers(IEnumerable<ILooseLearnerDestinationAndProgression> progressionList)
+        public IEnumerable<string> GetDPduplicateLearnRefNumbers(IList<MessageLearnerDestinationandProgression> progressionList)
         {
             var duplicates = progressionList.GroupBy(x => x.LearnRefNumber, StringComparer.OrdinalIgnoreCase)
                                .Where(g => g.Count() > 1)

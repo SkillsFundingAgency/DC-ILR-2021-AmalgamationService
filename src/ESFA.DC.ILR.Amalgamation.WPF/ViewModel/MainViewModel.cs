@@ -80,6 +80,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
                 RaisePropertyChanged(nameof(ChooseFileVisibility));
                 RaisePropertyChanged(nameof(ProcessingVisibility));
                 RaisePropertyChanged(nameof(ProcessedSuccessfullyVisibility));
+                RaisePropertyChanged(nameof(ProcessedUnsuccessfullyVisibility));
                 RaisePropertyChanged(nameof(AmalgamationSummary));
             }
         }
@@ -99,11 +100,13 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
             }
         }
 
-        public bool ChooseFileVisibility => CurrentStage != StageKeys.ProcessedSuccessfully;
+        public bool ChooseFileVisibility => CurrentStage == StageKeys.ChooseFile;
 
         public bool ProcessingVisibility => CurrentStage == StageKeys.Processing;
 
         public bool ProcessedSuccessfullyVisibility => CurrentStage == StageKeys.ProcessedSuccessfully;
+
+        public bool ProcessedUnsuccessfullyVisibility => CurrentStage == StageKeys.ProcessHandledFailure;
 
         public ObservableCollection<string> Files
         {
@@ -178,7 +181,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
         private void ShowChooseFileDialog()
         {
-            CurrentStage = StageKeys.ChooseFile;
             var selectedFiles = _dialogInteractionService.GetFileNamesFromOpenFileDialog();
 
             if (selectedFiles?.Length > 0)
@@ -192,7 +194,6 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
         {
             CurrentStage = StageKeys.Processing;
             CanMerge = false;
-            ShowErrorMessage = false;
 
             try
             {
@@ -204,8 +205,7 @@ namespace ESFA.DC.ILR.Amalgamation.WPF.ViewModel
 
                 if (!result)
                 {
-                    ShowErrorMessage = true;
-                    CurrentStage = StageKeys.ChooseFile;
+                    CurrentStage = StageKeys.ProcessHandledFailure;
                     return;
                 }
 

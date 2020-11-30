@@ -23,12 +23,12 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
             MessageLearnerLearnerEmploymentStatus[] messageLearnerLearnerEmploymentStatuses =
             {
-            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
-            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
-            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, AgreeId = "4", Parent = messageLearner }
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner }
             };
 
-            var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, AgreeId = "4" };
+            var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 2, EmpId = 3, };
 
             var amalgamated = _learnerEmploymentStatusAmalgamator.Amalgamate(messageLearnerLearnerEmploymentStatuses);
 
@@ -47,11 +47,11 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Tests
 
             MessageLearnerLearnerEmploymentStatus[] messageLearnerLearnerEmploymentStatuses =
             {
-            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 1, EmpId = 3, Parent = messageLearner },
-            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 1, EmpId = 3, Parent = messageLearner },
+            new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 2, EmpId = 3, Parent = messageLearner },
             };
 
-            var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2019, 06, 01), EmpStat = 2, EmpId = 3, AgreeId = "4" };
+            var expectedResult = new MessageLearnerLearnerEmploymentStatus() { DateEmpStatApp = new DateTime(2020, 06, 01), EmpStat = 2, EmpId = 3 };
 
             var amalgamated = _learnerEmploymentStatusAmalgamator.Amalgamate(messageLearnerLearnerEmploymentStatuses);
             var validationError = _amalgamationErrorHandler.Errors;

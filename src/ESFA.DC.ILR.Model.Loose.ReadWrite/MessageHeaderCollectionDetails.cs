@@ -6,22 +6,8 @@ using ESFA.DC.ILR.Model.Loose.ReadWrite.Interface;
 
 namespace ESFA.DC.ILR.Model.Loose.ReadWrite
 {
-    public partial class MessageHeaderCollectionDetails : AbstractLooseReadWriteModel<ILooseHeader>, ILooseCollectionDetails
+    public partial class MessageHeaderCollectionDetails : AbstractLooseReadWriteModel<MessageHeader>, IParentRelationship<MessageHeader>, IAmalgamationModel
     {
-        [XmlIgnore]
-        public string CollectionString
-        {
-            get => collectionField.XmlEnumToString();
-            set => collectionField = (MessageHeaderCollectionDetailsCollection)Enum.Parse(typeof(MessageHeaderCollectionDetailsCollection), value);
-        }
-
-        [XmlIgnore]
-        public string YearString
-        {
-            get => yearField.XmlEnumToString();
-            set => yearField = (MessageHeaderCollectionDetailsYear)Enum.Parse(typeof(MessageHeaderCollectionDetailsYear), value);
-        }
-
         [XmlIgnore]
         public string SourceFileName => Parent.Parent.Parent.Filename;
 

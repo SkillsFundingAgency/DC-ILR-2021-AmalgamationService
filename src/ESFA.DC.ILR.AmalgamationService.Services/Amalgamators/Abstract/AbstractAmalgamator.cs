@@ -49,7 +49,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     prop.SetValue(entity, value.AmalgamatedValue);
                 }
 
-                _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
+              _amalgamationErrorHandler.HandleErrors(inputEntities.Select(x => new AmalgamationValidationError()
                 {
                     File = x.SourceFileName,
                     LearnRefNumber = x.LearnRefNumber ?? string.Empty,
@@ -80,7 +80,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
             return entity;
         }
 
-        protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, TValue[]>> selector, Func<IEnumerable<TValue[]>, IRuleResult<TValue[]>> rule, IEnumerable<T> inputEntities, T entity)
+        protected T ApplyGroupedCollectionRule<TValue>(Expression<Func<T, List<TValue>>> selector, Func<IEnumerable<List<TValue>>, IRuleResult<List<TValue>>> rule, IEnumerable<T> inputEntities, T entity)
         {
             if (inputEntities == null || !inputEntities.Any())
             {
@@ -148,7 +148,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators.Abstract
                     .SelectMany(x => x)
                     .GroupBy(groupByFunc)
                     .Select(amalgamator.Amalgamate)
-                    .ToArray();
+                    .ToList();
 
             if (amalgamatedGroups.Any())
             {

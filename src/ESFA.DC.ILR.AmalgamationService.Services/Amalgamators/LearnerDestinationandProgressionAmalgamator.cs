@@ -22,7 +22,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var messageLearnerDestinationandProgression = new MessageLearnerDestinationandProgression();
 
             ApplyRule(s => s.LearnRefNumber, _ruleProvider.BuildStandardRule<string>().Definition, models, messageLearnerDestinationandProgression);
-            ApplyRule(s => s.ULNNullable, _ruleProvider.BuildUlnRule().Definition, models, messageLearnerDestinationandProgression);
+            ApplyRule(s => s.ULN, _ruleProvider.BuildUlnRule().Definition, models, messageLearnerDestinationandProgression);
             ApplyGroupedCollectionRule(s => s.DPOutcome, _ruleProvider.BuildDPOutcomeRule().Definition, models, messageLearnerDestinationandProgression);
 
             return messageLearnerDestinationandProgression;

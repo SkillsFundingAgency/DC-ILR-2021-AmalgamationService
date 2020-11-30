@@ -28,7 +28,7 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             var message = new Message();
 
             ApplyChildRule(m => m.Header, _headerAmalgamator, models, message);
-            message.SourceFiles = GetSourceFiles(models);
+            message.SourceFiles.AddRange(GetSourceFiles(models));
             message.LearningProvider = GetLearningProvider(models);
             ApplyGroupedChildCollectionRule(m => m.Learner, g => g.LearnRefNumber, _learnerAmalgamator, models, message);
             ApplyGroupedChildCollectionRule(m => m.LearnerDestinationandProgression, g => g.LearnRefNumber, _learnerDestinationandProgressionAmalgamator, models, message);
@@ -36,9 +36,9 @@ namespace ESFA.DC.ILR.AmalgamationService.Services.Amalgamators
             return message;
         }
 
-        private MessageSourceFile[] GetSourceFiles(IEnumerable<Message> models)
+        private MessageSourceFilesSourceFile[] GetSourceFiles(IEnumerable<Message> models)
         {
-            return models.Select(x => new MessageSourceFile()
+            return models.Select(x => new MessageSourceFilesSourceFile()
             {
                 SourceFileName = x.Parent.Filename,
                 FilePreparationDate = x.Header.CollectionDetails.FilePreparationDate,
